@@ -1,5 +1,4 @@
 #include "LinkedList.h"
-#include "mock_Lexer.h"
 #include <malloc.h>
 #include <stdio.h>
 #include <assert.h>
@@ -22,9 +21,9 @@ ListElement *createListElement(int value){
   ListElement *NewNode= malloc(sizeof(ListElement));
   assert(NewNode != NULL);
 
-  NewNode -> key = key;
   NewNode -> value = value;
   NewNode -> next = NULL;
+
 
   return NewNode;
 
