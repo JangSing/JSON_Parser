@@ -1,35 +1,26 @@
-#include "JSON.h"
-#include "getToken.h"
+#include "Token.h"
 #include "LinkedList.h"
+
 #include <malloc.h>
 #include <stdio.h>
 #include <assert.h>
 #include <ctype.h>
 
-Token *ReceiveToken(){
-  return getToken();
-}
 
 LinkedList *DetermineState(){
-  Token *token;
-  int i;
 
+  int i;
+  Token *token;
   LinkedList *List=malloc(sizeof(LinkedList));
 
   List->state=WAIT_FOR_TOKEN;
 
-
-  for(i=0;i<5;i++){
-    token=getToken();
-
-    printf("i=%d token-> state=%d\n\n",i,List-> state);
-    printf("i=%d token-> type=%d\n",i,token-> type);
-    printf("i=%d token-> Operator=%d\n",i,token-> Operator);
-    printf("i=%d token-> value=%s\n",i,token-> value);
+  token=getToken();
+  do{
 
     switch(List->state){
       case WAIT_FOR_TOKEN :
-        if(token->type==TOKEN_OPERATOR_TYPE && token->Operator==OPERATOR1){
+        if(token-> type=TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(token))->symbol,"{")==0){
           List->state=OBJECT;
         }
         else{
@@ -37,15 +28,15 @@ LinkedList *DetermineState(){
         }break;
 
       case OBJECT :
-        if(token->type==TOKEN_IDENTIFIER_TYPE ){
-          List->state=WAIT_FOR_OPERATOR2;
+        if(token->type==TOKEN_IDENTIFIER_TYPE){
+          List->state=WAIT_FOR_COLON;
         }
         else{
           List->state=ERROR;
         }break;
 
-      case WAIT_FOR_OPERATOR2 :
-        if(token->type==TOKEN_OPERATOR_TYPE && token->Operator==OPERATOR2){
+      case WAIT_FOR_COLON :
+        if(token->type==TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(token))->symbol,":")==0){
           List->state=VALUE;
         }
         else{
@@ -54,35 +45,32 @@ LinkedList *DetermineState(){
 
       case VALUE :
         if(token->type==TOKEN_OPERATOR_TYPE){
-          if(token->Operator==OPERATOR1){
+          if(strcmp(((OperatorToken *)(token))->symbol,"{")==0){
             List->state=OBJECT;
           }
-          else if(token->Operator==OPERATOR6){
+          else if(strcmp(((OperatorToken *)(token))->symbol,"[")==0){
             List->state=ARRAY;
           }
           else{
             List->state=ERROR;
           }
         }
-        else if(token->type==TOKEN_IDENTIFIER_TYPE){
-          List->state=END_OR_CON;
-          // if(isdigit(token->value))
-            // List->state=NUMBER;
-          // else if(isalpha(token->value))
-            // List->state=STRING;
-          // else
-            // List->state=ERROR;
+        else if(token->type==TOKEN_STRING_TYPE){
+          List->state=STRING;
+        }
+        else if(token->type==TOKEN_INTEGER_TYPE || token->type==TOKEN_FLOAT_TYPE){
+          List->state=NUMBER;
         }
         else{
           List->state=ERROR;
         }break;
 
-      case END_OR_CON :
-        if(token->type==TOKEN_OPERATOR_TYPE){
-          if(token->Operator==OPERATOR4){
+      case STRING :
+        if(token->type==TOKEN_OPERATOR_TYPE ){
+          if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
             List->state=END;
           }
-          else if(token->Operator==OPERATOR3){
+          else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
             List->state=OBJECT;
           }
           else{
@@ -93,19 +81,97 @@ LinkedList *DetermineState(){
           List->state=ERROR;
         }break;
 
+      case NUMBER :
+        if(token->type==TOKEN_OPERATOR_TYPE ){
+          if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
+            List->state=END;
+          }
+          else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
+            List->state=OBJECT;
+          }
+          else{
+            List->state=ERROR;
+          }
+        }
+        else{
+          List->state=ERROR;
+        }break;
+
+      // case ARRAY_VALUE:
+        // if(token->type==TOKEN_OPERATOR_TYPE){
+          // if(strcmp(((OperatorToken *)(token))->symbol,"{")==0){
+            // List->state=OBJECT;
+          // }
+          // else if(strcmp(((OperatorToken *)(token))->symbol,"[")==0){
+            // List->state=ARRAY;
+          // }
+          // else{
+            // List->state=ERROR;
+          // }
+        // }
+        // else if(token->type==TOKEN_STRING_TYPE){
+          // List->state=STRING;
+        // }
+        // else if(token->type==TOKEN_INTEGER_TYPE || token->type==TOKEN_FLOAT_TYPE){
+          // List->state=NUMBER;
+        // }
+        // else{
+          // List->state=ERROR;
+        // }break;
+
+      // case ARRAY_OBJECT:
+        // if(token->type==TOKEN_IDENTIFIER_TYPE){
+          // List->state=ARRAY_WAIT_FOR_COLON;
+        // }
+        // else{
+          // List->state=ERROR;
+        // }break;
+
+      // case ARRAY_WAIT_FOR_COLON:
+        // if(token->type==TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(token))->symbol,":")==0){
+          // List->state=ARRAY_VALUE;
+        // }
+        // else{
+          // List->state=ERROR;
+        // }break;
+
+      // case ARRAY_STRING :
+        // if(token->type==TOKEN_OPERATOR_TYPE ){
+          // if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
+            // List->state=END;
+          // }
+          // else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
+            // List->state=OBJECT;
+          // }
+          // else{
+            // List->state=ERROR;
+          // }
+        // }
+        // else{
+          // List->state=ERROR;
+        // }break;
+
+      // case ARRAY_NUMBER :
+        // if(token->type==TOKEN_OPERATOR_TYPE ){
+          // if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
+            // List->state=END;
+          // }
+          // else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
+            // List->state=OBJECT;
+          // }
+          // else{
+            // List->state=ERROR;
+          // }
+        // }
+        // else{
+          // List->state=ERROR;
+        // }break;
+
 
     }
-    // token=getToken();
-    // printf("token-> state=%d\n",token-> state);
-    // printf("token-> type=%d\n",token-> type);
-    // printf("token-> Operator=%d\n",token-> Operator);
-    // printf("token-> value=%s\n\n",token-> value);
-  }
-// }
+    token=getToken();
 
-  // state=state;
-
-
+  }while(token!=NULL);
 
   return List;
 }
