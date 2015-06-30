@@ -73,9 +73,9 @@ void test_DetermineState()
   ((OperatorToken *)(token3))->symbol=":";
   getToken_ExpectAndReturn(token3);
 
-  // token4-> type=TOKEN_STRING_TYPE;
-  // ((StringToken *)(token4))-> name="JS";
-  // getToken_ExpectAndReturn(token4);
+  token4-> type=TOKEN_STRING_TYPE;
+  ((StringToken *)(token4))-> name="JS";
+  getToken_ExpectAndReturn(token4);
 
   // token5-> type=TOKEN_OPERATOR_TYPE;
   // ((OperatorToken *)(token5))-> symbol="{";
@@ -85,34 +85,52 @@ void test_DetermineState()
   // ((OperatorToken *)(token6))-> symbol="[";
   // getToken_ExpectAndReturn(token6);
 
-  token7-> type=TOKEN_INTEGER_TYPE;
-  ((IntegerToken *)(token7))-> value=1234;
-  getToken_ExpectAndReturn(token7);
+  // token7-> type=TOKEN_INTEGER_TYPE;
+  // ((IntegerToken *)(token7))-> value=1234;
+  // getToken_ExpectAndReturn(token7);
 
-  token8-> type=TOKEN_OPERATOR_TYPE;
-  ((OperatorToken *)(token8))-> symbol=",";
-  getToken_ExpectAndReturn(token8);
+  // token8-> type=TOKEN_OPERATOR_TYPE;
+  // ((OperatorToken *)(token8))-> symbol=",";
+  // getToken_ExpectAndReturn(token8);
 
-  token9-> type=TOKEN_IDENTIFIER_TYPE;
-  ((IdentifierToken *)(token9))-> name="NAME2";
-  getToken_ExpectAndReturn(token9);
+  // token9-> type=TOKEN_IDENTIFIER_TYPE;
+  // ((IdentifierToken *)(token9))-> name="NAME2";
+  // getToken_ExpectAndReturn(token9);
 
-  token10-> type=TOKEN_OPERATOR_TYPE;
-  ((OperatorToken *)(token10))->symbol=":";
-  getToken_ExpectAndReturn(token10);
+  // token10-> type=TOKEN_OPERATOR_TYPE;
+  // ((OperatorToken *)(token10))->symbol=":";
+  // getToken_ExpectAndReturn(token10);
 
-  token11-> type=TOKEN_OPERATOR_TYPE;
-  ((OperatorToken *)(token11))-> symbol="{";
-  getToken_ExpectAndReturn(token11);
+  // token11-> type=TOKEN_OPERATOR_TYPE;
+  // ((OperatorToken *)(token11))-> symbol="{";
+  // getToken_ExpectAndReturn(token11);
 
   getToken_ExpectAndReturn(NULL);
 
   List=DetermineState();
-  TEST_ASSERT_EQUAL(OBJECT,List->state);
+  TEST_ASSERT_EQUAL(STRING,List->state);
 
 
-  // printf("\n\n%d",isdigit('9'));
-  // printf("\n\n%d",isalpha('A'));
+}
 
+void test_createListElement()
+{
+  ListElement *NewNode;
+  IntegerToken *IntTok;
 
+  IntTok=createIntegerToken(123);
+  NewNode = createListElement(IntTok);
+
+  TEST_ASSERT_NOT_NULL(NewNode);
+  TEST_ASSERT_NOT_NULL(NewNode->value);
+
+  TEST_ASSERT_EQUAL(123,IntTok->value);
+
+  // printf("NewNode->value=%d\n",NewNode->value);
+  // printf("IntTok=%d\n",IntTok);
+  TEST_ASSERT_EQUAL(123,((IntegerToken *)(NewNode->value))->value);
+  TEST_ASSERT_EQUAL(TOKEN_INTEGER_TYPE,((IntegerToken *)(NewNode->value))->type);
+
+  // TEST_ASSERT_EQUAL(123,*(int *)NewNode->value);
+  // TEST_ASSERT_NULL(NewNode->next);
 }

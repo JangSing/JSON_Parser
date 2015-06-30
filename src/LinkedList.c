@@ -9,9 +9,10 @@ LinkedList *createLinkedList(){
   list = malloc(sizeof(LinkedList));
   assert(list != NULL);
 
-  list -> head   = NULL;
-  list -> tail   = NULL;
-  list -> length = 0;
+  list-> head   = NULL;
+  list-> tail   = NULL;
+  list-> length = 0;
+  list-> state  = WAIT_FOR_TOKEN;
 
   return list;
 }
