@@ -115,10 +115,10 @@ LinkedList *DetermineState(){
             Recur=1;
 
             RecurList=DetermineState();
-            printf("RecurList->state=%d\n",RecurList->state);
 
-            if(RecurList->state==ERROR){
-              return RecurList;
+            if(RecurList->state==ERROR || RecurList->state!=END){
+              List->state=ERROR;
+              return List;
             }
 
             NewNode=createListElement(Link2Tokens(leftToken, ":", (Token *)(RecurList)));
@@ -216,6 +216,9 @@ LinkedList *DetermineState(){
 
     if(Recur==1 && token->type==TOKEN_OPERATOR_TYPE){
       if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
+        List->state=END;
+        NewNode=createListElement(createOperatorToken("}"));
+        AddLast(NewNode,List);
         Recur=0;
         break;
       }

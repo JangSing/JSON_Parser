@@ -100,11 +100,11 @@ void test_Simple_JSON_List()
   TEST_ASSERT_EQUAL(END,List->state);
   TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(List->head->value))->symbol);
   TEST_ASSERT_EQUAL_STRING(":",((OperatorToken *)(List->head->next->value))->symbol);
-  TEST_ASSERT_EQUAL_STRING("NAME1",((StringToken *)(((OperatorToken *)(List->head->next->value))->token[0]))->name);
+  TEST_ASSERT_EQUAL_STRING("NAME1",((IdentifierToken *)(((OperatorToken *)(List->head->next->value))->token[0]))->name);
   TEST_ASSERT_EQUAL_STRING("JS",((StringToken *)(((OperatorToken *)(List->head->next->value))->token[1]))->name);
   TEST_ASSERT_EQUAL_STRING(",",((OperatorToken *)(List->head->next->next->value))->symbol);
   TEST_ASSERT_EQUAL_STRING(":",((OperatorToken *)(List->head->next->next->next->value))->symbol);
-  TEST_ASSERT_EQUAL_STRING("AGE",((StringToken *)(((OperatorToken *)(List->head->next->next->next->value))->token[0]))->name);
+  TEST_ASSERT_EQUAL_STRING("AGE",((IdentifierToken *)(((OperatorToken *)(List->head->next->next->next->value))->token[0]))->name);
   TEST_ASSERT_EQUAL(20,((IntegerToken *)(((OperatorToken *)(List->head->next->next->next->value))->token[1]))->value);
   TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(List->head->next->next->next->next->value))->symbol);
 
@@ -112,7 +112,8 @@ void test_Simple_JSON_List()
 /**
  *{
  *  "NAME1":"JS",
- *  "AGE"  :{"NAME2":"STEVEN"}
+ *  "AGE"  :{ "NAME2":"STEVEN",
+ *            "NAME3":"YEN"}
  *}
  */
 void test_JSON_List_with_Recursion()
@@ -125,11 +126,15 @@ void test_JSON_List_with_Recursion()
   Token *Value=(Token*)createStringToken("JS");
   Token *Coma=(Token*)createOperatorToken(",");
   Token *Key1=(Token*)createIdentifierToken("AGE");
-  Token *Colon1=(Token*)createOperatorToken(":");
+  // Token *Colon=(Token*)createOperatorToken(":");
   // Token *OpenBrace=createOperatorToken("{");
   Token *Key2=(Token*)createIdentifierToken("NAME2");
   // Token *Colon=(Token*)createOperatorToken(":");
   Token *Value2=(Token*)createStringToken("STEVEN");
+  // Token *Coma=(Token*)createOperatorToken(",");
+  Token *Key3=(Token*)createIdentifierToken("NAME3");
+  // Token *Colon=(Token*)createOperatorToken(":");
+  Token *Value3=(Token*)createStringToken("Yen");
   Token *CloseBrace=createOperatorToken("}");
   // Token *CloseBrace=createOperatorToken("}");
 
@@ -145,9 +150,17 @@ void test_JSON_List_with_Recursion()
   getToken_ExpectAndReturn(Colon);
 
   getToken_ExpectAndReturn(OpenBrace);
+
   getToken_ExpectAndReturn(Key2);
   getToken_ExpectAndReturn(Colon);
-  // getToken_ExpectAndReturn(Value2);
+  getToken_ExpectAndReturn(Value2);
+
+  getToken_ExpectAndReturn(Coma);
+
+  getToken_ExpectAndReturn(Key3);
+  getToken_ExpectAndReturn(Colon);
+  getToken_ExpectAndReturn(Value3);
+
   getToken_ExpectAndReturn(CloseBrace);
 
   getToken_ExpectAndReturn(CloseBrace);
@@ -158,5 +171,22 @@ void test_JSON_List_with_Recursion()
   List=DetermineState();
 
   TEST_ASSERT_EQUAL(END,List->state);
+  TEST_ASSERT_EQUAL(END,List->state);
+  TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(List->head->value))->symbol);
+  TEST_ASSERT_EQUAL_STRING(":",((OperatorToken *)(List->head->next->value))->symbol);
+  TEST_ASSERT_EQUAL_STRING("NAME1",((IdentifierToken *)(((OperatorToken *)(List->head->next->value))->token[0]))->name);
+  TEST_ASSERT_EQUAL_STRING("JS",((StringToken *)(((OperatorToken *)(List->head->next->value))->token[1]))->name);
+  TEST_ASSERT_EQUAL_STRING(",",((OperatorToken *)(List->head->next->next->value))->symbol);
+  TEST_ASSERT_EQUAL_STRING(":",((OperatorToken *)(List->head->next->next->next->value))->symbol);
+  TEST_ASSERT_EQUAL_STRING("AGE",((IdentifierToken *)(((OperatorToken *)(List->head->next->next->next->value))->token[0]))->name);
+  TEST_ASSERT_EQUAL_STRING("{", ((OperatorToken *)(((LinkedList *)(((OperatorToken *)\
+                                (List->head->next->next->next->value))->token[1]))->head->value))->symbol);
+  TEST_ASSERT_EQUAL_STRING(":", ((OperatorToken *)(((LinkedList *)(((OperatorToken *)\
+                                (List->head->next->next->next->value))->token[1]))->head->next->value))->symbol);
+  TEST_ASSERT_EQUAL_STRING("NAME2", ((IdentifierToken *)(((OperatorToken *)(((LinkedList *)(((OperatorToken *)\
+                                    (List->head->next->next->next->value))->token[1]))->head->next->value))->token[0]))->name);
+  TEST_ASSERT_EQUAL_STRING("STEVEN", ((StringToken *)(((OperatorToken *)(((LinkedList *)(((OperatorToken *)\
+                                    (List->head->next->next->next->value))->token[1]))->head->next->value))->token[1]))->name);
+
 
 }
