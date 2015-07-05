@@ -7,6 +7,8 @@
 #include <assert.h>
 #include <ctype.h>
 
+int Recur=0;
+
 Token *createOperatorToken(char *symbol) {
 
     OperatorToken *opTok =malloc(sizeof(OperatorToken)+sizeof(Token *)*2);
@@ -16,7 +18,15 @@ Token *createOperatorToken(char *symbol) {
 
   return (Token *)opTok;
 }
+IdentifierToken *createIdentifierToken(char *key){
 
+    IdentifierToken *IdenTok =malloc(sizeof(IdentifierToken));
+
+    IdenTok->type=TOKEN_IDENTIFIER_TYPE;
+    IdenTok->name =key;
+
+  return IdenTok;
+}
 IntegerToken *createIntegerToken(int value){
 
     IntegerToken *IntTok =malloc(sizeof(IntegerToken));
@@ -26,18 +36,15 @@ IntegerToken *createIntegerToken(int value){
 
   return IntTok;
 }
+StringToken *createStringToken(char *value){
 
-IdentifierToken *createIdentifierToken(char *key){
+    StringToken *StrTok =malloc(sizeof(StringToken));
 
-    IdentifierToken *IdenTok =malloc(sizeof(IdentifierToken));
+    StrTok->type=TOKEN_STRING_TYPE;
+    StrTok->name=value;
 
-    IdenTok->type=TOKEN_INTEGER_TYPE;
-    IdenTok->name =key;
-
-  return IdenTok;
+  return StrTok;
 }
-
-
 Token *Link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue){
 
   OperatorToken *opTok;
@@ -52,27 +59,32 @@ Token *Link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue){
 
 LinkedList *DetermineState(){
 
-  int i;
   Token *token;
   ListElement *NewNode;
-  Token *tempToken;
+  Token *leftToken,*rightToken;
+
   LinkedList *List=malloc(sizeof(LinkedList));
 
   List=createLinkedList();
 
-  token=getToken();
+  if(Recur==0){
+    token=getToken();
+  }
+  else{
+    List->state=OBJECT;
+    NewNode=createListElement(createOperatorToken("{"));
+    AddLast(NewNode,List);
+    token=getToken();
+  }
+
   do{
 
     switch(List->state){
       case WAIT_FOR_TOKEN :
-        if(token-> type=TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(token))->symbol,"{")==0){
+        if(token-> type==TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(token))->symbol,"{")==0){
           List->state=OBJECT;
           NewNode=createListElement(createOperatorToken("{"));
           AddLast(NewNode,List);
-          // printf("List->head=%d\n",List->head);
-          // printf("NewNode=%d\n",NewNode);
-          // printf("((OperatorToken *)(NewNode->value))->symbol=%s\n",((OperatorToken *)(NewNode->value))->symbol);
-          // printf("((OperatorToken *)(NewNode->value))->type=%d\n",((OperatorToken *)(NewNode->value))->type);
         }
         else{
           List->state=ERROR;
@@ -81,7 +93,7 @@ LinkedList *DetermineState(){
       case OBJECT :
         if(token->type==TOKEN_IDENTIFIER_TYPE){
           List->state=WAIT_FOR_COLON;
-          tempToken=(Token *)createIdentifierToken(((IdentifierToken *)(token))->name);
+          leftToken=(Token *)createIdentifierToken(((IdentifierToken *)(token))->name);
         }
         else{
           List->state=ERROR;
@@ -90,15 +102,6 @@ LinkedList *DetermineState(){
       case WAIT_FOR_COLON :
         if(token->type==TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(token))->symbol,":")==0){
           List->state=VALUE;
-          NewNode=createListElement(Link2Tokens(tempToken, ":", NULL));
-          AddLast(NewNode,List);
-          // printf("List->head->next=%d\n",List->head->next);
-          // printf("NewNode=%d\n",NewNode);
-          // printf("symbol=%s\n",((OperatorToken *)(NewNode->value))->symbol);
-          // printf("token[0]=%s\n",((IdentifierToken *)(((OperatorToken *)(NewNode->value))->token[0]))->name);
-          // printf("token[1]=%d\n",((OperatorToken *)(NewNode->value))->token[1]);
-          // printf("List->head->next->value->token[0]=%s\n",((IdentifierToken *)(((OperatorToken *)(List->head->next->value))->token[0]))->name);
-
         }
         else{
           List->state=ERROR;
@@ -107,7 +110,20 @@ LinkedList *DetermineState(){
       case VALUE :
         if(token->type==TOKEN_OPERATOR_TYPE){
           if(strcmp(((OperatorToken *)(token))->symbol,"{")==0){
-            List->state=OBJECT;
+            LinkedList *RecurList=malloc(sizeof(LinkedList));
+            List->state=WAIT_FOR_OPERATOR;
+            Recur=1;
+
+            RecurList=DetermineState();
+            printf("RecurList->state=%d\n",RecurList->state);
+
+            if(RecurList->state==ERROR){
+              return RecurList;
+            }
+
+            NewNode=createListElement(Link2Tokens(leftToken, ":", (Token *)(RecurList)));
+            AddLast(NewNode,List);
+
           }
           else if(strcmp(((OperatorToken *)(token))->symbol,"[")==0){
             List->state=ARRAY;
@@ -118,19 +134,16 @@ LinkedList *DetermineState(){
         }
         else if(token->type==TOKEN_STRING_TYPE){
           List->state=STRING;
-          tempToken=(Token *)createIdentifierToken(((StringToken *)(token))->name);
-          ((Token *)((StringToken *)(((OperatorToken *)(List->head->next->value))->token[1])))=tempToken;
-          printf("List->head->next=%d\n",List->head->next);
-          printf("NewNode=%d\n",NewNode);
-          printf("symbol=%s\n",((OperatorToken *)(NewNode->value))->symbol);
-          printf("token[0]=%s\n",((IdentifierToken *)(((OperatorToken *)(NewNode->value))->token[0]))->name);
-          printf("token[1]=%d\n",((OperatorToken *)(NewNode->value))->token[1]);
-          printf("List->head->next->value->token[0]=%s\n",((IdentifierToken *)(((OperatorToken *)(List->head->next->value))->token[0]))->name);
-          printf("List->head->next->value->token[1]=%s\n",((StringToken *)(((OperatorToken *)(List->head->next->value))->token[1]))->name);
-
+          rightToken=(Token *)createIdentifierToken(((StringToken *)(token))->name);
+          NewNode=createListElement(Link2Tokens(leftToken, ":", rightToken));
+          AddLast(NewNode,List);
         }
         else if(token->type==TOKEN_INTEGER_TYPE || token->type==TOKEN_FLOAT_TYPE){
           List->state=NUMBER;
+          rightToken=(Token *)createIntegerToken(((IntegerToken *)(token))->value);
+          NewNode=createListElement(Link2Tokens(leftToken, ":", rightToken));
+          AddLast(NewNode,List);
+
         }
         else{
           List->state=ERROR;
@@ -140,9 +153,14 @@ LinkedList *DetermineState(){
         if(token->type==TOKEN_OPERATOR_TYPE ){
           if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
             List->state=END;
+            NewNode=createListElement(createOperatorToken("}"));
+            AddLast(NewNode,List);
+
           }
           else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
             List->state=OBJECT;
+            NewNode=createListElement(createOperatorToken(","));
+            AddLast(NewNode,List);
           }
           else{
             List->state=ERROR;
@@ -150,15 +168,20 @@ LinkedList *DetermineState(){
         }
         else{
           List->state=ERROR;
+
         }break;
 
       case NUMBER :
         if(token->type==TOKEN_OPERATOR_TYPE ){
           if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
             List->state=END;
+            NewNode=createListElement(createOperatorToken("}"));
+            AddLast(NewNode,List);
           }
           else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
             List->state=OBJECT;
+            NewNode=createListElement(createOperatorToken(","));
+            AddLast(NewNode,List);
           }
           else{
             List->state=ERROR;
@@ -168,79 +191,35 @@ LinkedList *DetermineState(){
           List->state=ERROR;
         }break;
 
-      // case ARRAY_VALUE:
-        // if(token->type==TOKEN_OPERATOR_TYPE){
-          // if(strcmp(((OperatorToken *)(token))->symbol,"{")==0){
-            // List->state=OBJECT;
-          // }
-          // else if(strcmp(((OperatorToken *)(token))->symbol,"[")==0){
-            // List->state=ARRAY;
-          // }
-          // else{
-            // List->state=ERROR;
-          // }
-        // }
-        // else if(token->type==TOKEN_STRING_TYPE){
-          // List->state=STRING;
-        // }
-        // else if(token->type==TOKEN_INTEGER_TYPE || token->type==TOKEN_FLOAT_TYPE){
-          // List->state=NUMBER;
-        // }
-        // else{
-          // List->state=ERROR;
-        // }break;
-
-      // case ARRAY_OBJECT:
-        // if(token->type==TOKEN_IDENTIFIER_TYPE){
-          // List->state=ARRAY_WAIT_FOR_COLON;
-        // }
-        // else{
-          // List->state=ERROR;
-        // }break;
-
-      // case ARRAY_WAIT_FOR_COLON:
-        // if(token->type==TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(token))->symbol,":")==0){
-          // List->state=ARRAY_VALUE;
-        // }
-        // else{
-          // List->state=ERROR;
-        // }break;
-
-      // case ARRAY_STRING :
-        // if(token->type==TOKEN_OPERATOR_TYPE ){
-          // if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
-            // List->state=END;
-          // }
-          // else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
-            // List->state=OBJECT;
-          // }
-          // else{
-            // List->state=ERROR;
-          // }
-        // }
-        // else{
-          // List->state=ERROR;
-        // }break;
-
-      // case ARRAY_NUMBER :
-        // if(token->type==TOKEN_OPERATOR_TYPE ){
-          // if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
-            // List->state=END;
-          // }
-          // else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
-            // List->state=OBJECT;
-          // }
-          // else{
-            // List->state=ERROR;
-          // }
-        // }
-        // else{
-          // List->state=ERROR;
-        // }break;
-
-
+      case WAIT_FOR_OPERATOR :
+        if(token->type==TOKEN_OPERATOR_TYPE ){
+          if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
+            List->state=END;
+            NewNode=createListElement(createOperatorToken("}"));
+            AddLast(NewNode,List);
+          }
+          else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
+            List->state=OBJECT;
+            NewNode=createListElement(createOperatorToken(","));
+            AddLast(NewNode,List);
+          }
+          else{
+            List->state=ERROR;
+          }
+        }
+        else{
+          List->state=ERROR;
+        }break;
     }
+
     token=getToken();
+
+    if(Recur==1 && token->type==TOKEN_OPERATOR_TYPE){
+      if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
+        Recur=0;
+        break;
+      }
+    }
 
   }while(token!=NULL);
 

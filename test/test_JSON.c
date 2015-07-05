@@ -44,75 +44,6 @@ void test_getToken()
   TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(getToken()))-> symbol);
 }
 
-void test_DetermineState()
-{
-  LinkedList *List;
-  Token *token1 =malloc(sizeof(Token));
-  Token *token2 =malloc(sizeof(Token));
-  Token *token3 =malloc(sizeof(Token));
-  Token *token4 =malloc(sizeof(Token));
-  Token *token5 =malloc(sizeof(Token));
-  Token *token6 =malloc(sizeof(Token));
-  Token *token7 =malloc(sizeof(Token));
-  Token *token8 =malloc(sizeof(Token));
-  Token *token9 =malloc(sizeof(Token));
-  Token *token10 =malloc(sizeof(Token));
-  Token *token11 =malloc(sizeof(Token));
-  Token *token12 =malloc(sizeof(Token));
-  Token *token13 =malloc(sizeof(Token));
-
-  token1-> type=TOKEN_OPERATOR_TYPE;
-  ((OperatorToken *)(token1))-> symbol="{";
-  getToken_ExpectAndReturn(token1);
-
-  token2-> type=TOKEN_IDENTIFIER_TYPE;
-  ((IdentifierToken *)(token2))-> name="NAME";
-  getToken_ExpectAndReturn(token2);
-
-  token3-> type=TOKEN_OPERATOR_TYPE;
-  ((OperatorToken *)(token3))->symbol=":";
-  getToken_ExpectAndReturn(token3);
-
-  token4-> type=TOKEN_STRING_TYPE;
-  ((StringToken *)(token4))-> name="JS";
-  getToken_ExpectAndReturn(token4);
-
-  // token5-> type=TOKEN_OPERATOR_TYPE;
-  // ((OperatorToken *)(token5))-> symbol="{";
-  // getToken_ExpectAndReturn(token5);
-
-  // token6-> type=TOKEN_OPERATOR_TYPE;
-  // ((OperatorToken *)(token6))-> symbol="[";
-  // getToken_ExpectAndReturn(token6);
-
-  // token7-> type=TOKEN_INTEGER_TYPE;
-  // ((IntegerToken *)(token7))-> value=1234;
-  // getToken_ExpectAndReturn(token7);
-
-  // token8-> type=TOKEN_OPERATOR_TYPE;
-  // ((OperatorToken *)(token8))-> symbol=",";
-  // getToken_ExpectAndReturn(token8);
-
-  // token9-> type=TOKEN_IDENTIFIER_TYPE;
-  // ((IdentifierToken *)(token9))-> name="NAME2";
-  // getToken_ExpectAndReturn(token9);
-
-  // token10-> type=TOKEN_OPERATOR_TYPE;
-  // ((OperatorToken *)(token10))->symbol=":";
-  // getToken_ExpectAndReturn(token10);
-
-  // token11-> type=TOKEN_OPERATOR_TYPE;
-  // ((OperatorToken *)(token11))-> symbol="{";
-  // getToken_ExpectAndReturn(token11);
-
-  getToken_ExpectAndReturn(NULL);
-
-  List=DetermineState();
-  TEST_ASSERT_EQUAL(STRING,List->state);
-
-
-}
-
 void test_createListElement()
 {
   ListElement *NewNode;
@@ -126,11 +57,106 @@ void test_createListElement()
 
   TEST_ASSERT_EQUAL(123,IntTok->value);
 
-  // printf("NewNode->value=%d\n",NewNode->value);
-  // printf("IntTok=%d\n",IntTok);
   TEST_ASSERT_EQUAL(123,((IntegerToken *)(NewNode->value))->value);
   TEST_ASSERT_EQUAL(TOKEN_INTEGER_TYPE,((IntegerToken *)(NewNode->value))->type);
 
-  // TEST_ASSERT_EQUAL(123,*(int *)NewNode->value);
-  // TEST_ASSERT_NULL(NewNode->next);
+}
+
+/**
+ *  {
+ *    "NAME1":"JS",
+ *    "NAME2":"STEVEN"
+ *  }
+ */
+void test_Simple_JSON_List()
+{
+  LinkedList *List;
+
+  Token *OpenBrace=createOperatorToken("{");
+  Token *Key=(Token*)createIdentifierToken("NAME1");
+  Token *Colon=(Token*)createOperatorToken(":");
+  Token *Value=(Token*)createStringToken("JS");
+  Token *Coma=(Token*)createOperatorToken(",");
+  Token *Key1=(Token*)createIdentifierToken("AGE");
+  Token *Colon1=(Token*)createOperatorToken(":");
+  Token *Value1=(Token*)createIntegerToken(20);
+  Token *CloseBrace=createOperatorToken("}");
+
+  getToken_ExpectAndReturn(OpenBrace);
+  getToken_ExpectAndReturn(Key);
+  getToken_ExpectAndReturn(Colon);
+  getToken_ExpectAndReturn(Value);
+  getToken_ExpectAndReturn(Coma);
+  getToken_ExpectAndReturn(Key1);
+  getToken_ExpectAndReturn(Colon);
+  getToken_ExpectAndReturn(Value1);
+  getToken_ExpectAndReturn(CloseBrace);
+
+  getToken_ExpectAndReturn(NULL);
+
+  List=DetermineState();
+
+
+  TEST_ASSERT_EQUAL(END,List->state);
+  TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(List->head->value))->symbol);
+  TEST_ASSERT_EQUAL_STRING(":",((OperatorToken *)(List->head->next->value))->symbol);
+  TEST_ASSERT_EQUAL_STRING("NAME1",((StringToken *)(((OperatorToken *)(List->head->next->value))->token[0]))->name);
+  TEST_ASSERT_EQUAL_STRING("JS",((StringToken *)(((OperatorToken *)(List->head->next->value))->token[1]))->name);
+  TEST_ASSERT_EQUAL_STRING(",",((OperatorToken *)(List->head->next->next->value))->symbol);
+  TEST_ASSERT_EQUAL_STRING(":",((OperatorToken *)(List->head->next->next->next->value))->symbol);
+  TEST_ASSERT_EQUAL_STRING("AGE",((StringToken *)(((OperatorToken *)(List->head->next->next->next->value))->token[0]))->name);
+  TEST_ASSERT_EQUAL(20,((IntegerToken *)(((OperatorToken *)(List->head->next->next->next->value))->token[1]))->value);
+  TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(List->head->next->next->next->next->value))->symbol);
+
+}
+/**
+ *{
+ *  "NAME1":"JS",
+ *  "AGE"  :{"NAME2":"STEVEN"}
+ *}
+ */
+void test_JSON_List_with_Recursion()
+{
+  LinkedList *List;
+
+  Token *OpenBrace=createOperatorToken("{");
+  Token *Key=(Token*)createIdentifierToken("NAME1");
+  Token *Colon=(Token*)createOperatorToken(":");
+  Token *Value=(Token*)createStringToken("JS");
+  Token *Coma=(Token*)createOperatorToken(",");
+  Token *Key1=(Token*)createIdentifierToken("AGE");
+  Token *Colon1=(Token*)createOperatorToken(":");
+  // Token *OpenBrace=createOperatorToken("{");
+  Token *Key2=(Token*)createIdentifierToken("NAME2");
+  // Token *Colon=(Token*)createOperatorToken(":");
+  Token *Value2=(Token*)createStringToken("STEVEN");
+  Token *CloseBrace=createOperatorToken("}");
+  // Token *CloseBrace=createOperatorToken("}");
+
+
+  getToken_ExpectAndReturn(OpenBrace);
+  getToken_ExpectAndReturn(Key);
+  getToken_ExpectAndReturn(Colon);
+  getToken_ExpectAndReturn(Value);
+
+  getToken_ExpectAndReturn(Coma);
+
+  getToken_ExpectAndReturn(Key1);
+  getToken_ExpectAndReturn(Colon);
+
+  getToken_ExpectAndReturn(OpenBrace);
+  getToken_ExpectAndReturn(Key2);
+  getToken_ExpectAndReturn(Colon);
+  // getToken_ExpectAndReturn(Value2);
+  getToken_ExpectAndReturn(CloseBrace);
+
+  getToken_ExpectAndReturn(CloseBrace);
+
+  getToken_ExpectAndReturn(NULL);
+
+
+  List=DetermineState();
+
+  TEST_ASSERT_EQUAL(END,List->state);
+
 }

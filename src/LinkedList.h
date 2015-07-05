@@ -11,6 +11,7 @@ typedef enum{
   STRING,
   END_OR_CON,
   END,
+  WAIT_FOR_OPERATOR,
   ERROR,
 }ListState;
 

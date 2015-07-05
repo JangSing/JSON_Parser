@@ -7,8 +7,9 @@
 LinkedList *DetermineState();
 
 Token *createOperatorToken(char *symbol);
-IntegerToken *createIntegerToken(int value);
 IdentifierToken *createIdentifierToken(char *key);
+IntegerToken *createIntegerToken(int value);
+StringToken *createStringToken(char *value);
 
 Token *Link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue);
 
