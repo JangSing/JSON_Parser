@@ -13,4 +13,7 @@ StringToken *createStringToken(char *value);
 
 Token *Link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue);
 
+Token *getElementValue(ListElement *FindKey);
+
+
 #endif // JSON_H

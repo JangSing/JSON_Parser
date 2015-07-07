@@ -1,8 +1,9 @@
 #include "LinkedList.h"
-
+#include "Token.h"
 #include <malloc.h>
 #include <stdio.h>
 #include <assert.h>
+
 
 LinkedList *createLinkedList(){
   LinkedList *list;
@@ -145,18 +146,36 @@ int strCompare (void *first, void *second){
 
 }
 
+int TokCompare (void *first, void *second){
+
+  Token *ptr=(Token *)(first);
+  Token *ptr1=(Token *)(second);
+
+  if(strcmp(ptr,ptr1)==0){
+    return 0;
+  }
+  else if(first==NULL||second==NULL){
+    return -1;
+  }
+  else{
+    return 1;
+  }
+
+}
+
 ListElement *listFind(LinkedList *list, void *value, int(*compare)(void *,void *)){
   ListElement *ptr;
-
   ptr=list->head;
 
   if(list==NULL || value==NULL||(compare(ptr ->value , value)==-1)){
     return NULL;
   }
+
   else{
-    //if they the same then continue looping
-    while (compare(ptr ->value , value)){
+    //if they are not the same then continue looping
+    while (compare(ptr ->value , value)==1){
       ptr =ptr->next;
+
       if(ptr==NULL){
         return NULL;
       }
@@ -165,7 +184,26 @@ ListElement *listFind(LinkedList *list, void *value, int(*compare)(void *,void *
   }
 }
 
+ListElement *KeyFind(LinkedList *list, void *value, int(*compare)(void *,void *)){
+  ListElement *ptr;
+  ptr=list->head;
 
+  if(list==NULL || value==NULL||(compare(ptr ->value , value)==-1)){
+    return NULL;
+  }
 
-
-
+  else{
+    ptr=ptr->next;
+    //if they are not the same then continue looping
+    while (compare(((IdentifierToken *)(((OperatorToken *)(ptr ->value))->token[0]))->name , value)==1){
+      ptr =ptr->next;
+      if (ptr==NULL){
+        return ptr;
+      }
+      if((((OperatorToken *)(ptr ->value))->token[0])==NULL){
+        ptr=ptr->next;
+      }
+    }
+    return ptr;
+  }
+}

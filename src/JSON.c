@@ -15,6 +15,8 @@ Token *createOperatorToken(char *symbol) {
 
     opTok->type=TOKEN_OPERATOR_TYPE;
     opTok->symbol=symbol;
+    opTok->token[0]=NULL;
+    opTok->token[1]=NULL;
 
   return (Token *)opTok;
 }
@@ -227,5 +229,9 @@ LinkedList *DetermineState(){
   }while(token!=NULL);
 
   return List;
+}
+
+Token *getElementValue(ListElement *FindKey){
+  return ((OperatorToken *)(FindKey->value))->token[1];
 }
 

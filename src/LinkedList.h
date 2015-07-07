@@ -43,11 +43,9 @@ ListElement *RemoveLast(LinkedList *List);
 //*** Find Element function start here ***\\
 
 ListElement *listFind(LinkedList *list,void *value, int(*compare)(void *,void *));
+ListElement *KeyFind(LinkedList *list, void *value, int(*compare)(void *,void *));
 int intCompare(void *first, void *second);
 int strCompare(void *first, void *second);
-
-
-
-
+int TokCompare (void *first, void *second);
 
 #endif // LinkedList_H
