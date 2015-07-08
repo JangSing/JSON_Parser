@@ -20,6 +20,7 @@ Token *createOperatorToken(char *symbol) {
 
   return (Token *)opTok;
 }
+
 IdentifierToken *createIdentifierToken(char *key){
 
     IdentifierToken *IdenTok =malloc(sizeof(IdentifierToken));
@@ -29,6 +30,7 @@ IdentifierToken *createIdentifierToken(char *key){
 
   return IdenTok;
 }
+
 IntegerToken *createIntegerToken(int value){
 
     IntegerToken *IntTok =malloc(sizeof(IntegerToken));
@@ -38,6 +40,7 @@ IntegerToken *createIntegerToken(int value){
 
   return IntTok;
 }
+
 StringToken *createStringToken(char *value){
 
     StringToken *StrTok =malloc(sizeof(StringToken));
@@ -47,6 +50,7 @@ StringToken *createStringToken(char *value){
 
   return StrTok;
 }
+
 Token *Link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue){
 
   OperatorToken *opTok;
