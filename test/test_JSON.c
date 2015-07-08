@@ -7,11 +7,11 @@
 #include "LinkedList.h"
 #include "JSON.h"
 
-void setUp(void)
+void setUp()
 {
 }
 
-void tearDown(void)
+void tearDown()
 {
 }
 
@@ -94,22 +94,21 @@ void test_Simple_JSON_List()
 
   List=DetermineState();
 
+  TEST_ASSERT_EQUAL(END,List->state);
+
   OperatorToken *Token1 = ((OperatorToken *)(List->head->value));
   OperatorToken *Token2 = ((OperatorToken *)(List->head->next->value));
   OperatorToken *Token3 = ((OperatorToken *)(List->head->next->next->value));
   OperatorToken *Token4 = ((OperatorToken *)(List->head->next->next->next->value));
-  OperatorToken *Token5 = ((OperatorToken *)(List->head->next->next->next->next->value));
 
-  TEST_ASSERT_EQUAL(END,List->state);
   TEST_ASSERT_EQUAL_STRING("{",Token1->symbol);
   TEST_ASSERT_EQUAL_STRING(":",Token2->symbol);
   TEST_ASSERT_EQUAL_STRING("NAME1",((IdentifierToken *)(Token2->token[0]))->name);
   TEST_ASSERT_EQUAL_STRING("JS",((StringToken *)(Token2->token[1]))->name);
-  TEST_ASSERT_EQUAL_STRING(",",Token3->symbol);
-  TEST_ASSERT_EQUAL_STRING(":",Token4->symbol);
-  TEST_ASSERT_EQUAL_STRING("AGE",((IdentifierToken *)(Token4->token[0]))->name);
-  TEST_ASSERT_EQUAL(20,((IntegerToken *)(Token4->token[1]))->value);
-  TEST_ASSERT_EQUAL_STRING("}",Token5->symbol);
+  TEST_ASSERT_EQUAL_STRING(":",Token3->symbol);
+  TEST_ASSERT_EQUAL_STRING("AGE",((IdentifierToken *)(Token3->token[0]))->name);
+  TEST_ASSERT_EQUAL(20,((IntegerToken *)(Token3->token[1]))->value);
+  TEST_ASSERT_EQUAL_STRING("}",Token4->symbol);
 }
 /**
  *{
@@ -155,37 +154,34 @@ void test_JSON_List_with_Recursion_JSON_List()
 
   List=DetermineState();
 
+  TEST_ASSERT_EQUAL(END,List->state);
+
   OperatorToken *Token1 = ((OperatorToken *)(List->head->value));
   OperatorToken *Token2 = ((OperatorToken *)(List->head->next->value));
   OperatorToken *Token3 = ((OperatorToken *)(List->head->next->next->value));
   OperatorToken *Token4 = ((OperatorToken *)(List->head->next->next->next->value));
-  OperatorToken *Token5 = ((OperatorToken *)(List->head->next->next->next->next->value));
 
-  TEST_ASSERT_EQUAL(END,List->state);
   TEST_ASSERT_EQUAL_STRING("{",Token1->symbol);
   TEST_ASSERT_EQUAL_STRING(":",Token2->symbol);
   TEST_ASSERT_EQUAL_STRING("NAME1",((IdentifierToken *)(Token2->token[0]))->name);
   TEST_ASSERT_EQUAL_STRING("JS",((StringToken *)(Token2->token[1]))->name);
-  TEST_ASSERT_EQUAL_STRING(",",Token3->symbol);
-  TEST_ASSERT_EQUAL_STRING(":",Token4->symbol);
-  TEST_ASSERT_EQUAL_STRING("AGE",((IdentifierToken *)(Token4->token[0]))->name);
+  TEST_ASSERT_EQUAL_STRING(":",Token3->symbol);
+  TEST_ASSERT_EQUAL_STRING("AGE",((IdentifierToken *)(Token3->token[0]))->name);
 
-  OperatorToken *Token4Token1 = ((OperatorToken *)(((LinkedList *)(Token4->token[1]))->head->value));
-  OperatorToken *Token4Token2 = ((OperatorToken *)(((LinkedList *)(Token4->token[1]))->head->next->value));
-  OperatorToken *Token4Token3 = ((OperatorToken *)(((LinkedList *)(Token4->token[1]))->head->next->next->value));
-  OperatorToken *Token4Token4 = ((OperatorToken *)(((LinkedList *)(Token4->token[1]))->head->next->next->next->value));
-  OperatorToken *Token4Token5 = ((OperatorToken *)(((LinkedList *)(Token4->token[1]))->head->next->next->next->next->value));
+  OperatorToken *Token3Token1 = ((OperatorToken *)(((LinkedList *)(Token3->token[1]))->head->value));
+  OperatorToken *Token3Token2 = ((OperatorToken *)(((LinkedList *)(Token3->token[1]))->head->next->value));
+  OperatorToken *Token3Token3 = ((OperatorToken *)(((LinkedList *)(Token3->token[1]))->head->next->next->value));
+  OperatorToken *Token3Token4 = ((OperatorToken *)(((LinkedList *)(Token3->token[1]))->head->next->next->next->value));
 
-  TEST_ASSERT_EQUAL_STRING("{", Token4Token1->symbol);
-  TEST_ASSERT_EQUAL_STRING(":", Token4Token2->symbol);
-  TEST_ASSERT_EQUAL_STRING("NAME2", ((IdentifierToken *)(Token4Token2->token[0]))->name);
-  TEST_ASSERT_EQUAL_STRING("STEVEN",((StringToken *)(Token4Token2->token[1]))->name);
-  TEST_ASSERT_EQUAL_STRING(",", Token4Token3->symbol);
-  TEST_ASSERT_EQUAL_STRING(":", Token4Token4->symbol);
-  TEST_ASSERT_EQUAL_STRING("NAME3", ((IdentifierToken *)(Token4Token4->token[0]))->name);
-  TEST_ASSERT_EQUAL_STRING("Yen",((StringToken *)(Token4Token4->token[1]))->name);
-  TEST_ASSERT_EQUAL_STRING("}", Token4Token5->symbol);
-  TEST_ASSERT_EQUAL_STRING("}",Token5->symbol);
+  TEST_ASSERT_EQUAL_STRING("{", Token3Token1->symbol);
+  TEST_ASSERT_EQUAL_STRING(":", Token3Token2->symbol);
+  TEST_ASSERT_EQUAL_STRING("NAME2", ((IdentifierToken *)(Token3Token2->token[0]))->name);
+  TEST_ASSERT_EQUAL_STRING("STEVEN",((StringToken *)(Token3Token2->token[1]))->name);
+  TEST_ASSERT_EQUAL_STRING(":", Token3Token3->symbol);
+  TEST_ASSERT_EQUAL_STRING("NAME3", ((IdentifierToken *)(Token3Token3->token[0]))->name);
+  TEST_ASSERT_EQUAL_STRING("Yen",((StringToken *)(Token3Token3->token[1]))->name);
+  TEST_ASSERT_EQUAL_STRING("}", Token3Token4->symbol);
+  TEST_ASSERT_EQUAL_STRING("}",Token4->symbol);
 }
 
 
@@ -285,5 +281,89 @@ void test_Finding_Element_in_Recursion_JSON_List()
   printf("Key=%s\n",((IdentifierToken *)((OperatorToken *)(FindKey->value))->token[0])->name);
   printf("value=%s",((StringToken *)(FindVal))->name);
   // TEST_ASSERT_EQUAL("AGE",((IdentifierToken *)((OperatorToken *)(FindEle->value))->token[0])->name);
+}
+
+void test_iteratorGetNext()
+{
+  int value[]={1,3,4};
+
+  LinkedList *ptr;
+  ListElement *Ele;
+
+  ptr=createLinkedList();
+
+  AddLast(createListElement(&value[0]),ptr);
+  AddLast(createListElement(&value[1]),ptr);
+  AddLast(createListElement(&value[2]),ptr);
+
+  Ele=ptr->head;
+
+  TEST_ASSERT_NOT_NULL(Ele);
+  TEST_ASSERT_NOT_NULL(Ele->next);
+  TEST_ASSERT_EQUAL(1,*((int *)(Ele->value)));
+  Ele=iteratorGetNext(Ele);
+
+  TEST_ASSERT_NOT_NULL(Ele);
+  TEST_ASSERT_NOT_NULL(Ele->next);
+  TEST_ASSERT_EQUAL(3,*((int *)(Ele->value)));
+  Ele=iteratorGetNext(Ele);
+
+  TEST_ASSERT_EQUAL(4,*((int *)(Ele->value)));
+}
+
+void test_iteratorGetNext_for_Simple_List()
+{
+  LinkedList *List;
+  ListElement *tempEle;
+
+  Token *OpenBrace=createOperatorToken("{");
+  Token *CloseBrace=createOperatorToken("}");
+  Token *Coma=(Token*)createOperatorToken(",");
+  Token *Colon=(Token*)createOperatorToken(":");
+  Token *Key0=(Token*)createIdentifierToken("NAME1");
+  Token *Key1=(Token*)createIdentifierToken("AGE");
+  Token *Value0=(Token*)createStringToken("JS");
+  Token *Value1=(Token*)createIntegerToken(20);
+
+  getToken_ExpectAndReturn(OpenBrace);    //"{"
+  getToken_ExpectAndReturn(Key0);         //"NAME1"
+  getToken_ExpectAndReturn(Colon);        //":"
+  getToken_ExpectAndReturn(Value0);       //"JS"
+  getToken_ExpectAndReturn(Coma);         //","
+  getToken_ExpectAndReturn(Key1);         //"AGE"
+  getToken_ExpectAndReturn(Colon);        //":"
+  getToken_ExpectAndReturn(Value1);       //20
+  getToken_ExpectAndReturn(CloseBrace);   //"}"
+  getToken_ExpectAndReturn(NULL);
+
+  List=DetermineState();
+
+
+  TEST_ASSERT_EQUAL(END,List->state);
+
+  tempEle=List->head;
+  TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(tempEle->value))->symbol);
+  tempEle=iteratorGetNext(tempEle);
+  TEST_ASSERT_EQUAL_STRING(":",((OperatorToken *)(tempEle->value))->symbol);
+  tempEle=iteratorGetNext(tempEle);
+  TEST_ASSERT_EQUAL_STRING(":",((OperatorToken *)(tempEle->value))->symbol);
+  tempEle=iteratorGetNext(tempEle);
+  TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(tempEle->value))->symbol);
+
+  // OperatorToken *Token = ((OperatorToken *)(tempToken->value));
+
+  // OperatorToken *Token2 = ((OperatorToken *)(List->head->next->value));
+  // OperatorToken *Token3 = ((OperatorToken *)(List->head->next->next->value));
+  // OperatorToken *Token4 = ((OperatorToken *)(List->head->next->next->next->value));
+
+  // TEST_ASSERT_EQUAL_STRING(":",Token2->symbol);
+  // TEST_ASSERT_EQUAL_STRING("NAME1",((IdentifierToken *)(Token2->token[0]))->name);
+  // TEST_ASSERT_EQUAL_STRING("JS",((StringToken *)(Token2->token[1]))->name);
+  // TEST_ASSERT_EQUAL_STRING(":",Token3->symbol);
+  // TEST_ASSERT_EQUAL_STRING("AGE",((IdentifierToken *)(Token3->token[0]))->name);
+  // TEST_ASSERT_EQUAL(20,((IntegerToken *)(Token3->token[1]))->value);
+  // TEST_ASSERT_EQUAL_STRING("}",Token4->symbol);
+
+
 }
 

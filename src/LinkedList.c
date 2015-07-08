@@ -22,7 +22,8 @@ ListElement *createListElement(void *value){
 
   ListElement *NewNode= malloc(sizeof(ListElement));
   assert(NewNode != NULL);
-
+  if(value==NULL)
+    return NULL;
   NewNode -> value = value;
   NewNode -> next = NULL;
 
@@ -36,7 +37,7 @@ void AddLast(ListElement *NewEle,LinkedList *List ){
     List -> tail = List -> head;
     (List->length)++;
   }
-  else if(NewEle==NULL){}
+  else if(NewEle==NULL || List==NULL){}
 
   else {
     List -> tail->next=NewEle;
@@ -206,4 +207,11 @@ ListElement *KeyFind(LinkedList *list, void *value, int(*compare)(void *,void *)
     }
     return ptr;
   }
+}
+
+ListElement *iteratorGetNext(ListElement *iterator){
+  if(iterator==NULL||iterator->next==NULL)
+    return NULL;
+  else
+    return iterator->next;
 }

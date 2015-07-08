@@ -1,6 +1,8 @@
 #ifndef LinkedList_H
 #define LinkedList_H
 
+#include "Token.h"
+
 typedef enum{
   WAIT_FOR_TOKEN,
   OBJECT,
@@ -47,5 +49,7 @@ ListElement *KeyFind(LinkedList *list, void *value, int(*compare)(void *,void *)
 int intCompare(void *first, void *second);
 int strCompare(void *first, void *second);
 int TokCompare (void *first, void *second);
+
+ListElement *iteratorGetNext(ListElement *iterator);
 
 #endif // LinkedList_H

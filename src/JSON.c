@@ -126,10 +126,8 @@ LinkedList *DetermineState(){
               List->state=ERROR;
               return List;
             }
-
             NewNode=createListElement(Link2Tokens(leftToken, ":", (Token *)(RecurList)));
             AddLast(NewNode,List);
-
           }
           else if(strcmp(((OperatorToken *)(token))->symbol,"[")==0){
             List->state=ARRAY;
@@ -149,7 +147,6 @@ LinkedList *DetermineState(){
           rightToken=(Token *)createIntegerToken(((IntegerToken *)(token))->value);
           NewNode=createListElement(Link2Tokens(leftToken, ":", rightToken));
           AddLast(NewNode,List);
-
         }
         else{
           List->state=ERROR;
@@ -161,12 +158,9 @@ LinkedList *DetermineState(){
             List->state=END;
             NewNode=createListElement(createOperatorToken("}"));
             AddLast(NewNode,List);
-
           }
           else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
             List->state=OBJECT;
-            NewNode=createListElement(createOperatorToken(","));
-            AddLast(NewNode,List);
           }
           else{
             List->state=ERROR;
@@ -174,7 +168,6 @@ LinkedList *DetermineState(){
         }
         else{
           List->state=ERROR;
-
         }break;
 
       case NUMBER :
@@ -186,8 +179,6 @@ LinkedList *DetermineState(){
           }
           else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
             List->state=OBJECT;
-            NewNode=createListElement(createOperatorToken(","));
-            AddLast(NewNode,List);
           }
           else{
             List->state=ERROR;
@@ -206,8 +197,6 @@ LinkedList *DetermineState(){
           }
           else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
             List->state=OBJECT;
-            NewNode=createListElement(createOperatorToken(","));
-            AddLast(NewNode,List);
           }
           else{
             List->state=ERROR;
@@ -216,6 +205,9 @@ LinkedList *DetermineState(){
         else{
           List->state=ERROR;
         }break;
+
+      case ERROR :
+        return List;
     }
 
     token=getToken();
