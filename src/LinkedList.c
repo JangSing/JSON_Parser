@@ -48,17 +48,25 @@ Iterator *iteratorGetNext(Iterator *Iter){
 }
 
 void AddLast(ListElement *NewEle,LinkedList *List ){
-
-  if(List -> head == NULL && List -> tail == NULL){
-    List -> head = NewEle;
-    List -> tail = List -> head;
-    (List->length)++;
-  }
-  else if(NewEle==NULL || List==NULL){}
-
+  
+  Iterator *Iter;
+  
+  if(NewEle==NULL){}
+  
   else {
-    List -> tail->next=NewEle;
-    List -> tail =List -> tail->next;
+    Iter=createIterator(List);
+    if(Iter->current == NULL){
+      List->head=NewEle;    
+      List->tail=List->head;
+    }
+    else{
+      while(Iter->current!=NULL){
+        Iter=iteratorGetNext(Iter);
+      }
+      Iter->current=NewEle;
+      List->tail->next=Iter->current;
+      List->tail=List->tail->next;
+    }
     (List->length)++;
   }
 }
