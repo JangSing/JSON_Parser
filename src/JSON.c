@@ -63,7 +63,7 @@ Token *Link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue){
   return (Token *)opTok;
 }
 
-LinkedList *DetermineState(){
+LinkedList *JsonParse(){
 
   Token *token;
   ListElement *NewNode;
@@ -120,7 +120,7 @@ LinkedList *DetermineState(){
             List->state=WAIT_FOR_OPERATOR;
             Recur=1;
 
-            RecurList=DetermineState();
+            RecurList=JsonParse();
 
             if(RecurList->state==ERROR || RecurList->state!=END){
               List->state=ERROR;
@@ -138,7 +138,7 @@ LinkedList *DetermineState(){
         }
         else if(token->type==TOKEN_STRING_TYPE){
           List->state=STRING;
-          rightToken=(Token *)createIdentifierToken(((StringToken *)(token))->name);
+          rightToken=(Token *)createStringToken(((StringToken *)(token))->name);
           NewNode=createListElement(Link2Tokens(leftToken, ":", rightToken));
           AddLast(NewNode,List);
         }
@@ -208,6 +208,8 @@ LinkedList *DetermineState(){
 
       case ERROR :
         return List;
+        
+      default:List->state=ERROR;
     }
 
     token=getToken();

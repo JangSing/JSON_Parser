@@ -92,7 +92,7 @@ void test_Simple_JSON_List()
 
   getToken_ExpectAndReturn(NULL);
 
-  List=DetermineState();
+  List=JsonParse();
 
   TEST_ASSERT_EQUAL(END,List->state);
 
@@ -152,7 +152,7 @@ void test_JSON_List_with_Recursion_JSON_List()
   getToken_ExpectAndReturn(CloseBrace);   //"}"
   getToken_ExpectAndReturn(NULL);
 
-  List=DetermineState();
+  List=JsonParse();
 
   TEST_ASSERT_EQUAL(END,List->state);
 
@@ -218,7 +218,7 @@ void test_Finding_Element_in_Simple_JSON_List()
 
   getToken_ExpectAndReturn(NULL);
 
-  List=DetermineState();
+  List=JsonParse();
 
   FindEle=(ListElement *)(KeyFind(List, "AGE", strCompare));
 
@@ -272,7 +272,7 @@ void test_Finding_Element_in_Recursion_JSON_List()
   getToken_ExpectAndReturn(CloseBrace);   //"}"
   getToken_ExpectAndReturn(NULL);
 
-  List=DetermineState();
+  List=JsonParse();
 
   FindKey=(ListElement *)(KeyFind(List, "AGE", strCompare));
   FindKey=(ListElement *)(KeyFind((LinkedList *)(((OperatorToken *)(FindKey->value))->token[1]), "NAME3", strCompare));
@@ -288,7 +288,7 @@ void test_iteratorGetNext()
   int value[]={1,3,4};
 
   LinkedList *ptr;
-  ListElement *Ele;
+  Iterator *Iter;
 
   ptr=createLinkedList();
 
@@ -296,25 +296,25 @@ void test_iteratorGetNext()
   AddLast(createListElement(&value[1]),ptr);
   AddLast(createListElement(&value[2]),ptr);
 
-  Ele=ptr->head;
+  Iter=createIterator(ptr);
 
-  TEST_ASSERT_NOT_NULL(Ele);
-  TEST_ASSERT_NOT_NULL(Ele->next);
-  TEST_ASSERT_EQUAL(1,*((int *)(Ele->value)));
-  Ele=iteratorGetNext(Ele);
+  TEST_ASSERT_NOT_NULL(Iter);
+  TEST_ASSERT_NOT_NULL(Iter->current->next);
+  TEST_ASSERT_EQUAL(1,*((int *)(Iter->current->value)));
+  Iter=iteratorGetNext(Iter);
 
-  TEST_ASSERT_NOT_NULL(Ele);
-  TEST_ASSERT_NOT_NULL(Ele->next);
-  TEST_ASSERT_EQUAL(3,*((int *)(Ele->value)));
-  Ele=iteratorGetNext(Ele);
+  TEST_ASSERT_NOT_NULL(Iter);
+  TEST_ASSERT_NOT_NULL(Iter->current->next);
+  TEST_ASSERT_EQUAL(3,*((int *)(Iter->current->value)));
+  Iter=iteratorGetNext(Iter);
 
-  TEST_ASSERT_EQUAL(4,*((int *)(Ele->value)));
+  TEST_ASSERT_EQUAL(4,*((int *)(Iter->current->value)));
 }
 
 void test_iteratorGetNext_for_Simple_List()
 {
   LinkedList *List;
-  ListElement *tempEle;
+  Iterator *Iter;
 
   Token *OpenBrace=createOperatorToken("{");
   Token *CloseBrace=createOperatorToken("}");
@@ -336,19 +336,19 @@ void test_iteratorGetNext_for_Simple_List()
   getToken_ExpectAndReturn(CloseBrace);   //"}"
   getToken_ExpectAndReturn(NULL);
 
-  List=DetermineState();
+  List=JsonParse();
 
 
   TEST_ASSERT_EQUAL(END,List->state);
-
-  tempEle=List->head;
-  TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(tempEle->value))->symbol);
-  tempEle=iteratorGetNext(tempEle);
-  TEST_ASSERT_EQUAL_STRING(":",((OperatorToken *)(tempEle->value))->symbol);
-  tempEle=iteratorGetNext(tempEle);
-  TEST_ASSERT_EQUAL_STRING(":",((OperatorToken *)(tempEle->value))->symbol);
-  tempEle=iteratorGetNext(tempEle);
-  TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(tempEle->value))->symbol);
+  
+  Iter=createIterator(List);
+  TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(Iter->current->value))->symbol);
+  Iter=iteratorGetNext(Iter);
+  TEST_ASSERT_EQUAL_STRING(":",((OperatorToken *)(Iter->current->value))->symbol);
+  Iter=iteratorGetNext(Iter);
+  TEST_ASSERT_EQUAL_STRING(":",((OperatorToken *)(Iter->current->value))->symbol);
+  Iter=iteratorGetNext(Iter);
+  TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(Iter->current->value))->symbol);
 
   // OperatorToken *Token = ((OperatorToken *)(tempToken->value));
 

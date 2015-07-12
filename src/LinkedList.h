@@ -15,7 +15,7 @@ typedef enum{
   END,
   WAIT_FOR_OPERATOR,
   ERROR,
-}ListState;
+}JsonState;
 
 typedef struct ListElement_t{
   struct ListElement_t *next;
@@ -26,8 +26,13 @@ typedef struct {
   ListElement *head;
   ListElement *tail;
   int length;
-  ListState state;
+  JsonState state;
 }LinkedList;
+
+typedef struct {
+   ListElement *current;
+} Iterator;
+
 
 LinkedList *createLinkedList();
 ListElement *createListElement(void *value);
@@ -48,8 +53,11 @@ ListElement *listFind(LinkedList *list,void *value, int(*compare)(void *,void *)
 ListElement *KeyFind(LinkedList *list, void *value, int(*compare)(void *,void *));
 int intCompare(void *first, void *second);
 int strCompare(void *first, void *second);
-int TokCompare (void *first, void *second);
 
-ListElement *iteratorGetNext(ListElement *iterator);
+
+Iterator *createIterator(LinkedList *list); 
+Iterator *iteratorGetNext(Iterator *iter);
+
+
 
 #endif // LinkedList_H

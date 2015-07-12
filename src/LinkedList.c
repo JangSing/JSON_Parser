@@ -30,6 +30,23 @@ ListElement *createListElement(void *value){
   return NewNode;
 }
 
+Iterator *createIterator(LinkedList *List){
+  Iterator *Iter=malloc(sizeof(Iterator));
+  
+  if(List==NULL){
+    return NULL;
+  }
+  else{
+    Iter->current=List->head;  
+    return Iter;
+  }
+}
+  
+Iterator *iteratorGetNext(Iterator *Iter){
+  Iter->current=Iter->current->next;
+  return Iter;
+}
+
 void AddLast(ListElement *NewEle,LinkedList *List ){
 
   if(List -> head == NULL && List -> tail == NULL){
@@ -147,23 +164,6 @@ int strCompare (void *first, void *second){
 
 }
 
-int TokCompare (void *first, void *second){
-
-  Token *ptr=(Token *)(first);
-  Token *ptr1=(Token *)(second);
-
-  if(strcmp(ptr,ptr1)==0){
-    return 0;
-  }
-  else if(first==NULL||second==NULL){
-    return -1;
-  }
-  else{
-    return 1;
-  }
-
-}
-
 ListElement *listFind(LinkedList *list, void *value, int(*compare)(void *,void *)){
   ListElement *ptr;
   ptr=list->head;
@@ -209,9 +209,6 @@ ListElement *KeyFind(LinkedList *list, void *value, int(*compare)(void *,void *)
   }
 }
 
-ListElement *iteratorGetNext(ListElement *iterator){
-  if(iterator==NULL||iterator->next==NULL)
-    return NULL;
-  else
-    return iterator->next;
-}
+
+  
+  

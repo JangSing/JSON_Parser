@@ -4,7 +4,7 @@
 #include "LinkedList.h"
 #include "Token.h"
 
-LinkedList *DetermineState();
+LinkedList *JsonParse();
 
 Token *createOperatorToken(char *symbol);
 IdentifierToken *createIdentifierToken(char *key);
