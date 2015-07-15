@@ -1,9 +1,11 @@
 #include "LinkedList.h"
 #include "Token.h"
+#include "compareFunction.h"
+#include "IteratorFunction.h"
+
 #include <malloc.h>
 #include <stdio.h>
 #include <assert.h>
-
 
 LinkedList *createLinkedList(){
   LinkedList *list;
@@ -20,157 +22,106 @@ LinkedList *createLinkedList(){
 
 ListElement *createListElement(void *value){
 
-  ListElement *NewNode= malloc(sizeof(ListElement));
-  assert(NewNode != NULL);
+  ListElement *newNode= malloc(sizeof(ListElement));
+  assert(newNode != NULL);
   if(value==NULL)
     return NULL;
-  NewNode -> value = value;
-  NewNode -> next = NULL;
+  newNode -> value = value;
+  newNode -> next = NULL;
 
-  return NewNode;
+  return newNode;
 }
 
-Iterator *createIterator(LinkedList *List){
-  Iterator *Iter=malloc(sizeof(Iterator));
-  
-  if(List==NULL){
-    return NULL;
-  }
-  else{
-    Iter->current=List->head;  
-    return Iter;
-  }
-}
-  
-Iterator *iteratorGetNext(Iterator *Iter){
-  Iter->current=Iter->current->next;
-  return Iter;
-}
+void addLast(ListElement *newEle,LinkedList *list ){
 
-void AddLast(ListElement *NewEle,LinkedList *List ){
-  
-  Iterator *Iter;
-  
-  if(NewEle==NULL){}
-  
+  Iterator *iter;
+
+  if(newEle==NULL){}
+
   else {
-    Iter=createIterator(List);
-    if(Iter->current == NULL){
-      List->head=NewEle;    
-      List->tail=List->head;
+    iter=createIterator(list);
+    if(iter->current == NULL){
+      list->head=newEle;
+      list->tail=list->head;
     }
     else{
-      while(Iter->current!=NULL){
-        Iter=iteratorGetNext(Iter);
-      }
-      Iter->current=NewEle;
-      List->tail->next=Iter->current;
-      List->tail=List->tail->next;
+      iter->current=list->tail;
+      iter=iteratorGetNext(iter);
+      iter->current=newEle;
+      list->tail->next=iter->current;
+      list->tail=list->tail->next;
     }
-    (List->length)++;
+    (list->length)++;
   }
 }
 
-void AddFirst(LinkedList *stack,ListElement *NewElem){
+void addFirst(LinkedList *list,ListElement *newElem){
 
-
-  if(stack->head==NULL && stack->tail==NULL){
-    stack->head=NewElem;
-    stack->tail=stack->head;
-    (stack->length)++;
-  }
-  else if(NewElem==NULL){}
-
+  if(newElem==NULL){}
 
   else{
-    NewElem->next=stack->head;
-    stack->head=NewElem;
-    (stack->length)++;
+    if(list->head==NULL && list->tail==NULL){
+      list->head=newElem;
+      list->tail=list->head;
+    }
+    else{
+      newElem->next=list->head;
+      list->head=newElem;
+    }
+    (list->length)++;
   }
 }
 
-ListElement *RemoveFirst(LinkedList *stack){
-  ListElement *ptr;
+ListElement *removeFirst(LinkedList *list){
+  ListElement *remEle;
 
-  if(stack->head==NULL && stack->tail==NULL){
+  if(list->head==NULL && list->tail==NULL){
     return NULL;
   }
-  else if(stack->head->next==NULL){
-    ptr=stack->head;
-    stack->head=NULL;
-    stack->tail=NULL;
-    (stack->length)--;
-  }
   else{
-    ptr=stack->head;
-    stack->head=stack->head->next;
-    (stack->length)--;
+    if(list->head->next==NULL){
+      remEle=list->head;
+      list->head=NULL;
+      list->tail=NULL;
+    }
+    else{
+      remEle=list->head;
+      list->head=list->head->next;
+    }
+    (list->length)--;
   }
-
-  ptr->next=NULL;
-  return ptr;
+  remEle->next=NULL;
+  return remEle;
 }
 
-ListElement *RemoveLast(LinkedList *List){
-  ListElement *RemoveEle;
+ListElement *removeLast(LinkedList *list){
+  ListElement *removeEle;
   ListElement *travel;
 
-  if(List->head==NULL && List->tail==NULL){
+  if(list->head==NULL && list->tail==NULL){
     return NULL;
   }
-  else if(List->head->next==NULL){
-    RemoveEle=List->head;
-    List->head=NULL;
-    List->tail=NULL;
-    (List->length)--;
-  }
   else{
-    travel=List->head;
-    while (travel->next!=NULL){
-      List->tail=travel;
-      travel=travel->next;
+    if(list->head->next==NULL){
+      removeEle=list->head;
+      list->head=NULL;
+      list->tail=NULL;
     }
-    RemoveEle=travel;
-    List->tail->next=NULL;
-
-    (List->length)--;
+    else{
+      travel=list->head;
+      while (travel->next!=NULL){
+        list->tail=travel;
+        travel=travel->next;
+      }
+      removeEle=travel;
+      list->tail->next=NULL;
+    }
+    (list->length)--;
   }
-  return RemoveEle;
+  return removeEle;
 }
 
 //*** Find Element function start here ***\\
-
-int intCompare(void *first, void *second){
-  int *ptr=(int *)(first);
-  int *ptr1=(int *)(second);
-
-  if(*ptr==*ptr1){
-    return 0;
-  }
-  else if(first==NULL||second==NULL){
-    return -1;
-  }
-  else{
-    return 1;
-  }
-}
-
-int strCompare (void *first, void *second){
-
-  char *ptr=(char *)(first);
-  char *ptr1=(char *)(second);
-
-  if(strcmp(ptr,ptr1)==0){
-    return 0;
-  }
-  else if(first==NULL||second==NULL){
-    return -1;
-  }
-  else{
-    return 1;
-  }
-
-}
 
 ListElement *listFind(LinkedList *list, void *value, int(*compare)(void *,void *)){
   ListElement *ptr;
@@ -193,7 +144,7 @@ ListElement *listFind(LinkedList *list, void *value, int(*compare)(void *,void *
   }
 }
 
-ListElement *KeyFind(LinkedList *list, void *value, int(*compare)(void *,void *)){
+ListElement *keyFind(LinkedList *list, void *value, int(*compare)(void *,void *)){
   ListElement *ptr;
   ptr=list->head;
 
@@ -204,12 +155,12 @@ ListElement *KeyFind(LinkedList *list, void *value, int(*compare)(void *,void *)
   else{
     ptr=ptr->next;
     //if they are not the same then continue looping
-    while (compare(((IdentifierToken *)(((OperatorToken *)(ptr ->value))->token[0]))->name , value)==1){
+    while (compare(((IdentifierToken *)(((operatorToken *)(ptr ->value))->token[0]))->name , value)==1){
       ptr =ptr->next;
       if (ptr==NULL){
         return ptr;
       }
-      if((((OperatorToken *)(ptr ->value))->token[0])==NULL){
+      if((((operatorToken *)(ptr ->value))->token[0])==NULL){
         ptr=ptr->next;
       }
     }
@@ -218,5 +169,5 @@ ListElement *KeyFind(LinkedList *list, void *value, int(*compare)(void *,void *)
 }
 
 
-  
-  
+
+

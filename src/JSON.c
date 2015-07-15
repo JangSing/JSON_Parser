@@ -1,17 +1,18 @@
 #include "Token.h"
 #include "LinkedList.h"
 #include "JSON.h"
+#include "IteratorFunction.h"
 
 #include <malloc.h>
 #include <stdio.h>
 #include <assert.h>
 #include <ctype.h>
 
-int Recur=0;
+int recur=0;
 
 Token *createOperatorToken(char *symbol) {
 
-    OperatorToken *opTok =malloc(sizeof(OperatorToken)+sizeof(Token *)*2);
+    operatorToken *opTok =malloc(sizeof(operatorToken)+sizeof(Token *)*2);
 
     opTok->type=TOKEN_OPERATOR_TYPE;
     opTok->symbol=symbol;
@@ -33,12 +34,12 @@ IdentifierToken *createIdentifierToken(char *key){
 
 IntegerToken *createIntegerToken(int value){
 
-    IntegerToken *IntTok =malloc(sizeof(IntegerToken));
+    IntegerToken *intTok =malloc(sizeof(IntegerToken));
 
-    IntTok->type=TOKEN_INTEGER_TYPE;
-    IntTok->value=value;
+    intTok->type=TOKEN_INTEGER_TYPE;
+    intTok->value=value;
 
-  return IntTok;
+  return intTok;
 }
 
 StringToken *createStringToken(char *value){
@@ -51,11 +52,11 @@ StringToken *createStringToken(char *value){
   return StrTok;
 }
 
-Token *Link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue){
+Token *link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue){
 
-  OperatorToken *opTok;
+  operatorToken *opTok;
 
-  opTok=(OperatorToken *)createOperatorToken(operatorSymbol);
+  opTok=(operatorToken *)createOperatorToken(operatorSymbol);
 
   opTok->token[0]=leftValue;
   opTok->token[1]=rightValue;
@@ -63,173 +64,172 @@ Token *Link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue){
   return (Token *)opTok;
 }
 
-LinkedList *JsonParse(){
+LinkedList *jsonParse(){
 
   Token *token;
-  ListElement *NewNode;
+  ListElement *newNode;
   Token *leftToken,*rightToken;
 
-  LinkedList *List=malloc(sizeof(LinkedList));
+  LinkedList *list=malloc(sizeof(LinkedList));
 
-  List=createLinkedList();
+  list=createLinkedList();
 
-  if(Recur==0){
+  if(recur==0){
     token=getToken();
   }
   else{
-    List->state=OBJECT;
-    NewNode=createListElement(createOperatorToken("{"));
-    AddLast(NewNode,List);
+    list->state=OBJECT;
+    newNode=createListElement(createOperatorToken("{"));
+    addLast(newNode,list);
     token=getToken();
   }
 
   do{
-
-    switch(List->state){
+    switch(list->state){
       case WAIT_FOR_TOKEN :
-        if(token-> type==TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(token))->symbol,"{")==0){
-          List->state=OBJECT;
-          NewNode=createListElement(createOperatorToken("{"));
-          AddLast(NewNode,List);
+        if(token-> type==TOKEN_OPERATOR_TYPE && strcmp(((operatorToken *)(token))->symbol,"{")==0){
+          list->state=OBJECT;
+          newNode=createListElement(createOperatorToken("{"));
+          addLast(newNode,list);
         }
         else{
-          List->state=ERROR;
+          list->state=ERROR;
         }break;
 
       case OBJECT :
         if(token->type==TOKEN_IDENTIFIER_TYPE){
-          List->state=WAIT_FOR_COLON;
+          list->state=WAIT_FOR_COLON;
           leftToken=(Token *)createIdentifierToken(((IdentifierToken *)(token))->name);
         }
         else{
-          List->state=ERROR;
+          list->state=ERROR;
         }break;
 
       case WAIT_FOR_COLON :
-        if(token->type==TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(token))->symbol,":")==0){
-          List->state=VALUE;
+        if(token->type==TOKEN_OPERATOR_TYPE && strcmp(((operatorToken *)(token))->symbol,":")==0){
+          list->state=value;
         }
         else{
-          List->state=ERROR;
+          list->state=ERROR;
         }break;
 
-      case VALUE :
+      case value :
         if(token->type==TOKEN_OPERATOR_TYPE){
-          if(strcmp(((OperatorToken *)(token))->symbol,"{")==0){
-            LinkedList *RecurList=malloc(sizeof(LinkedList));
-            List->state=WAIT_FOR_OPERATOR;
-            Recur=1;
+          if(strcmp(((operatorToken *)(token))->symbol,"{")==0){
+            LinkedList *recurList=malloc(sizeof(LinkedList));
+            list->state=WAIT_FOR_OPERATOR;
+            recur=1;
 
-            RecurList=JsonParse();
+            recurList=jsonParse();
 
-            if(RecurList->state==ERROR || RecurList->state!=END){
-              List->state=ERROR;
-              return List;
+            if(recurList->state==ERROR || recurList->state!=END){
+              list->state=ERROR;
+              return list;
             }
-            NewNode=createListElement(Link2Tokens(leftToken, ":", (Token *)(RecurList)));
-            AddLast(NewNode,List);
+            newNode=createListElement(link2Tokens(leftToken, ":", (Token *)(recurList)));
+            addLast(newNode,list);
           }
-          else if(strcmp(((OperatorToken *)(token))->symbol,"[")==0){
-            List->state=ARRAY;
+          else if(strcmp(((operatorToken *)(token))->symbol,"[")==0){
+            list->state=ARRAY;
           }
           else{
-            List->state=ERROR;
+            list->state=ERROR;
           }
         }
         else if(token->type==TOKEN_STRING_TYPE){
-          List->state=STRING;
+          list->state=STRING;
           rightToken=(Token *)createStringToken(((StringToken *)(token))->name);
-          NewNode=createListElement(Link2Tokens(leftToken, ":", rightToken));
-          AddLast(NewNode,List);
+          newNode=createListElement(link2Tokens(leftToken, ":", rightToken));
+          addLast(newNode,list);
         }
         else if(token->type==TOKEN_INTEGER_TYPE || token->type==TOKEN_FLOAT_TYPE){
-          List->state=NUMBER;
+          list->state=NUMBER;
           rightToken=(Token *)createIntegerToken(((IntegerToken *)(token))->value);
-          NewNode=createListElement(Link2Tokens(leftToken, ":", rightToken));
-          AddLast(NewNode,List);
+          newNode=createListElement(link2Tokens(leftToken, ":", rightToken));
+          addLast(newNode,list);
         }
         else{
-          List->state=ERROR;
+          list->state=ERROR;
         }break;
 
       case STRING :
         if(token->type==TOKEN_OPERATOR_TYPE ){
-          if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
-            List->state=END;
-            NewNode=createListElement(createOperatorToken("}"));
-            AddLast(NewNode,List);
+          if(strcmp(((operatorToken *)(token))->symbol,"}")==0){
+            list->state=END;
+            newNode=createListElement(createOperatorToken("}"));
+            addLast(newNode,list);
           }
-          else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
-            List->state=OBJECT;
+          else if(strcmp(((operatorToken *)(token))->symbol,",")==0){
+            list->state=OBJECT;
           }
           else{
-            List->state=ERROR;
+            list->state=ERROR;
           }
         }
         else{
-          List->state=ERROR;
+          list->state=ERROR;
         }break;
 
       case NUMBER :
         if(token->type==TOKEN_OPERATOR_TYPE ){
-          if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
-            List->state=END;
-            NewNode=createListElement(createOperatorToken("}"));
-            AddLast(NewNode,List);
+          if(strcmp(((operatorToken *)(token))->symbol,"}")==0){
+            list->state=END;
+            newNode=createListElement(createOperatorToken("}"));
+            addLast(newNode,list);
           }
-          else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
-            List->state=OBJECT;
+          else if(strcmp(((operatorToken *)(token))->symbol,",")==0){
+            list->state=OBJECT;
           }
           else{
-            List->state=ERROR;
+            list->state=ERROR;
           }
         }
         else{
-          List->state=ERROR;
+          list->state=ERROR;
         }break;
 
       case WAIT_FOR_OPERATOR :
         if(token->type==TOKEN_OPERATOR_TYPE ){
-          if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
-            List->state=END;
-            NewNode=createListElement(createOperatorToken("}"));
-            AddLast(NewNode,List);
+          if(strcmp(((operatorToken *)(token))->symbol,"}")==0){
+            list->state=END;
+            newNode=createListElement(createOperatorToken("}"));
+            addLast(newNode,list);
           }
-          else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
-            List->state=OBJECT;
+          else if(strcmp(((operatorToken *)(token))->symbol,",")==0){
+            list->state=OBJECT;
           }
           else{
-            List->state=ERROR;
+            list->state=ERROR;
           }
         }
         else{
-          List->state=ERROR;
+          list->state=ERROR;
         }break;
 
       case ERROR :
-        return List;
-        
-      default:List->state=ERROR;
+        return list;
+
+      default:list->state=ERROR;
     }
 
     token=getToken();
 
-    if(Recur==1 && token->type==TOKEN_OPERATOR_TYPE){
-      if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
-        List->state=END;
-        NewNode=createListElement(createOperatorToken("}"));
-        AddLast(NewNode,List);
-        Recur=0;
+    if(recur==1 && token->type==TOKEN_OPERATOR_TYPE){
+      if(strcmp(((operatorToken *)(token))->symbol,"}")==0){
+        list->state=END;
+        newNode=createListElement(createOperatorToken("}"));
+        addLast(newNode,list);
+        recur=0;
         break;
       }
     }
 
   }while(token!=NULL);
 
-  return List;
+  return list;
 }
 
-Token *getElementValue(ListElement *FindKey){
-  return ((OperatorToken *)(FindKey->value))->token[1];
+Token *getElementValue(ListElement *findKey){
+  return ((operatorToken *)(findKey->value))->token[1];
 }
 

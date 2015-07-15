@@ -7,7 +7,7 @@ typedef enum{
   WAIT_FOR_TOKEN,
   OBJECT,
   WAIT_FOR_COLON,
-  VALUE,
+  value,
   ARRAY,
   NUMBER,
   STRING,
@@ -29,35 +29,24 @@ typedef struct {
   JsonState state;
 }LinkedList;
 
-typedef struct {
-   ListElement *current;
-} Iterator;
-
-
 LinkedList *createLinkedList();
 ListElement *createListElement(void *value);
 
 //*** Adding Element function start here ***\\
 
-void AddLast(ListElement *NewEle,LinkedList *List );
-void AddFirst(LinkedList *stack,ListElement *NewElem);
+void addLast(ListElement *newEle,LinkedList *list );
+void addFirst(LinkedList *list,ListElement *newElem);
 
 //*** Removing Element function start here ***\\
 
-ListElement *RemoveFirst(LinkedList *stack);
-ListElement *RemoveLast(LinkedList *List);
+ListElement *removeFirst(LinkedList *list);
+ListElement *removeLast(LinkedList *list);
 
 //*** Find Element function start here ***\\
 
 ListElement *listFind(LinkedList *list,void *value, int(*compare)(void *,void *));
-ListElement *KeyFind(LinkedList *list, void *value, int(*compare)(void *,void *));
+ListElement *keyFind(LinkedList *list, void *value, int(*compare)(void *,void *));
 int intCompare(void *first, void *second);
 int strCompare(void *first, void *second);
-
-
-Iterator *createIterator(LinkedList *list); 
-Iterator *iteratorGetNext(Iterator *iter);
-
-
 
 #endif // LinkedList_H

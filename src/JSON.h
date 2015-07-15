@@ -4,16 +4,16 @@
 #include "LinkedList.h"
 #include "Token.h"
 
-LinkedList *JsonParse();
+LinkedList *jsonParse();
 
 Token *createOperatorToken(char *symbol);
 IdentifierToken *createIdentifierToken(char *key);
 IntegerToken *createIntegerToken(int value);
 StringToken *createStringToken(char *value);
 
-Token *Link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue);
+Token *link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue);
 
-Token *getElementValue(ListElement *FindKey);
+Token *getElementValue(ListElement *findKey);
 
 
 #endif // JSON_H
