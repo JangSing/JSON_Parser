@@ -58,7 +58,7 @@ typedef struct {
   char *symbol;
   Arity arity;
   Token *token[0];
-} operatorToken;
+} OperatorToken;
 
 Token *getToken();
 

@@ -6,26 +6,44 @@
 
 #include <stdio.h>
 
-void customTestAssertTree(void *key, void *value, Iterator *actual, int lineNo){
-  operatorToken *opTok=((operatorToken *)(actual->current->value));
+void customTestAssertKeyValue(void *key, void *value, ListElement *actual, int lineNo){
 
-  TEST_ASSERT_EQUAL_STRING(":",opTok->symbol);
-
-  if(opTok->token[0]->type==TOKEN_IDENTIFIER_TYPE){
-    TEST_ASSERT_EQUAL_STRING((char *)(key),((IdentifierToken *)(opTok->token[0]))->name);
+  if (key==NULL || value==NULL || actual==NULL){
+    CUSTOM_TEST_FAIL("ERROR:There are no key or value or actual to be tested");
   }
   else{
-    CUSTOM_TEST_FAIL("The key must be a IDENTIFIER type");
-  }
+    OperatorToken *opTok=((OperatorToken *)(actual->value));
 
-  if(opTok->token[1]->type==TOKEN_STRING_TYPE){
-    TEST_ASSERT_EQUAL_STRING((char *)(value),((StringToken *)(opTok->token[1]))->name);
-  }
-  else if (opTok->token[1]->type==TOKEN_INTEGER_TYPE){
-    TEST_ASSERT_EQUAL(*((int *)(value)),((IntegerToken *)(opTok->token[1]))->value);
-  }
-  else{
-    CUSTOM_TEST_FAIL("Unexpected value type");
+    char *idenKey=((IdentifierToken *)(key))->name;
+    char *strValue=((StringToken *)(value))->name;
+    int  intValue=((IntegerToken *)(value))->value;
+
+    char *leftToken=((IdentifierToken *)(opTok->token[0]))->name;
+    char *charRightToken=((StringToken *)(opTok->token[1]))->name;
+    int  intRightToken=((IntegerToken *)(opTok->token[1]))->value;
+
+
+    UNITY_TEST_ASSERT_EQUAL_STRING(":", opTok->symbol, lineNo, NULL);
+
+
+    //test for KEY token
+    if(opTok->token[0]->type==TOKEN_IDENTIFIER_TYPE){
+      UNITY_TEST_ASSERT_EQUAL_STRING(idenKey,leftToken,lineNo, NULL);
+    }
+    else{
+      CUSTOM_TEST_FAIL("ERROR:The Key must be an Identifier");
+    }
+
+    //test for VALUE token
+    if(opTok->token[1]->type==TOKEN_STRING_TYPE){
+      UNITY_TEST_ASSERT_EQUAL_STRING(strValue,charRightToken,lineNo, NULL);
+    }
+    else if(opTok->token[1]->type==TOKEN_INTEGER_TYPE){
+      UNITY_TEST_ASSERT_EQUAL_INT(intValue,intRightToken, lineNo, NULL);
+    }
+    else{
+      CUSTOM_TEST_FAIL("ERROR:Unexpected value type");
+    }
   }
 
 }

@@ -2,6 +2,7 @@
 #include "LinkedList.h"
 #include "JSON.h"
 #include "IteratorFunction.h"
+#include "createTokenType.h"
 
 #include <malloc.h>
 #include <stdio.h>
@@ -10,58 +11,20 @@
 
 int recur=0;
 
-Token *createOperatorToken(char *symbol) {
-
-    operatorToken *opTok =malloc(sizeof(operatorToken)+sizeof(Token *)*2);
-
-    opTok->type=TOKEN_OPERATOR_TYPE;
-    opTok->symbol=symbol;
-    opTok->token[0]=NULL;
-    opTok->token[1]=NULL;
-
-  return (Token *)opTok;
-}
-
-IdentifierToken *createIdentifierToken(char *key){
-
-    IdentifierToken *IdenTok =malloc(sizeof(IdentifierToken));
-
-    IdenTok->type=TOKEN_IDENTIFIER_TYPE;
-    IdenTok->name =key;
-
-  return IdenTok;
-}
-
-IntegerToken *createIntegerToken(int value){
-
-    IntegerToken *intTok =malloc(sizeof(IntegerToken));
-
-    intTok->type=TOKEN_INTEGER_TYPE;
-    intTok->value=value;
-
-  return intTok;
-}
-
-StringToken *createStringToken(char *value){
-
-    StringToken *StrTok =malloc(sizeof(StringToken));
-
-    StrTok->type=TOKEN_STRING_TYPE;
-    StrTok->name=value;
-
-  return StrTok;
-}
-
 Token *link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue){
 
-  operatorToken *opTok;
+  OperatorToken *opTok;
 
-  opTok=(operatorToken *)createOperatorToken(operatorSymbol);
+  opTok=(OperatorToken *)createOperatorToken(operatorSymbol);
 
   opTok->token[0]=leftValue;
   opTok->token[1]=rightValue;
 
   return (Token *)opTok;
+}
+
+Token *getElementValue(ListElement *findKey){
+  return ((OperatorToken *)(findKey->value))->token[1];
 }
 
 LinkedList *jsonParse(){
@@ -87,7 +50,7 @@ LinkedList *jsonParse(){
   do{
     switch(list->state){
       case WAIT_FOR_TOKEN :
-        if(token-> type==TOKEN_OPERATOR_TYPE && strcmp(((operatorToken *)(token))->symbol,"{")==0){
+        if(token-> type==TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(token))->symbol,"{")==0){
           list->state=OBJECT;
           newNode=createListElement(createOperatorToken("{"));
           addLast(newNode,list);
@@ -106,7 +69,7 @@ LinkedList *jsonParse(){
         }break;
 
       case WAIT_FOR_COLON :
-        if(token->type==TOKEN_OPERATOR_TYPE && strcmp(((operatorToken *)(token))->symbol,":")==0){
+        if(token->type==TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(token))->symbol,":")==0){
           list->state=value;
         }
         else{
@@ -115,7 +78,7 @@ LinkedList *jsonParse(){
 
       case value :
         if(token->type==TOKEN_OPERATOR_TYPE){
-          if(strcmp(((operatorToken *)(token))->symbol,"{")==0){
+          if(strcmp(((OperatorToken *)(token))->symbol,"{")==0){
             LinkedList *recurList=malloc(sizeof(LinkedList));
             list->state=WAIT_FOR_OPERATOR;
             recur=1;
@@ -129,7 +92,7 @@ LinkedList *jsonParse(){
             newNode=createListElement(link2Tokens(leftToken, ":", (Token *)(recurList)));
             addLast(newNode,list);
           }
-          else if(strcmp(((operatorToken *)(token))->symbol,"[")==0){
+          else if(strcmp(((OperatorToken *)(token))->symbol,"[")==0){
             list->state=ARRAY;
           }
           else{
@@ -154,12 +117,12 @@ LinkedList *jsonParse(){
 
       case STRING :
         if(token->type==TOKEN_OPERATOR_TYPE ){
-          if(strcmp(((operatorToken *)(token))->symbol,"}")==0){
+          if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
             list->state=END;
             newNode=createListElement(createOperatorToken("}"));
             addLast(newNode,list);
           }
-          else if(strcmp(((operatorToken *)(token))->symbol,",")==0){
+          else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
             list->state=OBJECT;
           }
           else{
@@ -172,12 +135,12 @@ LinkedList *jsonParse(){
 
       case NUMBER :
         if(token->type==TOKEN_OPERATOR_TYPE ){
-          if(strcmp(((operatorToken *)(token))->symbol,"}")==0){
+          if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
             list->state=END;
             newNode=createListElement(createOperatorToken("}"));
             addLast(newNode,list);
           }
-          else if(strcmp(((operatorToken *)(token))->symbol,",")==0){
+          else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
             list->state=OBJECT;
           }
           else{
@@ -190,12 +153,12 @@ LinkedList *jsonParse(){
 
       case WAIT_FOR_OPERATOR :
         if(token->type==TOKEN_OPERATOR_TYPE ){
-          if(strcmp(((operatorToken *)(token))->symbol,"}")==0){
+          if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
             list->state=END;
             newNode=createListElement(createOperatorToken("}"));
             addLast(newNode,list);
           }
-          else if(strcmp(((operatorToken *)(token))->symbol,",")==0){
+          else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
             list->state=OBJECT;
           }
           else{
@@ -215,7 +178,7 @@ LinkedList *jsonParse(){
     token=getToken();
 
     if(recur==1 && token->type==TOKEN_OPERATOR_TYPE){
-      if(strcmp(((operatorToken *)(token))->symbol,"}")==0){
+      if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
         list->state=END;
         newNode=createListElement(createOperatorToken("}"));
         addLast(newNode,list);
@@ -229,7 +192,5 @@ LinkedList *jsonParse(){
   return list;
 }
 
-Token *getElementValue(ListElement *findKey){
-  return ((operatorToken *)(findKey->value))->token[1];
-}
+
 

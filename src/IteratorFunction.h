@@ -10,5 +10,4 @@ typedef struct {
 Iterator *createIterator(LinkedList *list);
 Iterator *iteratorGetNext(Iterator *iter);
 
-
 #endif // IteratorFunction_H

@@ -6,7 +6,7 @@
 #include "IteratorFunction.h"
 #include "createTokenType.h"
 #include "CustomAssertion.h"
-#include "IteratorFunction.h"
+#include "createTokenType.h"
 
 void setUp(void)
 {

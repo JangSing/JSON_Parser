@@ -155,12 +155,12 @@ ListElement *keyFind(LinkedList *list, void *value, int(*compare)(void *,void *)
   else{
     ptr=ptr->next;
     //if they are not the same then continue looping
-    while (compare(((IdentifierToken *)(((operatorToken *)(ptr ->value))->token[0]))->name , value)==1){
+    while (compare(((IdentifierToken *)(((OperatorToken *)(ptr ->value))->token[0]))->name , value)==1){
       ptr =ptr->next;
       if (ptr==NULL){
         return ptr;
       }
-      if((((operatorToken *)(ptr ->value))->token[0])==NULL){
+      if((((OperatorToken *)(ptr ->value))->token[0])==NULL){
         ptr=ptr->next;
       }
     }

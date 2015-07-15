@@ -7,17 +7,17 @@
 #include "LinkedList.h"
 #include "IteratorFunction.h"
 
-#define TEST_ASSERT_TREE(key, value, actual)      \
-                    customTestAssertTree(key, value, actual, __LINE__)
+#define TEST_ASSERT_KEY_VALUE(key, value, actual)      \
+                    customTestAssertKeyValue(key, value, actual, __LINE__)
 
 #define CUSTOM_TEST_FAIL(msg,...)              {                                                                              \
                                                char buffer[256];                                                              \
                                                sprintf(buffer,msg, ## __VA_ARGS__);                                           \
-                                               UNITY_TEST_FAIL(__LINE__, buffer); \
+                                               UNITY_TEST_FAIL(lineNo, buffer); \
                                                }
 
 
-void customTestAssertTree(void *key, void *value,Iterator *actual, int lineNo);
+void customTestAssertKeyValue(void *key, void *value,ListElement *actual, int lineNo);
 
 
 #endif // CustomAssertion_H

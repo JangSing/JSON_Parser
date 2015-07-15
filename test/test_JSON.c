@@ -4,6 +4,8 @@
 #include "JSON.h"
 #include "compareFunction.h"
 #include "IteratorFunction.h"
+#include "createTokenType.h"
+#include "CustomAssertion.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,8 +21,6 @@ void tearDown()
 
 void test_getToken()
 {
-
-  // Token *Token;
   Token *INT=malloc(sizeof(Token));
   Token *FLOAT=malloc(sizeof(Token));
   Token *IDEN=malloc(sizeof(Token));
@@ -31,7 +31,7 @@ void test_getToken()
   ((FloatToken *)(FLOAT))-> value=12.34;
   ((IdentifierToken *)(IDEN))-> name="JangSing";
   ((StringToken *)(STR))-> name="Wong";
-  ((operatorToken *)(OPE))-> symbol="{";
+  ((OperatorToken *)(OPE))-> symbol="{";
 
 	getToken_ExpectAndReturn(INT);
 	getToken_ExpectAndReturn(FLOAT);
@@ -43,7 +43,7 @@ void test_getToken()
   TEST_ASSERT_EQUAL_FLOAT(12.34,((FloatToken *)(getToken()))-> value);
   TEST_ASSERT_EQUAL_STRING("JangSing",((IdentifierToken *)(getToken()))-> name);
   TEST_ASSERT_EQUAL_STRING("Wong",((StringToken *)(getToken()))-> name);
-  TEST_ASSERT_EQUAL_STRING("{",((operatorToken *)(getToken()))-> symbol);
+  TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(getToken()))-> symbol);
 }
 
 void test_createListElement()
@@ -72,6 +72,7 @@ void test_createListElement()
 void test_Simple_JSON_List()
 {
   LinkedList *list;
+  Iterator *iter;
 
   Token *openBrace=createOperatorToken("{");
   Token *closeBrace=createOperatorToken("}");
@@ -98,10 +99,19 @@ void test_Simple_JSON_List()
 
   TEST_ASSERT_EQUAL(END,list->state);
 
-  operatorToken *token1 = ((operatorToken *)(list->head->value));
-  operatorToken *token2 = ((operatorToken *)(list->head->next->value));
-  operatorToken *token3 = ((operatorToken *)(list->head->next->next->value));
-  operatorToken *token4 = ((operatorToken *)(list->head->next->next->next->value));
+  // iter=createIterator(list);
+  // TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(iter->current->value))->symbol);
+  // iter=iteratorGetNext(iter);
+  // TEST_ASSERT_KEY_VALUE("NAME1","JS", iter);
+  // iter=iteratorGetNext(iter);
+  // TEST_ASSERT_KEY_VALUE("AGE",&IntValue[1], iter);
+  // iter=iteratorGetNext(iter);
+  // TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter->current->value))->symbol);
+
+  OperatorToken *token1 = ((OperatorToken *)(list->head->value));
+  OperatorToken *token2 = ((OperatorToken *)(list->head->next->value));
+  OperatorToken *token3 = ((OperatorToken *)(list->head->next->next->value));
+  OperatorToken *token4 = ((OperatorToken *)(list->head->next->next->next->value));
 
   TEST_ASSERT_EQUAL_STRING("{",token1->symbol);
   TEST_ASSERT_EQUAL_STRING(":",token2->symbol);
@@ -159,10 +169,10 @@ void test_JSON_List_with_Recursion_JSON_List()
 
   TEST_ASSERT_EQUAL(END,list->state);
 
-  operatorToken *token1 = ((operatorToken *)(list->head->value));
-  operatorToken *token2 = ((operatorToken *)(list->head->next->value));
-  operatorToken *token3 = ((operatorToken *)(list->head->next->next->value));
-  operatorToken *token4 = ((operatorToken *)(list->head->next->next->next->value));
+  OperatorToken *token1 = ((OperatorToken *)(list->head->value));
+  OperatorToken *token2 = ((OperatorToken *)(list->head->next->value));
+  OperatorToken *token3 = ((OperatorToken *)(list->head->next->next->value));
+  OperatorToken *token4 = ((OperatorToken *)(list->head->next->next->next->value));
 
   TEST_ASSERT_EQUAL_STRING("{",token1->symbol);
   TEST_ASSERT_EQUAL_STRING(":",token2->symbol);
@@ -171,10 +181,10 @@ void test_JSON_List_with_Recursion_JSON_List()
   TEST_ASSERT_EQUAL_STRING(":",token3->symbol);
   TEST_ASSERT_EQUAL_STRING("AGE",((IdentifierToken *)(token3->token[0]))->name);
 
-  operatorToken *Token3Token1 = ((operatorToken *)(((LinkedList *)(token3->token[1]))->head->value));
-  operatorToken *Token3Token2 = ((operatorToken *)(((LinkedList *)(token3->token[1]))->head->next->value));
-  operatorToken *Token3Token3 = ((operatorToken *)(((LinkedList *)(token3->token[1]))->head->next->next->value));
-  operatorToken *Token3Token4 = ((operatorToken *)(((LinkedList *)(token3->token[1]))->head->next->next->next->value));
+  OperatorToken *Token3Token1 = ((OperatorToken *)(((LinkedList *)(token3->token[1]))->head->value));
+  OperatorToken *Token3Token2 = ((OperatorToken *)(((LinkedList *)(token3->token[1]))->head->next->value));
+  OperatorToken *Token3Token3 = ((OperatorToken *)(((LinkedList *)(token3->token[1]))->head->next->next->value));
+  OperatorToken *Token3Token4 = ((OperatorToken *)(((LinkedList *)(token3->token[1]))->head->next->next->next->value));
 
   TEST_ASSERT_EQUAL_STRING("{", Token3Token1->symbol);
   TEST_ASSERT_EQUAL_STRING(":", Token3Token2->symbol);
@@ -223,8 +233,8 @@ void test_Finding_Element_in_Simple_JSON_List()
 
   findEle=(ListElement *)(keyFind(list, "AGE", strCompare));
 
-  // printf("value=%s",((IdentifierToken *)((operatorToken *)(findEle->value))->token[0])->name);
-  // TEST_ASSERT_EQUAL("AGE",((IdentifierToken *)((operatorToken *)(findEle->value))->token[0])->name);
+  // printf("value=%s",((IdentifierToken *)((OperatorToken *)(findEle->value))->token[0])->name);
+  // TEST_ASSERT_EQUAL("AGE",((IdentifierToken *)((OperatorToken *)(findEle->value))->token[0])->name);
 }
 
 /**
@@ -274,12 +284,12 @@ void test_Finding_Element_in_Recursion_JSON_List()
   list=jsonParse();
 
   findKey=(ListElement *)(keyFind(list, "AGE", strCompare));
-  findKey=(ListElement *)(keyFind((LinkedList *)(((operatorToken *)(findKey->value))->token[1]), "NAME3", strCompare));
+  findKey=(ListElement *)(keyFind((LinkedList *)(((OperatorToken *)(findKey->value))->token[1]), "NAME3", strCompare));
   findVal=(Token *)(getElementValue(findKey));
 
-  printf("key=%s\n",((IdentifierToken *)((operatorToken *)(findKey->value))->token[0])->name);
+  printf("key=%s\n",((IdentifierToken *)((OperatorToken *)(findKey->value))->token[0])->name);
   printf("value=%s",((StringToken *)(findVal))->name);
-  // TEST_ASSERT_EQUAL("AGE",((IdentifierToken *)((operatorToken *)(findEle->value))->token[0])->name);
+  // TEST_ASSERT_EQUAL("AGE",((IdentifierToken *)((OperatorToken *)(findEle->value))->token[0])->name);
 }
 
 void test_iteratorGetNext()
@@ -341,19 +351,19 @@ void test_iteratorGetNext_for_Simple_List()
   TEST_ASSERT_EQUAL(END,list->state);
 
   iter=createIterator(list);
-  TEST_ASSERT_EQUAL_STRING("{",((operatorToken *)(iter->current->value))->symbol);
+  TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(iter->current->value))->symbol);
   iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL_STRING(":",((operatorToken *)(iter->current->value))->symbol);
+  TEST_ASSERT_EQUAL_STRING(":",((OperatorToken *)(iter->current->value))->symbol);
   iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL_STRING(":",((operatorToken *)(iter->current->value))->symbol);
+  TEST_ASSERT_EQUAL_STRING(":",((OperatorToken *)(iter->current->value))->symbol);
   iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL_STRING("}",((operatorToken *)(iter->current->value))->symbol);
+  TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter->current->value))->symbol);
 
-  // operatorToken *Token = ((operatorToken *)(tempToken->value));
+  // OperatorToken *Token = ((OperatorToken *)(tempToken->value));
 
-  // operatorToken *token2 = ((operatorToken *)(list->head->next->value));
-  // operatorToken *token3 = ((operatorToken *)(list->head->next->next->value));
-  // operatorToken *token4 = ((operatorToken *)(list->head->next->next->next->value));
+  // OperatorToken *token2 = ((OperatorToken *)(list->head->next->value));
+  // OperatorToken *token3 = ((OperatorToken *)(list->head->next->next->value));
+  // OperatorToken *token4 = ((OperatorToken *)(list->head->next->next->next->value));
 
   // TEST_ASSERT_EQUAL_STRING(":",token2->symbol);
   // TEST_ASSERT_EQUAL_STRING("NAME1",((IdentifierToken *)(token2->token[0]))->name);
