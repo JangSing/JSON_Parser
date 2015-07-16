@@ -51,7 +51,7 @@ void test_createListElement()
   ListElement *newNode;
   IntegerToken *intTok;
 
-  intTok=createIntegerToken(123);
+  intTok=(IntegerToken *)createIntegerToken(123);
   newNode = createListElement(intTok);
 
   TEST_ASSERT_NOT_NULL(newNode);
@@ -76,51 +76,41 @@ void test_Simple_JSON_List()
 
   Token *openBrace=createOperatorToken("{");
   Token *closeBrace=createOperatorToken("}");
-  Token *coma=(Token*)createOperatorToken(",");
-  Token *colon=(Token*)createOperatorToken(":");
-  Token *key0=(Token*)createIdentifierToken("NAME1");
-  Token *key1=(Token*)createIdentifierToken("AGE");
-  Token *value0=(Token*)createStringToken("JS");
-  Token *value1=(Token*)createIntegerToken(20);
+  Token *coma=createOperatorToken(",");
+  Token *colon0=createOperatorToken(":");
+  Token *colon1=createOperatorToken(":");
+  Token *NAME1=createIdentifierToken("NAME1");
+  Token *AGE=createIdentifierToken("AGE");
+  Token *JS=createStringToken("JS");
+  Token *int20=createIntegerToken(20);
 
-  getToken_ExpectAndReturn(openBrace);    //"{"
-  getToken_ExpectAndReturn(key0);         //"NAME1"
-  getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(value0);       //"JS"
-  getToken_ExpectAndReturn(coma);         //","
-  getToken_ExpectAndReturn(key1);         //"AGE"
-  getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(value1);       //20
-  getToken_ExpectAndReturn(closeBrace);   //"}"
-
+  getToken_ExpectAndReturn(openBrace);     //"{"
+  getToken_ExpectAndReturn(NAME1);         //"NAME1"
+  getToken_ExpectAndReturn(colon0);        //":"
+  getToken_ExpectAndReturn(JS);            //"JS"
+  getToken_ExpectAndReturn(coma);          //","
+  getToken_ExpectAndReturn(AGE);           //"AGE"
+  getToken_ExpectAndReturn(colon1);        //":"
+  getToken_ExpectAndReturn(int20);         //20
+  getToken_ExpectAndReturn(closeBrace);    //"}"
   getToken_ExpectAndReturn(NULL);
 
   list=jsonParse();
 
   TEST_ASSERT_EQUAL(END,list->state);
 
-  // iter=createIterator(list);
-  // TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(iter->current->value))->symbol);
-  // iter=iteratorGetNext(iter);
-  // TEST_ASSERT_KEY_VALUE("NAME1","JS", iter);
-  // iter=iteratorGetNext(iter);
-  // TEST_ASSERT_KEY_VALUE("AGE",&IntValue[1], iter);
-  // iter=iteratorGetNext(iter);
-  // TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter->current->value))->symbol);
+  iter=createIterator(list);
+  TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(iter->current->value))->symbol);
+  iter=iteratorGetNext(iter);
 
-  OperatorToken *token1 = ((OperatorToken *)(list->head->value));
-  OperatorToken *token2 = ((OperatorToken *)(list->head->next->value));
-  OperatorToken *token3 = ((OperatorToken *)(list->head->next->next->value));
-  OperatorToken *token4 = ((OperatorToken *)(list->head->next->next->next->value));
+  TEST_ASSERT_KEY_VALUE(NAME1,JS, iter->current);
 
-  TEST_ASSERT_EQUAL_STRING("{",token1->symbol);
-  TEST_ASSERT_EQUAL_STRING(":",token2->symbol);
-  TEST_ASSERT_EQUAL_STRING("NAME1",((IdentifierToken *)(token2->token[0]))->name);
-  TEST_ASSERT_EQUAL_STRING("JS",((StringToken *)(token2->token[1]))->name);
-  TEST_ASSERT_EQUAL_STRING(":",token3->symbol);
-  TEST_ASSERT_EQUAL_STRING("AGE",((IdentifierToken *)(token3->token[0]))->name);
-  TEST_ASSERT_EQUAL(20,((IntegerToken *)(token3->token[1]))->value);
-  TEST_ASSERT_EQUAL_STRING("}",token4->symbol);
+  iter=iteratorGetNext(iter);
+
+  TEST_ASSERT_KEY_VALUE(AGE,int20, iter->current);
+
+  iter=iteratorGetNext(iter);
+  TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter->current->value))->symbol);
 }
 
 /**
@@ -133,68 +123,65 @@ void test_Simple_JSON_List()
 void test_JSON_List_with_Recursion_JSON_List()
 {
   LinkedList *list;
+  Iterator *iter1,*iter2;
 
-  Token *openBrace=createOperatorToken("{");
-  Token *closeBrace=createOperatorToken("}");
-  Token *coma=(Token*)createOperatorToken(",");
-  Token *colon=(Token*)createOperatorToken(":");
-  Token *key0=(Token*)createIdentifierToken("NAME1");
-  Token *key1=(Token*)createIdentifierToken("AGE");
-  Token *key2=(Token*)createIdentifierToken("NAME2");
-  Token *key3=(Token*)createIdentifierToken("NAME3");
-  Token *value0=(Token*)createStringToken("JS");
-  Token *value1=(Token*)createStringToken("STEVEN");
-  Token *value2=(Token*)createStringToken("Yen");
+  Token *openBrace0=createOperatorToken("{");
+  Token *openBrace1=createOperatorToken("{");
+  Token *closeBrace0=createOperatorToken("}");
+  Token *closeBrace1=createOperatorToken("}");
+  Token *coma=createOperatorToken(",");
+  Token *colon0=createOperatorToken(":");
+  Token *colon1=createOperatorToken(":");
+  Token *colon2=createOperatorToken(":");
+  Token *colon3=createOperatorToken(":");
+  Token *NAME1=createIdentifierToken("NAME1");
+  Token *AGE=createIdentifierToken("AGE");
+  Token *NAME2=createIdentifierToken("NAME2");
+  Token *NAME3=createIdentifierToken("NAME3");
+  Token *JS=createStringToken("JS");
+  Token *STEVEN=createStringToken("STEVEN");
+  Token *Yen=createStringToken("Yen");
+  Token *int20=createIntegerToken(20);
 
-  getToken_ExpectAndReturn(openBrace);    //"{"
-  getToken_ExpectAndReturn(key0);         //"NAME1"
-  getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(value0);       //"JS"
-  getToken_ExpectAndReturn(coma);         //","
-  getToken_ExpectAndReturn(key1);         //"AGE"
-  getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(openBrace);    //"{"
-  getToken_ExpectAndReturn(key2);         //"NAME2"
-  getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(value1);       //"STEVEN"
-  getToken_ExpectAndReturn(coma);         //","
-  getToken_ExpectAndReturn(key3);         //"NAME3"
-  getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(value2);       //"Yen"
-  getToken_ExpectAndReturn(closeBrace);   //"}"
-  getToken_ExpectAndReturn(closeBrace);   //"}"
+  getToken_ExpectAndReturn(openBrace0);     //"{"
+  getToken_ExpectAndReturn(NAME1);         //"NAME1"
+  getToken_ExpectAndReturn(colon0);        //":"
+  getToken_ExpectAndReturn(JS);            //"JS"
+  getToken_ExpectAndReturn(coma);          //","
+  getToken_ExpectAndReturn(AGE);           //"AGE"
+  getToken_ExpectAndReturn(colon1);        //":"
+  getToken_ExpectAndReturn(openBrace1);     //"{"
+  getToken_ExpectAndReturn(NAME2);         //"NAME2"
+  getToken_ExpectAndReturn(colon2);        //":"
+  getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
+  getToken_ExpectAndReturn(coma);          //","
+  getToken_ExpectAndReturn(NAME3);         //"NAME3"
+  getToken_ExpectAndReturn(colon3);        //":"
+  getToken_ExpectAndReturn(Yen);           //"Yen"
+  getToken_ExpectAndReturn(closeBrace0);    //"}"
+  getToken_ExpectAndReturn(closeBrace1);    //"}"
   getToken_ExpectAndReturn(NULL);
 
   list=jsonParse();
 
   TEST_ASSERT_EQUAL(END,list->state);
 
-  OperatorToken *token1 = ((OperatorToken *)(list->head->value));
-  OperatorToken *token2 = ((OperatorToken *)(list->head->next->value));
-  OperatorToken *token3 = ((OperatorToken *)(list->head->next->next->value));
-  OperatorToken *token4 = ((OperatorToken *)(list->head->next->next->next->value));
-
-  TEST_ASSERT_EQUAL_STRING("{",token1->symbol);
-  TEST_ASSERT_EQUAL_STRING(":",token2->symbol);
-  TEST_ASSERT_EQUAL_STRING("NAME1",((IdentifierToken *)(token2->token[0]))->name);
-  TEST_ASSERT_EQUAL_STRING("JS",((StringToken *)(token2->token[1]))->name);
-  TEST_ASSERT_EQUAL_STRING(":",token3->symbol);
-  TEST_ASSERT_EQUAL_STRING("AGE",((IdentifierToken *)(token3->token[0]))->name);
-
-  OperatorToken *Token3Token1 = ((OperatorToken *)(((LinkedList *)(token3->token[1]))->head->value));
-  OperatorToken *Token3Token2 = ((OperatorToken *)(((LinkedList *)(token3->token[1]))->head->next->value));
-  OperatorToken *Token3Token3 = ((OperatorToken *)(((LinkedList *)(token3->token[1]))->head->next->next->value));
-  OperatorToken *Token3Token4 = ((OperatorToken *)(((LinkedList *)(token3->token[1]))->head->next->next->next->value));
-
-  TEST_ASSERT_EQUAL_STRING("{", Token3Token1->symbol);
-  TEST_ASSERT_EQUAL_STRING(":", Token3Token2->symbol);
-  TEST_ASSERT_EQUAL_STRING("NAME2", ((IdentifierToken *)(Token3Token2->token[0]))->name);
-  TEST_ASSERT_EQUAL_STRING("STEVEN",((StringToken *)(Token3Token2->token[1]))->name);
-  TEST_ASSERT_EQUAL_STRING(":", Token3Token3->symbol);
-  TEST_ASSERT_EQUAL_STRING("NAME3", ((IdentifierToken *)(Token3Token3->token[0]))->name);
-  TEST_ASSERT_EQUAL_STRING("Yen",((StringToken *)(Token3Token3->token[1]))->name);
-  TEST_ASSERT_EQUAL_STRING("}", Token3Token4->symbol);
-  TEST_ASSERT_EQUAL_STRING("}",token4->symbol);
+  iter1=createIterator(list);
+  TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(iter1->current->value))->symbol);
+  iter1=iteratorGetNext(iter1);
+  TEST_ASSERT_KEY_VALUE(NAME1,JS, iter1->current);
+  iter1=iteratorGetNext(iter1);
+  TEST_ASSERT_KEY(AGE,iter1->current);
+  iter2=createIterator(((LinkedList *)(((OperatorToken *)(iter1->current->value))->token[1])));
+  TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(iter2->current->value))->symbol);
+  iter2=iteratorGetNext(iter2);
+  TEST_ASSERT_KEY_VALUE(NAME2,STEVEN, iter2->current);
+  iter2=iteratorGetNext(iter2);
+  TEST_ASSERT_KEY_VALUE(NAME3,Yen, iter2->current);
+  iter2=iteratorGetNext(iter2);
+  TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter2->current->value))->symbol);
+  iter1=iteratorGetNext(iter1);
+  TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter1->current->value))->symbol);
 }
 
 /**
@@ -206,35 +193,36 @@ void test_JSON_List_with_Recursion_JSON_List()
 void test_Finding_Element_in_Simple_JSON_List()
 {
   LinkedList *list;
-  ListElement *findEle;
+  ListElement *findKey;
+  Token *findVal;
 
   Token *openBrace=createOperatorToken("{");
   Token *closeBrace=createOperatorToken("}");
-  Token *coma=(Token*)createOperatorToken(",");
-  Token *colon=(Token*)createOperatorToken(":");
-  Token *key0=(Token*)createIdentifierToken("NAME1");
-  Token *key1=(Token*)createIdentifierToken("AGE");
-  Token *value0=(Token*)createStringToken("JS");
-  Token *value1=(Token*)createIntegerToken(20);
+  Token *coma=createOperatorToken(",");
+  Token *colon=createOperatorToken(":");
+  Token *NAME1=createIdentifierToken("NAME1");
+  Token *AGE=createIdentifierToken("AGE");
+  Token *JS=createStringToken("JS");
+  Token *int20=createIntegerToken(20);
 
   getToken_ExpectAndReturn(openBrace);    //"{"
-  getToken_ExpectAndReturn(key0);         //"NAME1"
+  getToken_ExpectAndReturn(NAME1);        //"NAME1"
   getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(value0);       //"JS"
+  getToken_ExpectAndReturn(JS);           //"JS"
   getToken_ExpectAndReturn(coma);         //","
-  getToken_ExpectAndReturn(key1);         //"AGE"
+  getToken_ExpectAndReturn(AGE);          //"AGE"
   getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(value1);       //20
+  getToken_ExpectAndReturn(int20);        //20
   getToken_ExpectAndReturn(closeBrace);   //"}"
 
   getToken_ExpectAndReturn(NULL);
 
   list=jsonParse();
 
-  findEle=(ListElement *)(keyFind(list, "AGE", strCompare));
+  findKey=(ListElement *)(keyFind(list, "AGE", strCompare));
+  findVal=(Token *)(getElementValue(findKey));
 
-  // printf("value=%s",((IdentifierToken *)((OperatorToken *)(findEle->value))->token[0])->name);
-  // TEST_ASSERT_EQUAL("AGE",((IdentifierToken *)((OperatorToken *)(findEle->value))->token[0])->name);
+  TEST_ASSERT_EQUAL(((IntegerToken *)(int20))->value,((IntegerToken *)(findVal))->value);
 }
 
 /**
@@ -252,31 +240,31 @@ void test_Finding_Element_in_Recursion_JSON_List()
 
   Token *openBrace=createOperatorToken("{");
   Token *closeBrace=createOperatorToken("}");
-  Token *coma=(Token*)createOperatorToken(",");
-  Token *colon=(Token*)createOperatorToken(":");
-  Token *key0=(Token*)createIdentifierToken("NAME1");
-  Token *key1=(Token*)createIdentifierToken("AGE");
-  Token *key2=(Token*)createIdentifierToken("NAME2");
-  Token *key3=(Token*)createIdentifierToken("NAME3");
-  Token *value0=(Token*)createStringToken("JS");
-  Token *value1=(Token*)createStringToken("STEVEN");
-  Token *value2=(Token*)createStringToken("Yen");
+  Token *coma=createOperatorToken(",");
+  Token *colon=createOperatorToken(":");
+  Token *NAME1=createIdentifierToken("NAME1");
+  Token *AGE=createIdentifierToken("AGE");
+  Token *NAME2=createIdentifierToken("NAME2");
+  Token *NAME3=createIdentifierToken("NAME3");
+  Token *JS=createStringToken("JS");
+  Token *STEVEN=createStringToken("STEVEN");
+  Token *Yen=createStringToken("Yen");
 
   getToken_ExpectAndReturn(openBrace);    //"{"
-  getToken_ExpectAndReturn(key0);         //"NAME1"
+  getToken_ExpectAndReturn(NAME1);         //"NAME1"
   getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(value0);       //"JS"
+  getToken_ExpectAndReturn(JS);           //"JS"
   getToken_ExpectAndReturn(coma);         //","
-  getToken_ExpectAndReturn(key1);         //"AGE"
+  getToken_ExpectAndReturn(AGE);          //"AGE"
   getToken_ExpectAndReturn(colon);        //":"
   getToken_ExpectAndReturn(openBrace);    //"{"
-  getToken_ExpectAndReturn(key2);         //"NAME2"
+  getToken_ExpectAndReturn(NAME2);         //"NAME2"
   getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(value1);       //"STEVEN"
+  getToken_ExpectAndReturn(STEVEN);       //"STEVEN"
   getToken_ExpectAndReturn(coma);         //","
-  getToken_ExpectAndReturn(key3);         //"NAME3"
+  getToken_ExpectAndReturn(NAME3);         //"NAME3"
   getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(value2);       //"Yen"
+  getToken_ExpectAndReturn(Yen);          //"Yen"
   getToken_ExpectAndReturn(closeBrace);   //"}"
   getToken_ExpectAndReturn(closeBrace);   //"}"
   getToken_ExpectAndReturn(NULL);
@@ -287,90 +275,10 @@ void test_Finding_Element_in_Recursion_JSON_List()
   findKey=(ListElement *)(keyFind((LinkedList *)(((OperatorToken *)(findKey->value))->token[1]), "NAME3", strCompare));
   findVal=(Token *)(getElementValue(findKey));
 
-  printf("key=%s\n",((IdentifierToken *)((OperatorToken *)(findKey->value))->token[0])->name);
-  printf("value=%s",((StringToken *)(findVal))->name);
-  // TEST_ASSERT_EQUAL("AGE",((IdentifierToken *)((OperatorToken *)(findEle->value))->token[0])->name);
+  TEST_ASSERT_EQUAL_PTR(((StringToken *)(Yen))->name,((StringToken *)(findVal))->name);
 }
 
-void test_iteratorGetNext()
-{
-  int value[]={1,3,4};
-
-  LinkedList *ptr;
-  Iterator *iter;
-
-  ptr=createLinkedList();
-
-  addLast(createListElement(&value[0]),ptr);
-  addLast(createListElement(&value[1]),ptr);
-  addLast(createListElement(&value[2]),ptr);
-
-  iter=createIterator(ptr);
-
-  TEST_ASSERT_NOT_NULL(iter);
-  TEST_ASSERT_NOT_NULL(iter->current->next);
-  TEST_ASSERT_EQUAL(1,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-
-  TEST_ASSERT_NOT_NULL(iter);
-  TEST_ASSERT_NOT_NULL(iter->current->next);
-  TEST_ASSERT_EQUAL(3,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-
-  TEST_ASSERT_EQUAL(4,*((int *)(iter->current->value)));
-}
-
-void test_iteratorGetNext_for_Simple_List()
-{
-  LinkedList *list;
-  Iterator *iter;
-
-  Token *openBrace=createOperatorToken("{");
-  Token *closeBrace=createOperatorToken("}");
-  Token *coma=(Token*)createOperatorToken(",");
-  Token *colon=(Token*)createOperatorToken(":");
-  Token *key0=(Token*)createIdentifierToken("NAME1");
-  Token *key1=(Token*)createIdentifierToken("AGE");
-  Token *value0=(Token*)createStringToken("JS");
-  Token *value1=(Token*)createIntegerToken(20);
-
-  getToken_ExpectAndReturn(openBrace);    //"{"
-  getToken_ExpectAndReturn(key0);         //"NAME1"
-  getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(value0);       //"JS"
-  getToken_ExpectAndReturn(coma);         //","
-  getToken_ExpectAndReturn(key1);         //"AGE"
-  getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(value1);       //20
-  getToken_ExpectAndReturn(closeBrace);   //"}"
-  getToken_ExpectAndReturn(NULL);
-
-  list=jsonParse();
 
 
-  TEST_ASSERT_EQUAL(END,list->state);
 
-  iter=createIterator(list);
-  TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(iter->current->value))->symbol);
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL_STRING(":",((OperatorToken *)(iter->current->value))->symbol);
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL_STRING(":",((OperatorToken *)(iter->current->value))->symbol);
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter->current->value))->symbol);
-
-  // OperatorToken *Token = ((OperatorToken *)(tempToken->value));
-
-  // OperatorToken *token2 = ((OperatorToken *)(list->head->next->value));
-  // OperatorToken *token3 = ((OperatorToken *)(list->head->next->next->value));
-  // OperatorToken *token4 = ((OperatorToken *)(list->head->next->next->next->value));
-
-  // TEST_ASSERT_EQUAL_STRING(":",token2->symbol);
-  // TEST_ASSERT_EQUAL_STRING("NAME1",((IdentifierToken *)(token2->token[0]))->name);
-  // TEST_ASSERT_EQUAL_STRING("JS",((StringToken *)(token2->token[1]))->name);
-  // TEST_ASSERT_EQUAL_STRING(":",token3->symbol);
-  // TEST_ASSERT_EQUAL_STRING("AGE",((IdentifierToken *)(token3->token[0]))->name);
-  // TEST_ASSERT_EQUAL(20,((IntegerToken *)(token3->token[1]))->value);
-  // TEST_ASSERT_EQUAL_STRING("}",token4->symbol);
-}
 

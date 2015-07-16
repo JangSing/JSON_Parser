@@ -2,11 +2,13 @@
 #define createTokenType_H
 
 #include "Token.h"
+#include "JSON.h"
 
 Token *createOperatorToken(char *symbol);
-IdentifierToken *createIdentifierToken(char *key);
-IntegerToken *createIntegerToken(int value);
-StringToken *createStringToken(char *value);
+Token *createIdentifierToken(char *key);
+Token *createIntegerToken(int value);
+Token *createStringToken(char *value);
+Token *createJsonToken(JsonObject *json);
 
 
 #endif // createTokenType_H

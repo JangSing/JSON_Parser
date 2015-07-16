@@ -23,6 +23,10 @@ Token *link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue){
   return (Token *)opTok;
 }
 
+JsonObject *createJsonObject(){
+}
+
+
 Token *getElementValue(ListElement *findKey){
   return ((OperatorToken *)(findKey->value))->token[1];
 }
@@ -191,6 +195,5 @@ LinkedList *jsonParse(){
 
   return list;
 }
-
 
 

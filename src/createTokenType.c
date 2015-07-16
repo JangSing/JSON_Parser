@@ -11,42 +11,52 @@
 
 Token *createOperatorToken(char *symbol) {
 
-    OperatorToken *opTok =malloc(sizeof(OperatorToken)+sizeof(Token *)*2);
+  OperatorToken *opTok =malloc(sizeof(OperatorToken)+sizeof(Token *)*2);
 
-    opTok->type=TOKEN_OPERATOR_TYPE;
-    opTok->symbol=symbol;
-    opTok->token[0]=NULL;
-    opTok->token[1]=NULL;
+  opTok->type=TOKEN_OPERATOR_TYPE;
+  opTok->symbol=symbol;
+  opTok->token[0]=NULL;
+  opTok->token[1]=NULL;
 
   return (Token *)opTok;
 }
 
-IdentifierToken *createIdentifierToken(char *key){
+Token *createIdentifierToken(char *key){
 
-    IdentifierToken *IdenTok =malloc(sizeof(IdentifierToken));
+  IdentifierToken *IdenTok =malloc(sizeof(IdentifierToken));
 
-    IdenTok->type=TOKEN_IDENTIFIER_TYPE;
-    IdenTok->name =key;
+  IdenTok->type=TOKEN_IDENTIFIER_TYPE;
+  IdenTok->name =key;
 
-  return IdenTok;
+  return (Token *)IdenTok;
 }
 
-IntegerToken *createIntegerToken(int value){
+Token *createIntegerToken(int value){
 
-    IntegerToken *intTok =malloc(sizeof(IntegerToken));
+  IntegerToken *intTok =malloc(sizeof(IntegerToken));
 
-    intTok->type=TOKEN_INTEGER_TYPE;
-    intTok->value=value;
+  intTok->type=TOKEN_INTEGER_TYPE;
+  intTok->value=value;
 
-  return intTok;
+  return (Token *)intTok;
 }
 
-StringToken *createStringToken(char *value){
+Token *createStringToken(char *value){
 
-    StringToken *StrTok =malloc(sizeof(StringToken));
+  StringToken *StrTok =malloc(sizeof(StringToken));
 
-    StrTok->type=TOKEN_STRING_TYPE;
-    StrTok->name=value;
+  StrTok->type=TOKEN_STRING_TYPE;
+  StrTok->name=value;
 
-  return StrTok;
+  return (Token *)StrTok;
+}
+
+Token *createJsonToken(JsonObject *json){
+
+  JsonToken *jsonTok =malloc(sizeof(JsonToken));
+
+  jsonTok->type=TOKEN_JSON_TYPE;
+  jsonTok->list->state=json->state;
+
+  return (Token *)jsonTok;
 }

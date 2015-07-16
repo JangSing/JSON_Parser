@@ -8,15 +8,41 @@
 #include "CustomAssertion.h"
 #include "IteratorFunction.h"
 
-void setUp(void)
+void setUp()
 {
 }
 
-void tearDown(void)
+void tearDown()
 {
 }
 
-void test_module_generator_needs_to_be_implemented(void)
+void test_iteratorGetNext()
 {
-	TEST_IGNORE_MESSAGE("Implement me!");
+  int value[]={1,3,4};
+
+  LinkedList *ptr;
+  Iterator *iter;
+
+  ptr=createLinkedList();
+
+  addLast(createListElement(&value[0]),ptr);
+  addLast(createListElement(&value[1]),ptr);
+  addLast(createListElement(&value[2]),ptr);
+
+  TEST_ASSERT_NOT_NULL(ptr);
+  iter=createIterator(ptr);
+
+  TEST_ASSERT_NOT_NULL(iter);
+  TEST_ASSERT_NOT_NULL(iter->current->next);
+  TEST_ASSERT_EQUAL(1,*((int *)(iter->current->value)));
+  iter=iteratorGetNext(iter);
+
+  TEST_ASSERT_NOT_NULL(iter);
+  TEST_ASSERT_NOT_NULL(iter->current->next);
+  TEST_ASSERT_EQUAL(3,*((int *)(iter->current->value)));
+  iter=iteratorGetNext(iter);
+
+  TEST_ASSERT_NOT_NULL(iter);
+  TEST_ASSERT_NULL(iter->current->next);
+  TEST_ASSERT_EQUAL(4,*((int *)(iter->current->value)));
 }

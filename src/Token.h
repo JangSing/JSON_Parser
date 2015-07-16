@@ -1,6 +1,7 @@
 #ifndef Token_H
 #define Token_H
 
+#include "LinkedList.h"
 #include <stdint.h>
 
 typedef enum {
@@ -10,6 +11,7 @@ typedef enum {
   TOKEN_STRING_TYPE,
   TOKEN_OPERATOR_TYPE,
   TOKEN_IDENTIFIER_TYPE,
+  TOKEN_JSON_TYPE,
 } TokenType;
 
 typedef enum {
@@ -59,6 +61,8 @@ typedef struct {
   Arity arity;
   Token *token[0];
 } OperatorToken;
+
+
 
 Token *getToken();
 
