@@ -47,23 +47,6 @@ void test_getToken()
   TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(getToken()))-> symbol);
 }
 
-void test_createListElement()
-{
-  ListElement *newNode;
-  IntegerToken *intTok;
-
-  intTok=(IntegerToken *)createIntegerToken(123);
-  newNode = createListElement(intTok);
-
-  TEST_ASSERT_NOT_NULL(newNode);
-  TEST_ASSERT_NOT_NULL(newNode->value);
-
-  TEST_ASSERT_EQUAL(123,intTok->value);
-
-  TEST_ASSERT_EQUAL(123,((IntegerToken *)(newNode->value))->value);
-  TEST_ASSERT_EQUAL(TOKEN_INTEGER_TYPE,((IntegerToken *)(newNode->value))->type);
-}
-
 /**
  *  {
  *    "NAME1":"JS",

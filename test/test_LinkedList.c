@@ -3,6 +3,7 @@
 #include "compareFunction.h"
 #include "IteratorFunction.h"
 #include "FindElementFunction.h"
+#include "createTokenType.h"
 
 #include <malloc.h>
 #include <stdio.h>
@@ -46,7 +47,7 @@ void test_function_createLinkedList()
  */
 
 
-void test_function_createListElement_for_NULL_value()
+void test_function_createListElement_for_NULL_value_should_return_NULL()
 {
   ListElement *newNode;
   int value=1;
@@ -80,6 +81,23 @@ void test_function_createListElement_for_String_value()
   TEST_ASSERT_NOT_NULL(newNode->value);
   TEST_ASSERT_EQUAL_STRING("JangSing",(char *)newNode->value);
   TEST_ASSERT_NULL(newNode->next);
+}
+
+void test_function_createListElement_for_Token_value()
+{
+  ListElement *newNode;
+  IntegerToken *intTok;
+
+  intTok=(IntegerToken *)createIntegerToken(123);
+  newNode = createListElement(intTok);
+
+  TEST_ASSERT_NOT_NULL(newNode);
+  TEST_ASSERT_NOT_NULL(newNode->value);
+
+  TEST_ASSERT_EQUAL(123,intTok->value);
+
+  TEST_ASSERT_EQUAL(123,((IntegerToken *)(newNode->value))->value);
+  TEST_ASSERT_EQUAL(TOKEN_INTEGER_TYPE,((IntegerToken *)(newNode->value))->type);
 }
 
 void test_Adding_one_element_to_LinkedList_using_function_AddLast_and_AddFirst()
@@ -486,7 +504,6 @@ void test_RemoveLast_given_three_element_in_LinkedList_should_return_removed_las
   TEST_ASSERT_EQUAL(2,ptr->length);
 }
 
-
 void test_All_function_in_one_single_LinkedList()
 {
   int value[]={1,2,3,4,5,6};
@@ -550,7 +567,101 @@ void test_All_function_in_one_single_LinkedList()
   TEST_ASSERT_EQUAL(4,ptr->length);
 }
 
+void test_Find_Integer_Element_if_Element_not_in_the_List_Should_return_NULL()
+{
+	int myValue4 =8;
+  int value[]={1,3,4,6,7};
 
+  LinkedList *ptr;
+  ListElement *elemFind;
+
+  ptr=createLinkedList();
+
+  addLast(createListElement(&value[0]),ptr);
+  addLast(createListElement(&value[1]),ptr);
+  addLast(createListElement(&value[2]),ptr);
+  addLast(createListElement(&value[3]),ptr);
+  addLast(createListElement(&value[4]),ptr);
+
+  elemFind=NULL;
+  elemFind=listFind(ptr,&myValue4,intCompare);
+
+  TEST_ASSERT_NOT_NULL(ptr);
+  TEST_ASSERT_NULL(elemFind);
+}
+
+void test_findElement_integer()
+{
+	int myValue4 =4;
+  int value[]={1,3,4,6,7};
+
+  LinkedList *ptr;
+  ListElement *elemFind;
+
+  ptr=createLinkedList();
+
+  addLast(createListElement(&value[0]),ptr);
+  addLast(createListElement(&value[1]),ptr);
+  addLast(createListElement(&value[2]),ptr);
+  addLast(createListElement(&value[3]),ptr);
+  addLast(createListElement(&value[4]),ptr);
+
+  elemFind=NULL;
+  elemFind=listFind(ptr,&myValue4,intCompare);
+
+  TEST_ASSERT_NOT_NULL(ptr);
+  TEST_ASSERT_NOT_NULL(elemFind);
+  TEST_ASSERT_NOT_NULL(elemFind->value);
+  TEST_ASSERT_EQUAL(4,*(int *)(elemFind->value));
+}
+
+void test_Find_String_Element_if_Element_not_in_the_List_Should_return_NULL()
+{
+	char *myStr4="five";
+  char *str[]={"one","three","four","six","seven"};
+
+  LinkedList *ptr;
+  ListElement *elemFind;
+
+  ptr=createLinkedList();
+
+  addLast(createListElement(str[0]),ptr);
+  addLast(createListElement(str[1]),ptr);
+  addLast(createListElement(str[2]),ptr);
+  addLast(createListElement(str[3]),ptr);
+  addLast(createListElement(str[4]),ptr);
+
+  elemFind=NULL;
+  elemFind=listFind(ptr,myStr4,strCompare);
+
+  TEST_ASSERT_NOT_NULL(ptr);
+  TEST_ASSERT_NULL(elemFind);
+}  
+
+void test_findElement_string()
+{
+	char *myStr4="four";
+  char *str[]={"one","three","four","six","seven"};
+
+  LinkedList *ptr;
+  ListElement *elemFind;
+
+  ptr=createLinkedList();
+
+  addLast(createListElement(str[0]),ptr);
+  addLast(createListElement(str[1]),ptr);
+  addLast(createListElement(str[2]),ptr);
+  addLast(createListElement(str[3]),ptr);
+  addLast(createListElement(str[4]),ptr);
+
+  elemFind=NULL;
+  elemFind=listFind(ptr,myStr4,strCompare);
+
+  TEST_ASSERT_NOT_NULL(ptr);
+  TEST_ASSERT_NOT_NULL(elemFind);
+  TEST_ASSERT_NOT_NULL(elemFind->value);
+  TEST_ASSERT_EQUAL("four",(char *)(elemFind->value));
+}
 
 
 

@@ -8,61 +8,64 @@
 #include <stdio.h>
 #include <assert.h>
 
-void setUp(void)
+void setUp()
 {
 }
 
-void tearDown(void)
+void tearDown()
 {
 }
 
-void test_findElement_integer()
+void test_listFind_Function_given_list_is_NULL_should_return_NULL()
 {
-	int myValue4 =4;
-  int value[]={1,3,4,6,7};
-
-  LinkedList *ptr;
-  ListElement *elemFind;
-
-  ptr=createLinkedList();
-
-  addLast(createListElement(&value[0]),ptr);
-  addLast(createListElement(&value[1]),ptr);
-  addLast(createListElement(&value[2]),ptr);
-  addLast(createListElement(&value[3]),ptr);
-  addLast(createListElement(&value[4]),ptr);
-
-  elemFind=NULL;
-  elemFind=listFind(ptr,&myValue4,intCompare);
-
-  TEST_ASSERT_NOT_NULL(ptr);
-  TEST_ASSERT_NOT_NULL(elemFind);
-  TEST_ASSERT_NOT_NULL(elemFind->value);
-  TEST_ASSERT_EQUAL(4,*(int *)(elemFind->value));
-
+  ListElement *findEle;
+  char *strTest="forTesting";
+  
+  findEle=listFind(NULL,strTest,strCompare);
+  
+  TEST_ASSERT_NULL(findEle);
 }
 
-void test_findElement_string()
+void test_keyFind_Function_given_list_is_NULL_should_return_NULL()
 {
-	char *myStr4="four";
-  char *str[]={"one","three","four","six","seven"};
-
-  LinkedList *ptr;
-  ListElement *elemFind;
-
-  ptr=createLinkedList();
-
-  addLast(createListElement(str[0]),ptr);
-  addLast(createListElement(str[1]),ptr);
-  addLast(createListElement(str[2]),ptr);
-  addLast(createListElement(str[3]),ptr);
-  addLast(createListElement(str[4]),ptr);
-
-  elemFind=NULL;
-  elemFind=listFind(ptr,myStr4,strCompare);
-
-  TEST_ASSERT_NOT_NULL(ptr);
-  TEST_ASSERT_NOT_NULL(elemFind);
-  TEST_ASSERT_NOT_NULL(elemFind->value);
-  TEST_ASSERT_EQUAL("four",(char *)(elemFind->value));
+  ListElement *findEle;
+  char *strTest="forTesting";
+  
+  findEle=keyFind(NULL,strTest,strCompare);
+  
+  TEST_ASSERT_NULL(findEle);
 }
+
+void test_listFind_Function_given_Value_is_NULL_should_return_NULL()
+{
+  ListElement *findEle;
+  LinkedList *list;
+  
+  list=createLinkedList();
+  
+  findEle=listFind(list,NULL,strCompare);
+  
+  TEST_ASSERT_NULL(findEle);
+}
+
+void test_keyFind_Function_given_Value_is_NULL_should_return_NULL()
+{
+  ListElement *findEle;
+  LinkedList *list;
+  
+  list=createLinkedList();
+  
+  findEle=keyFind(list,NULL,strCompare);
+  
+  TEST_ASSERT_NULL(findEle);
+}
+
+
+
+
+
+
+
+
+
+

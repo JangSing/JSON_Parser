@@ -29,23 +29,17 @@ typedef struct {
   JsonState state;
 }LinkedList;
 
+//*** initialize LinkedList function start here***
 LinkedList *createLinkedList();
 ListElement *createListElement(void *value);
 
-//*** Adding Element function start here ***\\
-
+//*** Adding Element function start here ***
 void addLast(ListElement *newEle,LinkedList *list );
 void addFirst(LinkedList *list,ListElement *newElem);
 
-//*** Removing Element function start here ***\\
-
+//*** Removing Element function start here ***
 ListElement *removeFirst(LinkedList *list);
 ListElement *removeLast(LinkedList *list);
 
-//*** Find Element function start here ***\\
-
-
-// int intCompare(void *first, void *second);
-// int strCompare(void *first, void *second);
 
 #endif // LinkedList_H

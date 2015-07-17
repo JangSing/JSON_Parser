@@ -13,23 +13,31 @@
 int recur=0;
 
 Token *link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue){
+  if( leftValue==NULL || operatorSymbol==NULL || rightValue==NULL){
+    return NULL;
+  }
+  else{
+    OperatorToken *opTok;
 
-  OperatorToken *opTok;
+    opTok=(OperatorToken *)createOperatorToken(operatorSymbol);
 
-  opTok=(OperatorToken *)createOperatorToken(operatorSymbol);
+    opTok->token[0]=leftValue;
+    opTok->token[1]=rightValue;
 
-  opTok->token[0]=leftValue;
-  opTok->token[1]=rightValue;
-
-  return (Token *)opTok;
+    return (Token *)opTok;
+  }
 }
 
 JsonObject *createJsonObject(){
 }
 
-
 Token *getElementValue(ListElement *findKey){
-  return ((OperatorToken *)(findKey->value))->token[1];
+  if(findKey==NULL){
+    return NULL;
+  }
+  else{
+    return ((OperatorToken *)(findKey->value))->token[1];
+  }
 }
 
 LinkedList *jsonParse(){
