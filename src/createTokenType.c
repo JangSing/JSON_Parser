@@ -11,55 +11,73 @@
 #include <ctype.h>
 
 Token *createOperatorToken(char *symbol) {
+  if(symbol==NULL){
+    return NULL;
+  }
+  else{
+    OperatorToken *opTok =malloc(sizeof(OperatorToken)+sizeof(Token *)*2);
 
-  OperatorToken *opTok =malloc(sizeof(OperatorToken)+sizeof(Token *)*2);
+    opTok->type=TOKEN_OPERATOR_TYPE;
+    opTok->symbol=symbol;
+    opTok->token[0]=NULL;
+    opTok->token[1]=NULL;
 
-  opTok->type=TOKEN_OPERATOR_TYPE;
-  opTok->symbol=symbol;
-  opTok->token[0]=NULL;
-  opTok->token[1]=NULL;
-
-  return (Token *)opTok;
+    return (Token *)opTok;
+  }
 }
 
 Token *createIdentifierToken(char *key){
+  if(key==NULL){
+    return NULL;
+  }
+  else{
+    IdentifierToken *IdenTok =malloc(sizeof(IdentifierToken));
 
-  IdentifierToken *IdenTok =malloc(sizeof(IdentifierToken));
+    IdenTok->type=TOKEN_IDENTIFIER_TYPE;
+    IdenTok->name =key;
 
-  IdenTok->type=TOKEN_IDENTIFIER_TYPE;
-  IdenTok->name =key;
-
-  return (Token *)IdenTok;
+    return (Token *)IdenTok;
+  }
 }
 
 Token *createIntegerToken(int value){
+  if(&value==NULL){
+    return NULL;
+  }
+  else{
+    IntegerToken *intTok =malloc(sizeof(IntegerToken));
 
-  IntegerToken *intTok =malloc(sizeof(IntegerToken));
+    intTok->type=TOKEN_INTEGER_TYPE;
+    intTok->value=value;
 
-  intTok->type=TOKEN_INTEGER_TYPE;
-  intTok->value=value;
-
-  return (Token *)intTok;
+    return (Token *)intTok;
+  }
 }
 
 Token *createStringToken(char *value){
+  if(value==NULL){
+    return NULL;
+  }
+  else{
+    StringToken *StrTok =malloc(sizeof(StringToken));
 
-  StringToken *StrTok =malloc(sizeof(StringToken));
+    StrTok->type=TOKEN_STRING_TYPE;
+    StrTok->name=value;
 
-  StrTok->type=TOKEN_STRING_TYPE;
-  StrTok->name=value;
-
-  return (Token *)StrTok;
+    return (Token *)StrTok;
+  }
 }
 
-
-
 Token *createJsonToken(JsonObject *json){
+  if(json==NULL){
+    return NULL;
+  }
+  else{
+    JsonToken *jsonTok =malloc(sizeof(JsonToken));
 
-  JsonToken *jsonTok =malloc(sizeof(JsonToken));
+    jsonTok->type=TOKEN_JSON_TYPE;
+    jsonTok->list->state=json->state;
 
-  jsonTok->type=TOKEN_JSON_TYPE;
-  jsonTok->list->state=json->state;
-
-  return (Token *)jsonTok;
+    return (Token *)jsonTok;
+  }
 }

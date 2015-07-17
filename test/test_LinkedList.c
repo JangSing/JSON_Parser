@@ -636,7 +636,7 @@ void test_Find_String_Element_if_Element_not_in_the_List_Should_return_NULL()
 
   TEST_ASSERT_NOT_NULL(ptr);
   TEST_ASSERT_NULL(elemFind);
-}  
+}
 
 void test_findElement_string()
 {
