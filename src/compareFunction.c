@@ -1,4 +1,5 @@
 #include "compareFunction.h"
+#include "FindElementFunction.h"
 
 #include <stdio.h>
 #include <assert.h>

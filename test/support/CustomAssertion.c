@@ -3,6 +3,7 @@
 #include "JSON.h"
 #include "LinkedList.h"
 #include "IteratorFunction.h"
+#include "FindElementFunction.h"
 
 #include <stdio.h>
 

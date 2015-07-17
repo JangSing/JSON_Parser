@@ -6,6 +6,7 @@
 #include "IteratorFunction.h"
 #include "createTokenType.h"
 #include "CustomAssertion.h"
+#include "FindElementFunction.h"
 
 #include <stdio.h>
 #include <stdlib.h>

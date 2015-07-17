@@ -1,5 +1,6 @@
 #include "IteratorFunction.h"
 #include "LinkedList.h"
+#include "FindElementFunction.h"
 
 #include <malloc.h>
 #include <stdio.h>

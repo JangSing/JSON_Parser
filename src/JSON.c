@@ -3,6 +3,7 @@
 #include "JSON.h"
 #include "IteratorFunction.h"
 #include "createTokenType.h"
+#include "FindElementFunction.h"
 
 #include <malloc.h>
 #include <stdio.h>

@@ -2,6 +2,7 @@
 #include "Token.h"
 #include "compareFunction.h"
 #include "IteratorFunction.h"
+#include "FindElementFunction.h"
 
 #include <malloc.h>
 #include <stdio.h>
@@ -36,7 +37,7 @@ void addLast(ListElement *newEle,LinkedList *list ){
 
   Iterator *iter;
 
-  if(newEle==NULL){}
+  if(newEle==NULL || list==NULL){}
 
   else {
     iter=createIterator(list);
@@ -57,7 +58,7 @@ void addLast(ListElement *newEle,LinkedList *list ){
 
 void addFirst(LinkedList *list,ListElement *newElem){
 
-  if(newElem==NULL){}
+  if(newElem==NULL || list==NULL){}
 
   else{
     if(list->head==NULL && list->tail==NULL){
@@ -121,52 +122,7 @@ ListElement *removeLast(LinkedList *list){
   return removeEle;
 }
 
-//*** Find Element function start here ***\\
 
-ListElement *listFind(LinkedList *list, void *value, int(*compare)(void *,void *)){
-  ListElement *ptr;
-  ptr=list->head;
-
-  if(list==NULL || value==NULL||(compare(ptr ->value , value)==-1)){
-    return NULL;
-  }
-
-  else{
-    //if they are not the same then continue looping
-    while (compare(ptr ->value , value)==1){
-      ptr =ptr->next;
-
-      if(ptr==NULL){
-        return NULL;
-      }
-    }
-    return ptr;
-  }
-}
-
-ListElement *keyFind(LinkedList *list, void *value, int(*compare)(void *,void *)){
-  ListElement *ptr;
-  ptr=list->head;
-
-  if(list==NULL || value==NULL||(compare(ptr ->value , value)==-1)){
-    return NULL;
-  }
-
-  else{
-    ptr=ptr->next;
-    //if they are not the same then continue looping
-    while (compare(((IdentifierToken *)(((OperatorToken *)(ptr ->value))->token[0]))->name , value)==1){
-      ptr =ptr->next;
-      if (ptr==NULL){
-        return ptr;
-      }
-      if((((OperatorToken *)(ptr ->value))->token[0])==NULL){
-        ptr=ptr->next;
-      }
-    }
-    return ptr;
-  }
-}
 
 
 
