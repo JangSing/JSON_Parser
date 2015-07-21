@@ -1,9 +1,13 @@
-#include "Token.h"
-#include "LinkedList.h"
-#include "JSON.h"
-#include "IteratorFunction.h"
+#include "ErrorObject.h"
+#include "CException.h"
+#include "compareFunction.h"
 #include "createTokenType.h"
 #include "FindElementFunction.h"
+#include "IteratorFunction.h"
+#include "JSON.h"
+#include "LinkedList.h"
+#include "Token.h"
+#include "CustomAssertion.h"
 
 #include <malloc.h>
 #include <stdio.h>
@@ -69,6 +73,7 @@ LinkedList *jsonParse(){
           addLast(newNode,list);
         }
         else{
+          ThrowError("ERROR:Expected Open Brace",ERR_EXPECT_OPERATOR);
           list->state=ERROR;
         }break;
 
@@ -78,6 +83,7 @@ LinkedList *jsonParse(){
           leftToken=(Token *)createIdentifierToken(((IdentifierToken *)(token))->name);
         }
         else{
+          ThrowError("ERROR:Expected Identifier",ERR_EXPECT_IDEN);
           list->state=ERROR;
         }break;
 
@@ -86,6 +92,7 @@ LinkedList *jsonParse(){
           list->state=value;
         }
         else{
+          ThrowError("ERROR:Expected colon",ERR_EXPECT_COLON);
           list->state=ERROR;
         }break;
 
@@ -99,6 +106,7 @@ LinkedList *jsonParse(){
             recurList=jsonParse();
 
             if(recurList->state==ERROR || recurList->state!=END){
+              ThrowError("ERROR:Illegal Value",ERR_ILLEGAL_VALUE);
               list->state=ERROR;
               return list;
             }
@@ -109,6 +117,7 @@ LinkedList *jsonParse(){
             list->state=ARRAY;
           }
           else{
+            ThrowError("ERROR:Illegal Value",ERR_ILLEGAL_VALUE);
             list->state=ERROR;
           }
         }
@@ -125,11 +134,12 @@ LinkedList *jsonParse(){
           addLast(newNode,list);
         }
         else{
+          ThrowError("ERROR:Illegal Value",ERR_ILLEGAL_VALUE);
           list->state=ERROR;
         }break;
 
       case STRING :
-        if(token->type==TOKEN_OPERATOR_TYPE ){
+        if(token->type==TOKEN_OPERATOR_TYPE){
           if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
             list->state=END;
             newNode=createListElement(createOperatorToken("}"));
@@ -139,10 +149,12 @@ LinkedList *jsonParse(){
             list->state=OBJECT;
           }
           else{
+            ThrowError("ERROR:Expected operator '}' or ','",ERR_EXPECT_OPERATOR);
             list->state=ERROR;
           }
         }
         else{
+          ThrowError("ERROR:Expected operator '}' or ','",ERR_EXPECT_OPERATOR);
           list->state=ERROR;
         }break;
 
@@ -157,10 +169,12 @@ LinkedList *jsonParse(){
             list->state=OBJECT;
           }
           else{
+            ThrowError("ERROR:Expected operator '}' or ','",ERR_EXPECT_OPERATOR);
             list->state=ERROR;
           }
         }
         else{
+          ThrowError("ERROR:Expected operator '}' or ','",ERR_EXPECT_OPERATOR);
           list->state=ERROR;
         }break;
 
@@ -175,28 +189,39 @@ LinkedList *jsonParse(){
             list->state=OBJECT;
           }
           else{
+            ThrowError("ERROR:Expected operator '}' or ','",ERR_EXPECT_OPERATOR);
             list->state=ERROR;
           }
         }
         else{
+          ThrowError("ERROR:Expected operator '}' or ','",ERR_EXPECT_OPERATOR);
           list->state=ERROR;
         }break;
 
       case ERROR :
+        ThrowError("ERROR:Unknown Error",ERR_ILLEGAL_VALUE);
         return list;
 
-      default:list->state=ERROR;
+      default:
+        ThrowError("ERROR:Unknown Error",ERR_ILLEGAL_VALUE);
+        list->state=ERROR;
     }
 
     token=getToken();
 
     if(recur==1 && token->type==TOKEN_OPERATOR_TYPE){
       if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
-        list->state=END;
-        newNode=createListElement(createOperatorToken("}"));
-        addLast(newNode,list);
-        recur=0;
-        break;
+        if(list->state==STRING || list->state==NUMBER){
+          list->state=END;
+          newNode=createListElement(createOperatorToken("}"));
+          addLast(newNode,list);
+          recur=0;
+          break;
+        }
+        else{
+          ThrowError("ERROR:Illegal Value",ERR_ILLEGAL_VALUE);
+          list->state=ERROR;
+        }
       }
     }
 

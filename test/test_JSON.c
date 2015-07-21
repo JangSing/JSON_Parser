@@ -1,12 +1,14 @@
 #include "unity.h"
 #include "mock_Token.h"
-#include "LinkedList.h"
-#include "JSON.h"
+#include "ErrorObject.h"
+#include "CException.h"
 #include "compareFunction.h"
-#include "IteratorFunction.h"
 #include "createTokenType.h"
-#include "CustomAssertion.h"
 #include "FindElementFunction.h"
+#include "IteratorFunction.h"
+#include "JSON.h"
+#include "LinkedList.h"
+#include "CustomAssertion.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -258,11 +260,64 @@ void test_Finding_Element_in_Recursion_JSON_List()
   findKey=(ListElement *)(keyFind(list, "AGE", strCompare));
   findKey=(ListElement *)(keyFind((LinkedList *)(((OperatorToken *)(findKey->value))->token[1]), "NAME3", strCompare));
   findVal=(Token *)(getElementValue(findKey));
-
   TEST_ASSERT_EQUAL_PTR(((StringToken *)(Yen))->name,((StringToken *)(findVal))->name);
 }
 
+void test_Recursion_JSON_List_with_TryCatch()
+{
+  LinkedList *list;
+  ErrorObject *err;
 
+  Token *openBrace0=createOperatorToken("{");
+  Token *openBrace1=createOperatorToken("{");
+  Token *closeBrace0=createOperatorToken("}");
+  Token *closeBrace1=createOperatorToken("}");
+  Token *coma=createOperatorToken(",");
+  Token *colon0=createOperatorToken(":");
+  Token *colon1=createOperatorToken(":");
+  Token *colon2=createOperatorToken(":");
+  Token *colon3=createOperatorToken(":");
+  Token *NAME1=createIdentifierToken("NAME1");
+  Token *AGE=createIdentifierToken("AGE");
+  Token *NAME2=createIdentifierToken("NAME2");
+  Token *NAME3=createIdentifierToken("NAME3");
+  Token *JS=createStringToken("JS");
+  Token *STEVEN=createStringToken("STEVEN");
+  Token *Yen=createStringToken("Yen");
+  Token *int20=createIntegerToken(20);
 
+  getToken_ExpectAndReturn(openBrace0);     //"{"
+  getToken_ExpectAndReturn(NAME1);         //"NAME1"
+  getToken_ExpectAndReturn(colon0);        //":"
+  getToken_ExpectAndReturn(JS);            //"JS"
+  getToken_ExpectAndReturn(coma);          //","
+  getToken_ExpectAndReturn(AGE);           //"AGE"
+  getToken_ExpectAndReturn(colon1);        //":"
+  getToken_ExpectAndReturn(openBrace1);     //"{"
+  getToken_ExpectAndReturn(NAME2);         //"NAME2"
+  getToken_ExpectAndReturn(colon2);        //":"
+  getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
+  getToken_ExpectAndReturn(coma);          //","
+  getToken_ExpectAndReturn(NAME3);         //"NAME3"
+  getToken_ExpectAndReturn(colon3);        //":"
+  getToken_ExpectAndReturn(Yen);           //"Yen"
+  getToken_ExpectAndReturn(closeBrace0);    //"}"
+  getToken_ExpectAndReturn(closeBrace1);    //"}"
+  getToken_ExpectAndReturn(NULL);
+
+  Try{
+    list=jsonParse();
+  }Catch(err){
+    switch(err->errorCode){
+    case ERR_EXPECT_COLON :UNITY_TEST_FAIL(__LINE__, err->errorMsg);break;
+    case ERR_EXPECT_OPERATOR :UNITY_TEST_FAIL(__LINE__, err->errorMsg);break;
+    case ERR_EXPECT_IDEN  :UNITY_TEST_FAIL(__LINE__, err->errorMsg);break;
+    case ERR_ILLEGAL_VALUE:UNITY_TEST_FAIL(__LINE__, err->errorMsg);break;
+
+    }
+  }
+
+  TEST_ASSERT_EQUAL(END,list->state);
+}
 
 

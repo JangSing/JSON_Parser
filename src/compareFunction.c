@@ -1,5 +1,13 @@
+#include "ErrorObject.h"
+#include "CException.h"
 #include "compareFunction.h"
+#include "createTokenType.h"
 #include "FindElementFunction.h"
+#include "IteratorFunction.h"
+#include "JSON.h"
+#include "LinkedList.h"
+#include "Token.h"
+#include "CustomAssertion.h"
 
 #include <stdio.h>
 #include <assert.h>

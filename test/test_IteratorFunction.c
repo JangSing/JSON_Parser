@@ -1,13 +1,14 @@
 #include "unity.h"
 #include "mock_Token.h"
-#include "LinkedList.h"
-#include "JSON.h"
+#include "ErrorObject.h"
+#include "CException.h"
 #include "compareFunction.h"
-#include "IteratorFunction.h"
 #include "createTokenType.h"
-#include "CustomAssertion.h"
-#include "IteratorFunction.h"
 #include "FindElementFunction.h"
+#include "IteratorFunction.h"
+#include "JSON.h"
+#include "LinkedList.h"
+#include "CustomAssertion.h"
 
 void setUp()
 {
