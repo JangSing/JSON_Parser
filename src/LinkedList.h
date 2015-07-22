@@ -7,7 +7,7 @@ typedef enum{
   WAIT_FOR_TOKEN,
   OBJECT,
   WAIT_FOR_COLON,
-  value,
+  VALUE,
   ARRAY,
   NUMBER,
   STRING,

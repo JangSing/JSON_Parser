@@ -47,6 +47,13 @@ void test_getToken()
   TEST_ASSERT_EQUAL_STRING("JangSing",((IdentifierToken *)(getToken()))-> name);
   TEST_ASSERT_EQUAL_STRING("Wong",((StringToken *)(getToken()))-> name);
   TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(getToken()))-> symbol);
+
+  free(INT);
+  free(FLOAT);
+  free(IDEN);
+  free(STR);
+  free(OPE);
+
 }
 
 /**
@@ -81,6 +88,7 @@ void test_Simple_JSON_List()
   getToken_ExpectAndReturn(closeBrace);    //"}"
   getToken_ExpectAndReturn(NULL);
 
+  TEST_ASSERT_NOT_NULL(list);
   list=jsonParse();
 
   TEST_ASSERT_EQUAL(END,list->state);
@@ -97,6 +105,9 @@ void test_Simple_JSON_List()
 
   iter=iteratorGetNext(iter);
   TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter->current->value))->symbol);
+
+  free(list);
+  free(iter);
 }
 
 /**
@@ -129,14 +140,14 @@ void test_JSON_List_with_Recursion_JSON_List()
   Token *Yen=createStringToken("Yen");
   Token *int20=createIntegerToken(20);
 
-  getToken_ExpectAndReturn(openBrace0);     //"{"
+  getToken_ExpectAndReturn(openBrace0);    //"{"
   getToken_ExpectAndReturn(NAME1);         //"NAME1"
   getToken_ExpectAndReturn(colon0);        //":"
   getToken_ExpectAndReturn(JS);            //"JS"
   getToken_ExpectAndReturn(coma);          //","
   getToken_ExpectAndReturn(AGE);           //"AGE"
   getToken_ExpectAndReturn(colon1);        //":"
-  getToken_ExpectAndReturn(openBrace1);     //"{"
+  getToken_ExpectAndReturn(openBrace1);    //"{"
   getToken_ExpectAndReturn(NAME2);         //"NAME2"
   getToken_ExpectAndReturn(colon2);        //":"
   getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
@@ -144,10 +155,11 @@ void test_JSON_List_with_Recursion_JSON_List()
   getToken_ExpectAndReturn(NAME3);         //"NAME3"
   getToken_ExpectAndReturn(colon3);        //":"
   getToken_ExpectAndReturn(Yen);           //"Yen"
-  getToken_ExpectAndReturn(closeBrace0);    //"}"
-  getToken_ExpectAndReturn(closeBrace1);    //"}"
+  getToken_ExpectAndReturn(closeBrace0);   //"}"
+  getToken_ExpectAndReturn(closeBrace1);   //"}"
   getToken_ExpectAndReturn(NULL);
 
+  TEST_ASSERT_NOT_NULL(list);
   list=jsonParse();
 
   TEST_ASSERT_EQUAL(END,list->state);
@@ -168,6 +180,10 @@ void test_JSON_List_with_Recursion_JSON_List()
   TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter2->current->value))->symbol);
   iter1=iteratorGetNext(iter1);
   TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter1->current->value))->symbol);
+
+  free(list);
+  free(iter2);
+  free(iter1);
 }
 
 /**
@@ -185,30 +201,37 @@ void test_Finding_Element_in_Simple_JSON_List()
   Token *openBrace=createOperatorToken("{");
   Token *closeBrace=createOperatorToken("}");
   Token *coma=createOperatorToken(",");
-  Token *colon=createOperatorToken(":");
+  Token *colon0=createOperatorToken(":");
+  Token *colon1=createOperatorToken(":");
   Token *NAME1=createIdentifierToken("NAME1");
   Token *AGE=createIdentifierToken("AGE");
   Token *JS=createStringToken("JS");
   Token *int20=createIntegerToken(20);
 
-  getToken_ExpectAndReturn(openBrace);    //"{"
-  getToken_ExpectAndReturn(NAME1);        //"NAME1"
-  getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(JS);           //"JS"
-  getToken_ExpectAndReturn(coma);         //","
-  getToken_ExpectAndReturn(AGE);          //"AGE"
-  getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(int20);        //20
-  getToken_ExpectAndReturn(closeBrace);   //"}"
-
+  getToken_ExpectAndReturn(openBrace);     //"{"
+  getToken_ExpectAndReturn(NAME1);         //"NAME1"
+  getToken_ExpectAndReturn(colon0);        //":"
+  getToken_ExpectAndReturn(JS);            //"JS"
+  getToken_ExpectAndReturn(coma);          //","
+  getToken_ExpectAndReturn(AGE);           //"AGE"
+  getToken_ExpectAndReturn(colon1);        //":"
+  getToken_ExpectAndReturn(int20);         //20
+  getToken_ExpectAndReturn(closeBrace);    //"}"
   getToken_ExpectAndReturn(NULL);
 
+  TEST_ASSERT_NOT_NULL(list);
   list=jsonParse();
+
+  TEST_ASSERT_EQUAL(END,list->state);
 
   findKey=(ListElement *)(keyFind(list, "AGE", strCompare));
   findVal=(Token *)(getElementValue(findKey));
 
   TEST_ASSERT_EQUAL(((IntegerToken *)(int20))->value,((IntegerToken *)(findVal))->value);
+
+  free(list);
+  free(findKey);
+  free(findVal);
 }
 
 /**
@@ -224,10 +247,15 @@ void test_Finding_Element_in_Recursion_JSON_List()
   ListElement *findKey;
   Token *findVal;
 
-  Token *openBrace=createOperatorToken("{");
-  Token *closeBrace=createOperatorToken("}");
+  Token *openBrace0=createOperatorToken("{");
+  Token *openBrace1=createOperatorToken("{");
+  Token *closeBrace0=createOperatorToken("}");
+  Token *closeBrace1=createOperatorToken("}");
   Token *coma=createOperatorToken(",");
-  Token *colon=createOperatorToken(":");
+  Token *colon0=createOperatorToken(":");
+  Token *colon1=createOperatorToken(":");
+  Token *colon2=createOperatorToken(":");
+  Token *colon3=createOperatorToken(":");
   Token *NAME1=createIdentifierToken("NAME1");
   Token *AGE=createIdentifierToken("AGE");
   Token *NAME2=createIdentifierToken("NAME2");
@@ -235,32 +263,41 @@ void test_Finding_Element_in_Recursion_JSON_List()
   Token *JS=createStringToken("JS");
   Token *STEVEN=createStringToken("STEVEN");
   Token *Yen=createStringToken("Yen");
+  Token *int20=createIntegerToken(20);
 
-  getToken_ExpectAndReturn(openBrace);    //"{"
+  getToken_ExpectAndReturn(openBrace0);    //"{"
   getToken_ExpectAndReturn(NAME1);         //"NAME1"
-  getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(JS);           //"JS"
-  getToken_ExpectAndReturn(coma);         //","
-  getToken_ExpectAndReturn(AGE);          //"AGE"
-  getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(openBrace);    //"{"
+  getToken_ExpectAndReturn(colon0);        //":"
+  getToken_ExpectAndReturn(JS);            //"JS"
+  getToken_ExpectAndReturn(coma);          //","
+  getToken_ExpectAndReturn(AGE);           //"AGE"
+  getToken_ExpectAndReturn(colon1);        //":"
+  getToken_ExpectAndReturn(openBrace1);    //"{"
   getToken_ExpectAndReturn(NAME2);         //"NAME2"
-  getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(STEVEN);       //"STEVEN"
-  getToken_ExpectAndReturn(coma);         //","
+  getToken_ExpectAndReturn(colon2);        //":"
+  getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
+  getToken_ExpectAndReturn(coma);          //","
   getToken_ExpectAndReturn(NAME3);         //"NAME3"
-  getToken_ExpectAndReturn(colon);        //":"
-  getToken_ExpectAndReturn(Yen);          //"Yen"
-  getToken_ExpectAndReturn(closeBrace);   //"}"
-  getToken_ExpectAndReturn(closeBrace);   //"}"
+  getToken_ExpectAndReturn(colon3);        //":"
+  getToken_ExpectAndReturn(Yen);           //"Yen"
+  getToken_ExpectAndReturn(closeBrace0);   //"}"
+  getToken_ExpectAndReturn(closeBrace1);   //"}"
   getToken_ExpectAndReturn(NULL);
 
+  TEST_ASSERT_NOT_NULL(list);
   list=jsonParse();
+
+  TEST_ASSERT_EQUAL(END,list->state);
 
   findKey=(ListElement *)(keyFind(list, "AGE", strCompare));
   findKey=(ListElement *)(keyFind((LinkedList *)(((OperatorToken *)(findKey->value))->token[1]), "NAME3", strCompare));
   findVal=(Token *)(getElementValue(findKey));
+
   TEST_ASSERT_EQUAL_PTR(((StringToken *)(Yen))->name,((StringToken *)(findVal))->name);
+
+  free(list);
+  free(findKey);
+  free(findVal);
 }
 
 void test_Recursion_JSON_List_with_TryCatch()
@@ -286,14 +323,14 @@ void test_Recursion_JSON_List_with_TryCatch()
   Token *Yen=createStringToken("Yen");
   Token *int20=createIntegerToken(20);
 
-  getToken_ExpectAndReturn(openBrace0);     //"{"
+  getToken_ExpectAndReturn(openBrace0);    //"{"
   getToken_ExpectAndReturn(NAME1);         //"NAME1"
   getToken_ExpectAndReturn(colon0);        //":"
-  getToken_ExpectAndReturn(JS);            //"JS"
+  getToken_ExpectAndReturn(int20);            //"JS"
   getToken_ExpectAndReturn(coma);          //","
   getToken_ExpectAndReturn(AGE);           //"AGE"
   getToken_ExpectAndReturn(colon1);        //":"
-  getToken_ExpectAndReturn(openBrace1);     //"{"
+  getToken_ExpectAndReturn(openBrace1);    //"{"
   getToken_ExpectAndReturn(NAME2);         //"NAME2"
   getToken_ExpectAndReturn(colon2);        //":"
   getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
@@ -301,23 +338,28 @@ void test_Recursion_JSON_List_with_TryCatch()
   getToken_ExpectAndReturn(NAME3);         //"NAME3"
   getToken_ExpectAndReturn(colon3);        //":"
   getToken_ExpectAndReturn(Yen);           //"Yen"
-  getToken_ExpectAndReturn(closeBrace0);    //"}"
-  getToken_ExpectAndReturn(closeBrace1);    //"}"
+  getToken_ExpectAndReturn(closeBrace0);   //"}"
+  getToken_ExpectAndReturn(closeBrace1);   //"}"
   getToken_ExpectAndReturn(NULL);
+
+  TEST_ASSERT_NOT_NULL(list);
 
   Try{
     list=jsonParse();
   }Catch(err){
     switch(err->errorCode){
-    case ERR_EXPECT_COLON :UNITY_TEST_FAIL(__LINE__, err->errorMsg);break;
-    case ERR_EXPECT_OPERATOR :UNITY_TEST_FAIL(__LINE__, err->errorMsg);break;
-    case ERR_EXPECT_IDEN  :UNITY_TEST_FAIL(__LINE__, err->errorMsg);break;
-    case ERR_ILLEGAL_VALUE:UNITY_TEST_FAIL(__LINE__, err->errorMsg);break;
-
+    case ERR_EXPECT_COLON     :UNITY_TEST_FAIL(__LINE__, err->errorMsg);break;
+    case ERR_EXPECT_OPERATOR  :UNITY_TEST_FAIL(__LINE__, err->errorMsg);break;
+    case ERR_EXPECT_IDEN      :UNITY_TEST_FAIL(__LINE__, err->errorMsg);break;
+    case ERR_ILLEGAL_VALUE    :UNITY_TEST_FAIL(__LINE__, err->errorMsg);break;
+    case ERR_ACCESS_DENIED    :UNITY_TEST_FAIL(__LINE__, err->errorMsg);break;
     }
   }
 
   TEST_ASSERT_EQUAL(END,list->state);
+
+  free(list);
+  free(err);
 }
 
 

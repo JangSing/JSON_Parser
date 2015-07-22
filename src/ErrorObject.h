@@ -1,10 +1,13 @@
 #ifndef ErrorObject_H
 #define ErrorObject_H
 
+#include <stdarg.h>
+
 typedef enum {
   ERR_EXPECT_COLON,
   ERR_EXPECT_OPERATOR,
   ERR_EXPECT_IDEN,
+  ERR_ACCESS_DENIED,
   ERR_ILLEGAL_VALUE,
   ERR_NO_ERROR,
   ERR_WORNG_CODE,
@@ -21,6 +24,6 @@ typedef struct{
 
 void freeError(ErrorObject *err);
 
-void ThrowError(char *msg, ErrorCode errCode);
+void throwError(ErrorCode errCode, char *msg, ...);
 
 #endif // ErrorObject_H
