@@ -62,8 +62,6 @@ typedef struct {
   Token *token[0];
 } OperatorToken;
 
-
-
 Token *getToken();
 
 

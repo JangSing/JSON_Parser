@@ -33,9 +33,6 @@ Token *link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue){
   }
 }
 
-JsonObject *createJsonObject(){
-}
-
 Token *getElementValue(ListElement *findKey){
   if(findKey==NULL){
     return NULL;
@@ -45,14 +42,23 @@ Token *getElementValue(ListElement *findKey){
   }
 }
 
-LinkedList *jsonParse(){
+JsonObject *createJsonObject(){
+  JsonObject *jsonObj=malloc(sizeof(JsonObject));
+
+  jsonObj->state=WAIT_FOR_TOKEN;
+
+  return jsonObj;
+}
+
+Token *jsonParse(JsonObject *jsonObj){
+  JsonToken *jsonTok=malloc(sizeof(JsonToken));
+  LinkedList *list=malloc(sizeof(LinkedList));
 
   Token *token;
   ListElement *newNode;
   Token *leftToken,*rightToken;
   char *errMsg;
 
-  LinkedList *list=malloc(sizeof(LinkedList));
 
   list=createLinkedList();
 
@@ -60,22 +66,22 @@ LinkedList *jsonParse(){
     token=getToken();
   }
   else{
-    list->state=OBJECT;
+    jsonObj->state=OBJECT;
     newNode=createListElement(createOperatorToken("{"));
     addLast(newNode,list);
     token=getToken();
   }
 
   do{
-    switch(list->state){
+    switch(jsonObj->state){
       case WAIT_FOR_TOKEN :
         if(token-> type==TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(token))->symbol,"{")==0){
-          list->state=OBJECT;
+          jsonObj->state=OBJECT;
           newNode=createListElement(createOperatorToken("{"));
           addLast(newNode,list);
         }
         else{
-          list->state=ERROR;
+          jsonObj->state=ERROR;
           if(token-> type==TOKEN_OPERATOR_TYPE){
             throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected '{' but get '%s'.",((OperatorToken *)(token))->symbol);
           }
@@ -92,20 +98,20 @@ LinkedList *jsonParse(){
 
       case OBJECT :
         if(token->type==TOKEN_IDENTIFIER_TYPE){
-          list->state=WAIT_FOR_COLON;
+          jsonObj->state=WAIT_FOR_COLON;
           leftToken=(Token *)createIdentifierToken(((IdentifierToken *)(token))->name);
         }
         else{
-          list->state=ERROR;
+          jsonObj->state=ERROR;
           throwError(ERR_EXPECT_IDEN,"ERROR:Expected an Identifier for 'Key'");
         }break;
 
       case WAIT_FOR_COLON :
         if(token->type==TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(token))->symbol,":")==0){
-          list->state=VALUE;
+          jsonObj->state=VALUE;
         }
         else{
-          list->state=ERROR;
+          jsonObj->state=ERROR;
           if(token-> type==TOKEN_OPERATOR_TYPE){
             throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected ':' but get '%s'.",((OperatorToken *)(token))->symbol);
           }
@@ -123,57 +129,58 @@ LinkedList *jsonParse(){
       case VALUE :
         if(token->type==TOKEN_OPERATOR_TYPE){
           if(strcmp(((OperatorToken *)(token))->symbol,"{")==0){
-            LinkedList *recurList=malloc(sizeof(LinkedList));
-            list->state=WAIT_FOR_OPERATOR;
+            JsonObject *recurJsonObj;
+            jsonObj->state=WAIT_FOR_OPERATOR;
+
             recur=1;
+            recurJsonObj=createJsonObject();
 
-            recurList=jsonParse();
-
-            newNode=createListElement(link2Tokens(leftToken, ":", (Token *)(recurList)));
+            token=jsonParse(recurJsonObj);
+            newNode=createListElement(link2Tokens(leftToken, ":", token));
             addLast(newNode,list);
           }
           else if(strcmp(((OperatorToken *)(token))->symbol,"[")==0){
-            list->state=ARRAY;
+            jsonObj->state=ARRAY;
           }
           else{
-            list->state=ERROR;
+            jsonObj->state=ERROR;
             throwError(ERR_ILLEGAL_VALUE,"ERROR:Illegal Value type.");
           }
         }
         else if(token->type==TOKEN_STRING_TYPE){
-          list->state=STRING;
+          jsonObj->state=STRING;
           rightToken=(Token *)createStringToken(((StringToken *)(token))->name);
           newNode=createListElement(link2Tokens(leftToken, ":", rightToken));
           addLast(newNode,list);
         }
         else if(token->type==TOKEN_INTEGER_TYPE || token->type==TOKEN_FLOAT_TYPE){
-          list->state=NUMBER;
+          jsonObj->state=NUMBER;
           rightToken=(Token *)createIntegerToken(((IntegerToken *)(token))->value);
           newNode=createListElement(link2Tokens(leftToken, ":", rightToken));
           addLast(newNode,list);
         }
         else{
-          list->state=ERROR;
+          jsonObj->state=ERROR;
           throwError(ERR_ILLEGAL_VALUE,"ERROR:Illegal Value type.");
         }break;
 
       case STRING :
         if(token->type==TOKEN_OPERATOR_TYPE){
           if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
-            list->state=END;
+            jsonObj->state=END;
             newNode=createListElement(createOperatorToken("}"));
             addLast(newNode,list);
           }
           else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
-            list->state=OBJECT;
+            jsonObj->state=OBJECT;
           }
           else{
-            list->state=ERROR;
+            jsonObj->state=ERROR;
             throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected Operator '}' or ','.");
           }
         }
         else{
-          list->state=ERROR;
+          jsonObj->state=ERROR;
           if(token-> type==TOKEN_OPERATOR_TYPE){
             throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected Operator '}' or ',' but get '%s'.",((OperatorToken *)(token))->symbol);
           }
@@ -191,20 +198,20 @@ LinkedList *jsonParse(){
       case NUMBER :
         if(token->type==TOKEN_OPERATOR_TYPE ){
           if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
-            list->state=END;
+            jsonObj->state=END;
             newNode=createListElement(createOperatorToken("}"));
             addLast(newNode,list);
           }
           else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
-            list->state=OBJECT;
+            jsonObj->state=OBJECT;
           }
           else{
-            list->state=ERROR;
+            jsonObj->state=ERROR;
             throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected Operator '}' or ','.");
           }
         }
         else{
-          list->state=ERROR;
+          jsonObj->state=ERROR;
           if(token-> type==TOKEN_OPERATOR_TYPE){
             throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected Operator '}' or ',' but get '%s'.",((OperatorToken *)(token))->symbol);
           }
@@ -222,20 +229,20 @@ LinkedList *jsonParse(){
       case WAIT_FOR_OPERATOR :
         if(token->type==TOKEN_OPERATOR_TYPE ){
           if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
-            list->state=END;
+            jsonObj->state=END;
             newNode=createListElement(createOperatorToken("}"));
             addLast(newNode,list);
           }
           else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
-            list->state=OBJECT;
+            jsonObj->state=OBJECT;
           }
           else{
-            list->state=ERROR;
+            jsonObj->state=ERROR;
             throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected Operator '}' or ','.");
           }
         }
         else{
-          list->state=ERROR;
+          jsonObj->state=ERROR;
           if(token-> type==TOKEN_OPERATOR_TYPE){
             throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected Operator '}' or ',' but get '%s'.",((OperatorToken *)(token))->symbol);
           }
@@ -254,7 +261,7 @@ LinkedList *jsonParse(){
         throwError(ERR_ACCESS_DENIED,"ERROR:ACCESS DENIED!!!The Json List already completed.");break;
 
       default:
-        list->state=ERROR;
+        jsonObj->state=ERROR;
         throwError(ERR_ILLEGAL_VALUE,"ERROR:Unknown Error");
     }
 
@@ -262,15 +269,15 @@ LinkedList *jsonParse(){
 
     if(recur==1 && token->type==TOKEN_OPERATOR_TYPE){
       if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
-        if(list->state==STRING || list->state==NUMBER){
-          list->state=END;
+        if(jsonObj->state==STRING || jsonObj->state==NUMBER){
+          jsonObj->state=END;
           newNode=createListElement(createOperatorToken("}"));
           addLast(newNode,list);
           recur=0;
           break;
         }
         else{
-          list->state=ERROR;
+          jsonObj->state=ERROR;
           throwError(ERR_ILLEGAL_VALUE,"ERROR:Illegal Value type.");
         }
       }
@@ -278,12 +285,16 @@ LinkedList *jsonParse(){
 
   }while(token!=NULL);
 
-  if(list->state!=END){
+  if(jsonObj->state!=END){
     throwError(ERR_ACCESS_DENIED,"ERROR:ACCESS DENIED!!!The Json List is not completed.Expected '}'.");
   }
   else{
-    return list;
+    jsonTok->list=list;
+    return (Token *)jsonTok;
   }
 }
+
+
+
 
 

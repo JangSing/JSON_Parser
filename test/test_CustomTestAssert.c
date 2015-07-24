@@ -22,6 +22,8 @@ void test_Custom_Test_Assert_Key_Value()
 {
   LinkedList *list;
   Iterator *iter;
+  JsonObject *jsonObj;
+  Token *jsonTok;
 
   Token *openBrace=createOperatorToken("{");
   Token *closeBrace=createOperatorToken("}");
@@ -36,13 +38,14 @@ void test_Custom_Test_Assert_Key_Value()
   getToken_ExpectAndReturn(closeBrace);    //"}"
   getToken_ExpectAndReturn(NULL);
 
-  list=jsonParse();
-  TEST_ASSERT_EQUAL(END,list->state);
+  jsonObj=createJsonObject();
+  jsonTok=jsonParse(jsonObj);
 
-  iter=createIterator(list);
+  TEST_ASSERT_EQUAL(END,jsonObj->state);
+
+  iter=createIterator(((JsonToken *)jsonTok)->list);
   TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(iter->current->value))->symbol);
   iter=iteratorGetNext(iter);
-
   TEST_ASSERT_NOT_NULL(NAME1);
   TEST_ASSERT_NOT_NULL(JS);
   TEST_ASSERT_NOT_NULL(iter->current);

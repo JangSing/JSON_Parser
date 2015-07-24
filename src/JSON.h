@@ -17,9 +17,7 @@ typedef struct {
   LinkedList *list;
 } JsonToken;
 
-LinkedList *jsonParse();
-
-Token *jsonParse1(JsonObject *jsonObj);
+Token *jsonParse(JsonObject *jsonObj);
 
 JsonObject *createJsonObject();
 
