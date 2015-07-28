@@ -44,9 +44,7 @@ Token *getElementValue(ListElement *findKey){
 
 JsonObject *createJsonObject(){
   JsonObject *jsonObj=malloc(sizeof(JsonObject));
-
   jsonObj->state=WAIT_FOR_TOKEN;
-
   return jsonObj;
 }
 
@@ -81,7 +79,9 @@ Token *jsonParse(JsonObject *jsonObj){
           addLast(newNode,list);
         }
         else{
+          recur=0;
           jsonObj->state=ERROR;
+          DUMP_REMAIN_TOKEN;
           if(token-> type==TOKEN_OPERATOR_TYPE){
             throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected '{' but get '%s'.",((OperatorToken *)(token))->symbol);
           }
@@ -102,8 +102,10 @@ Token *jsonParse(JsonObject *jsonObj){
           leftToken=(Token *)createIdentifierToken(((IdentifierToken *)(token))->name);
         }
         else{
+          recur=0;
           jsonObj->state=ERROR;
-          throwError(ERR_EXPECT_IDEN,"ERROR:Expected an Identifier for 'Key'");
+          DUMP_REMAIN_TOKEN;
+          throwError(ERR_EXPECT_IDEN,"ERROR:Expected an Identifier for 'Key'.");
         }break;
 
       case WAIT_FOR_COLON :
@@ -111,7 +113,9 @@ Token *jsonParse(JsonObject *jsonObj){
           jsonObj->state=VALUE;
         }
         else{
+          recur=0;
           jsonObj->state=ERROR;
+          DUMP_REMAIN_TOKEN;
           if(token-> type==TOKEN_OPERATOR_TYPE){
             throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected ':' but get '%s'.",((OperatorToken *)(token))->symbol);
           }
@@ -134,7 +138,6 @@ Token *jsonParse(JsonObject *jsonObj){
 
             recur=1;
             recurJsonObj=createJsonObject();
-
             token=jsonParse(recurJsonObj);
             newNode=createListElement(link2Tokens(leftToken, ":", token));
             addLast(newNode,list);
@@ -143,8 +146,10 @@ Token *jsonParse(JsonObject *jsonObj){
             jsonObj->state=ARRAY;
           }
           else{
+            recur=0;
             jsonObj->state=ERROR;
-            throwError(ERR_ILLEGAL_VALUE,"ERROR:Illegal Value type.");
+            DUMP_REMAIN_TOKEN;
+            throwError(ERR_ILLEGAL_VALUE,"ERROR:Illegal Value.");
           }
         }
         else if(token->type==TOKEN_STRING_TYPE){
@@ -160,8 +165,10 @@ Token *jsonParse(JsonObject *jsonObj){
           addLast(newNode,list);
         }
         else{
+          recur=0;
           jsonObj->state=ERROR;
-          throwError(ERR_ILLEGAL_VALUE,"ERROR:Illegal Value type.");
+          DUMP_REMAIN_TOKEN;
+          throwError(ERR_ILLEGAL_VALUE,"ERROR:Illegal Value.");
         }break;
 
       case STRING :
@@ -175,16 +182,17 @@ Token *jsonParse(JsonObject *jsonObj){
             jsonObj->state=OBJECT;
           }
           else{
+            recur=0;
             jsonObj->state=ERROR;
-            throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected Operator '}' or ','.");
+            DUMP_REMAIN_TOKEN;
+            throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected Operator '}' or ',' but get '%s'.",((OperatorToken *)(token))->symbol);
           }
         }
         else{
+          recur=0;
           jsonObj->state=ERROR;
-          if(token-> type==TOKEN_OPERATOR_TYPE){
-            throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected Operator '}' or ',' but get '%s'.",((OperatorToken *)(token))->symbol);
-          }
-          else if(token-> type==TOKEN_IDENTIFIER_TYPE || token-> type==TOKEN_STRING_TYPE){
+          DUMP_REMAIN_TOKEN;
+          if(token-> type==TOKEN_IDENTIFIER_TYPE || token-> type==TOKEN_STRING_TYPE){
             throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected Operator '}' or ',' but get '%s'.",((StringToken *)(token))->name);
           }
           else if (token-> type==TOKEN_INTEGER_TYPE){
@@ -206,16 +214,17 @@ Token *jsonParse(JsonObject *jsonObj){
             jsonObj->state=OBJECT;
           }
           else{
+            recur=0;
             jsonObj->state=ERROR;
-            throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected Operator '}' or ','.");
+            DUMP_REMAIN_TOKEN;
+            throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected Operator '}' or ',' but get '%s'.",((OperatorToken *)(token))->symbol);
           }
         }
         else{
+          recur=0;
           jsonObj->state=ERROR;
-          if(token-> type==TOKEN_OPERATOR_TYPE){
-            throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected Operator '}' or ',' but get '%s'.",((OperatorToken *)(token))->symbol);
-          }
-          else if(token-> type==TOKEN_IDENTIFIER_TYPE || token-> type==TOKEN_STRING_TYPE){
+          DUMP_REMAIN_TOKEN;
+          if(token-> type==TOKEN_IDENTIFIER_TYPE || token-> type==TOKEN_STRING_TYPE){
             throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected Operator '}' or ',' but get '%s'.",((StringToken *)(token))->name);
           }
           else if (token-> type==TOKEN_INTEGER_TYPE){
@@ -237,12 +246,16 @@ Token *jsonParse(JsonObject *jsonObj){
             jsonObj->state=OBJECT;
           }
           else{
+            recur=0;
             jsonObj->state=ERROR;
+            DUMP_REMAIN_TOKEN;
             throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected Operator '}' or ','.");
           }
         }
         else{
+          recur=0;
           jsonObj->state=ERROR;
+          DUMP_REMAIN_TOKEN;
           if(token-> type==TOKEN_OPERATOR_TYPE){
             throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected Operator '}' or ',' but get '%s'.",((OperatorToken *)(token))->symbol);
           }
@@ -261,7 +274,9 @@ Token *jsonParse(JsonObject *jsonObj){
         throwError(ERR_ACCESS_DENIED,"ERROR:ACCESS DENIED!!!The Json List already completed.");break;
 
       default:
+        recur=0;
         jsonObj->state=ERROR;
+        DUMP_REMAIN_TOKEN;
         throwError(ERR_ILLEGAL_VALUE,"ERROR:Unknown Error");
     }
 
@@ -277,10 +292,13 @@ Token *jsonParse(JsonObject *jsonObj){
           break;
         }
         else{
+          recur=0;
           jsonObj->state=ERROR;
-          throwError(ERR_ILLEGAL_VALUE,"ERROR:Illegal Value type.");
+          DUMP_REMAIN_TOKEN;
+          throwError(ERR_ILLEGAL_VALUE,"ERROR:Illegal Value.");
         }
       }
+      else{}
     }
 
   }while(token!=NULL);

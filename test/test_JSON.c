@@ -57,29 +57,23 @@ void test_getToken()
 }
 
 /**
+ * A complete Simple List has been tested
+ *
  *  {
  *    "NAME1":"JS",
  *    "NAME2":"STEVEN"
  *  }
  */
-void test_Simple_JSON_List()
+void test_Simple_JSON_List_for_well_form()
 {
   JsonObject *jsonObj;
   Token *jsonTok;
   Iterator *iter;
   ErrorObject *err;
 
-  Token *openBrace=createOperatorToken("{");
-  Token *closeBrace=createOperatorToken("}");
-  Token *coma=createOperatorToken(",");
-  Token *colon0=createOperatorToken(":");
-  Token *colon1=createOperatorToken(":");
-  Token *NAME1=createIdentifierToken("NAME1");
-  Token *AGE=createIdentifierToken("AGE");
-  Token *JS=createStringToken("JS");
-  Token *int20=createIntegerToken(20);
+  TOKEN_DECLARE;
 
-  getToken_ExpectAndReturn(openBrace);     //"{"
+  getToken_ExpectAndReturn(openBrace0);    //"{"
   getToken_ExpectAndReturn(NAME1);         //"NAME1"
   getToken_ExpectAndReturn(colon0);        //":"
   getToken_ExpectAndReturn(JS);            //"JS"
@@ -87,20 +81,14 @@ void test_Simple_JSON_List()
   getToken_ExpectAndReturn(AGE);           //"AGE"
   getToken_ExpectAndReturn(colon1);        //":"
   getToken_ExpectAndReturn(int20);         //20
-  getToken_ExpectAndReturn(closeBrace);    //"}"
+  getToken_ExpectAndReturn(closeBrace0);   //"}"
   getToken_ExpectAndReturn(NULL);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
   }Catch(err){
-    switch(err->errorCode){
-    case ERR_EXPECT_COLON     :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_EXPECT_OPERATOR  :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_EXPECT_IDEN      :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_ILLEGAL_VALUE    :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_ACCESS_DENIED    :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    }
+    TEST_FAIL_MESSAGE(err->errorMsg);
   }
 
   TEST_ASSERT_EQUAL(END,jsonObj->state);
@@ -120,6 +108,314 @@ void test_Simple_JSON_List()
   free(err);
 }
 
+
+/**
+ * Test only '}' token has been passed into the list
+ *
+ *  }
+ *
+ */
+void test_Simple_JSON_List_with_not_well_form_should_Throw_Error1()
+{
+  JsonObject *jsonObj;
+  Token *jsonTok;
+  ErrorObject *err;
+
+  TOKEN_DECLARE;
+
+  getToken_ExpectAndReturn(closeBrace0);   //"}"
+  getToken_ExpectAndReturn(NULL);
+
+  jsonObj=createJsonObject();
+  Try{
+    jsonTok=jsonParse(jsonObj);
+  }Catch(err){
+    TEST_ASSERT_EQUAL_STRING("ERROR:Expected '{' but get '}'.",err->errorMsg);
+    TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+  }
+  free(jsonObj);
+  free(jsonTok);
+  free(err);
+}
+
+/**
+ * Test unexpected 'KEY' token has been passed into the list
+ *
+ *  { "JS"
+ *
+ */
+void test_Simple_JSON_List_with_not_well_form_should_Throw_Error2()
+{
+  JsonObject *jsonObj;
+  Token *jsonTok;
+  ErrorObject *err;
+
+  TOKEN_DECLARE;
+
+  getToken_ExpectAndReturn(openBrace0);   //"{"
+  getToken_ExpectAndReturn(JS);           //"JS"
+  getToken_ExpectAndReturn(NULL);
+
+  jsonObj=createJsonObject();
+  Try{
+    jsonTok=jsonParse(jsonObj);
+  }Catch(err){
+    TEST_ASSERT_EQUAL_STRING("ERROR:Expected an Identifier for 'Key'.",err->errorMsg);
+    TEST_ASSERT_EQUAL(ERR_EXPECT_IDEN,err->errorCode);
+  }
+  free(jsonObj);
+  free(jsonTok);
+  free(err);
+}
+
+/**
+ * Test unexpected token has been passed into the list after 'KEY' token
+ *
+ *  { "NAME1"}
+ *
+ */
+void test_Simple_JSON_List_with_not_well_form_should_Throw_Error3()
+{
+  JsonObject *jsonObj;
+  Token *jsonTok;
+  ErrorObject *err;
+
+  TOKEN_DECLARE;
+
+  getToken_ExpectAndReturn(openBrace0);   //"{"
+  getToken_ExpectAndReturn(NAME1);        //"NAME1"
+  getToken_ExpectAndReturn(closeBrace0);  //"}"
+  getToken_ExpectAndReturn(NULL);
+
+  jsonObj=createJsonObject();
+  Try{
+    jsonTok=jsonParse(jsonObj);
+  }Catch(err){
+    TEST_ASSERT_EQUAL_STRING("ERROR:Expected ':' but get '}'.",err->errorMsg);
+    TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+  }
+  free(jsonObj);
+  free(jsonTok);
+  free(err);
+}
+
+/**
+ * Test unexpected 'VALUE' token has been passed into the list
+ *
+ *  { "NAME1":}
+ *
+ */
+void test_Simple_JSON_List_with_not_well_form_should_Throw_Error4()
+{
+  JsonObject *jsonObj;
+  Token *jsonTok;
+  ErrorObject *err;
+
+  TOKEN_DECLARE;
+
+  getToken_ExpectAndReturn(openBrace0);   //"{"
+  getToken_ExpectAndReturn(NAME1);        //"NAME1"
+  getToken_ExpectAndReturn(colon0);        //:
+  getToken_ExpectAndReturn(closeBrace0);  //"}"
+  getToken_ExpectAndReturn(NULL);
+
+  jsonObj=createJsonObject();
+  Try{
+    jsonTok=jsonParse(jsonObj);
+  }Catch(err){
+    TEST_ASSERT_EQUAL_STRING("ERROR:Illegal Value.",err->errorMsg);
+    TEST_ASSERT_EQUAL(ERR_ILLEGAL_VALUE,err->errorCode);
+  }
+  free(jsonObj);
+  free(jsonTok);
+  free(err);
+}
+
+/**
+ * Test unexpected token has been passed into the list after 'VALUE' token
+ *
+ *  { "NAME1":"JS"^
+ *
+ */
+void test_Simple_JSON_List_with_not_well_form_should_Throw_Error5()
+{
+  JsonObject *jsonObj;
+  Token *jsonTok;
+  ErrorObject *err;
+
+  TOKEN_DECLARE;
+
+  getToken_ExpectAndReturn(openBrace0);   //{
+  getToken_ExpectAndReturn(NAME1);        //"NAME1"
+  getToken_ExpectAndReturn(colon0);       //:
+  getToken_ExpectAndReturn(JS);           //"JS"
+  getToken_ExpectAndReturn(caret);        //^
+  getToken_ExpectAndReturn(NULL);
+
+  jsonObj=createJsonObject();
+  Try{
+    jsonTok=jsonParse(jsonObj);
+  }Catch(err){
+    TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
+    TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+  }
+  free(jsonObj);
+  free(jsonTok);
+  free(err);
+}
+
+/**
+ * Test unexpected 'KEY' token has been passed into the list
+ *
+ *  {
+ *    "NAME1":"JS",
+ *  }
+ *
+ */
+void test_Simple_JSON_List_with_not_well_form_should_Throw_Error6()
+{
+  JsonObject *jsonObj;
+  Token *jsonTok;
+  ErrorObject *err;
+
+  TOKEN_DECLARE;
+
+  getToken_ExpectAndReturn(openBrace0);   //{
+  getToken_ExpectAndReturn(NAME1);        //"NAME1"
+  getToken_ExpectAndReturn(colon0);       //:
+  getToken_ExpectAndReturn(JS);           //"JS"
+  getToken_ExpectAndReturn(coma);         //,
+  getToken_ExpectAndReturn(closeBrace0);  //}
+  getToken_ExpectAndReturn(NULL);
+
+  jsonObj=createJsonObject();
+  Try{
+    jsonTok=jsonParse(jsonObj);
+  }Catch(err){
+    TEST_ASSERT_EQUAL_STRING("ERROR:Expected an Identifier for 'Key'.",err->errorMsg);
+    TEST_ASSERT_EQUAL(ERR_EXPECT_IDEN,err->errorCode);
+  }
+  free(jsonObj);
+  free(jsonTok);
+  free(err);
+}
+
+/**
+ * Test unexpected token has been passed into the list after 'KEY' token
+ *
+ *  {
+ *    "NAME1":"JS",
+ *    "AGE"
+ *  }
+ *
+ */
+void test_Simple_JSON_List_with_not_well_form_should_Throw_Error7()
+{
+  JsonObject *jsonObj;
+  Token *jsonTok;
+  ErrorObject *err;
+
+  TOKEN_DECLARE;
+
+  getToken_ExpectAndReturn(openBrace0);   //{
+  getToken_ExpectAndReturn(NAME1);        //"NAME1"
+  getToken_ExpectAndReturn(colon0);       //:
+  getToken_ExpectAndReturn(JS);           //"JS"
+  getToken_ExpectAndReturn(coma);         //,
+  getToken_ExpectAndReturn(AGE);          //"AGE"
+  getToken_ExpectAndReturn(closeBrace0);  //}
+  getToken_ExpectAndReturn(NULL);
+
+  jsonObj=createJsonObject();
+  Try{
+    jsonTok=jsonParse(jsonObj);
+  }Catch(err){
+    TEST_ASSERT_EQUAL_STRING("ERROR:Expected ':' but get '}'.",err->errorMsg);
+    TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+  }
+  free(jsonObj);
+  free(jsonTok);
+  free(err);
+}
+
+/**
+ * Test unexpected 'VALUE' token has been passed into the list
+ *
+ *  {
+ *    "NAME1":"JS",
+ *    "AGE"  :
+ *  }
+ *
+ */
+void test_Simple_JSON_List_with_not_well_form_should_Throw_Error8()
+{
+  JsonObject *jsonObj;
+  Token *jsonTok;
+  ErrorObject *err;
+
+  TOKEN_DECLARE;
+
+  getToken_ExpectAndReturn(openBrace0);   //{
+  getToken_ExpectAndReturn(NAME1);        //"NAME1"
+  getToken_ExpectAndReturn(colon0);       //:
+  getToken_ExpectAndReturn(JS);           //"JS"
+  getToken_ExpectAndReturn(coma);         //,
+  getToken_ExpectAndReturn(AGE);          //"AGE"
+  getToken_ExpectAndReturn(colon1);        //:
+  getToken_ExpectAndReturn(closeBrace0);  //}
+  getToken_ExpectAndReturn(NULL);
+
+  jsonObj=createJsonObject();
+  Try{
+    jsonTok=jsonParse(jsonObj);
+  }Catch(err){
+    TEST_ASSERT_EQUAL_STRING("ERROR:Illegal Value.",err->errorMsg);
+    TEST_ASSERT_EQUAL(ERR_ILLEGAL_VALUE,err->errorCode);
+  }
+  free(jsonObj);
+  free(jsonTok);
+  free(err);
+}
+
+/**
+ * Test unexpected token has been passed into the list after 'VALUE' token
+ *
+ *  {
+ *    "NAME1":"JS",
+ *    "AGE"  :20^
+ *
+ */
+void test_Simple_JSON_List_with_not_well_form_should_Throw_Error9()
+{
+  JsonObject *jsonObj;
+  Token *jsonTok;
+  ErrorObject *err;
+
+  TOKEN_DECLARE;
+
+  getToken_ExpectAndReturn(openBrace0);   //{
+  getToken_ExpectAndReturn(NAME1);        //"NAME1"
+  getToken_ExpectAndReturn(colon0);       //:
+  getToken_ExpectAndReturn(JS);           //"JS"
+  getToken_ExpectAndReturn(coma);         //,
+  getToken_ExpectAndReturn(AGE);          //"AGE"
+  getToken_ExpectAndReturn(colon1);       //:
+  getToken_ExpectAndReturn(int20);        //20
+  getToken_ExpectAndReturn(caret);        //^
+  getToken_ExpectAndReturn(NULL);
+
+  jsonObj=createJsonObject();
+  Try{
+    jsonTok=jsonParse(jsonObj);
+  }Catch(err){
+    TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
+    TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+  }
+  free(jsonObj);
+  free(jsonTok);
+  free(err);
+}
+
 /**
  *{
  *  "NAME1":"JS",
@@ -134,23 +430,7 @@ void test_JSON_List_with_Recursion_JSON_List()
   Iterator *iter1,*iter2;
   ErrorObject *err;
 
-  Token *openBrace0=createOperatorToken("{");
-  Token *openBrace1=createOperatorToken("{");
-  Token *closeBrace0=createOperatorToken("}");
-  Token *closeBrace1=createOperatorToken("}");
-  Token *coma=createOperatorToken(",");
-  Token *colon0=createOperatorToken(":");
-  Token *colon1=createOperatorToken(":");
-  Token *colon2=createOperatorToken(":");
-  Token *colon3=createOperatorToken(":");
-  Token *NAME1=createIdentifierToken("NAME1");
-  Token *AGE=createIdentifierToken("AGE");
-  Token *NAME2=createIdentifierToken("NAME2");
-  Token *NAME3=createIdentifierToken("NAME3");
-  Token *JS=createStringToken("JS");
-  Token *STEVEN=createStringToken("STEVEN");
-  Token *Yen=createStringToken("Yen");
-  Token *int20=createIntegerToken(20);
+  TOKEN_DECLARE;
 
   getToken_ExpectAndReturn(openBrace0);    //"{"
   getToken_ExpectAndReturn(NAME1);         //"NAME1"
@@ -166,7 +446,7 @@ void test_JSON_List_with_Recursion_JSON_List()
   getToken_ExpectAndReturn(coma);          //","
   getToken_ExpectAndReturn(NAME3);         //"NAME3"
   getToken_ExpectAndReturn(colon3);        //":"
-  getToken_ExpectAndReturn(Yen);           //"Yen"
+  getToken_ExpectAndReturn(YEN);           //"YEN"
   getToken_ExpectAndReturn(closeBrace0);   //"}"
   getToken_ExpectAndReturn(closeBrace1);   //"}"
   getToken_ExpectAndReturn(NULL);
@@ -175,13 +455,7 @@ void test_JSON_List_with_Recursion_JSON_List()
   Try{
     jsonTok=jsonParse(jsonObj);
   }Catch(err){
-    switch(err->errorCode){
-    case ERR_EXPECT_COLON     :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_EXPECT_OPERATOR  :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_EXPECT_IDEN      :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_ILLEGAL_VALUE    :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_ACCESS_DENIED    :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    }
+    TEST_FAIL_MESSAGE(err->errorMsg);
   }
 
   TEST_ASSERT_EQUAL(END,jsonObj->state);
@@ -197,12 +471,13 @@ void test_JSON_List_with_Recursion_JSON_List()
   iter2=iteratorGetNext(iter2);
   TEST_ASSERT_KEY_VALUE(NAME2,STEVEN, iter2->current);
   iter2=iteratorGetNext(iter2);
-  TEST_ASSERT_KEY_VALUE(NAME3,Yen, iter2->current);
+  TEST_ASSERT_KEY_VALUE(NAME3,YEN, iter2->current);
   iter2=iteratorGetNext(iter2);
   TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter2->current->value))->symbol);
   iter1=iteratorGetNext(iter1);
   TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter1->current->value))->symbol);
 
+  free(jsonObj);
   free(jsonTok);
   free(iter2);
   free(iter1);
@@ -223,17 +498,9 @@ void test_Finding_Element_in_Simple_JSON_List()
   Token *findVal;
   ErrorObject *err;
 
-  Token *openBrace=createOperatorToken("{");
-  Token *closeBrace=createOperatorToken("}");
-  Token *coma=createOperatorToken(",");
-  Token *colon0=createOperatorToken(":");
-  Token *colon1=createOperatorToken(":");
-  Token *NAME1=createIdentifierToken("NAME1");
-  Token *AGE=createIdentifierToken("AGE");
-  Token *JS=createStringToken("JS");
-  Token *int20=createIntegerToken(20);
+  TOKEN_DECLARE;
 
-  getToken_ExpectAndReturn(openBrace);     //"{"
+  getToken_ExpectAndReturn(openBrace0);     //"{"
   getToken_ExpectAndReturn(NAME1);         //"NAME1"
   getToken_ExpectAndReturn(colon0);        //":"
   getToken_ExpectAndReturn(JS);            //"JS"
@@ -241,7 +508,7 @@ void test_Finding_Element_in_Simple_JSON_List()
   getToken_ExpectAndReturn(AGE);           //"AGE"
   getToken_ExpectAndReturn(colon1);        //":"
   getToken_ExpectAndReturn(int20);         //20
-  getToken_ExpectAndReturn(closeBrace);    //"}"
+  getToken_ExpectAndReturn(closeBrace0);    //"}"
   getToken_ExpectAndReturn(NULL);
 
   jsonObj=createJsonObject();
@@ -249,13 +516,7 @@ void test_Finding_Element_in_Simple_JSON_List()
   Try{
     jsonTok=jsonParse(jsonObj);
   }Catch(err){
-    switch(err->errorCode){
-    case ERR_EXPECT_COLON     :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_EXPECT_OPERATOR  :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_EXPECT_IDEN      :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_ILLEGAL_VALUE    :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_ACCESS_DENIED    :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    }
+    TEST_FAIL_MESSAGE(err->errorMsg);
   }
 
   TEST_ASSERT_EQUAL(END,jsonObj->state);
@@ -286,23 +547,7 @@ void test_Finding_Element_in_Recursion_JSON_List()
   Token *findVal;
   ErrorObject *err;
 
-  Token *openBrace0=createOperatorToken("{");
-  Token *openBrace1=createOperatorToken("{");
-  Token *closeBrace0=createOperatorToken("}");
-  Token *closeBrace1=createOperatorToken("}");
-  Token *coma=createOperatorToken(",");
-  Token *colon0=createOperatorToken(":");
-  Token *colon1=createOperatorToken(":");
-  Token *colon2=createOperatorToken(":");
-  Token *colon3=createOperatorToken(":");
-  Token *NAME1=createIdentifierToken("NAME1");
-  Token *AGE=createIdentifierToken("AGE");
-  Token *NAME2=createIdentifierToken("NAME2");
-  Token *NAME3=createIdentifierToken("NAME3");
-  Token *JS=createStringToken("JS");
-  Token *STEVEN=createStringToken("STEVEN");
-  Token *Yen=createStringToken("Yen");
-  Token *int20=createIntegerToken(20);
+  TOKEN_DECLARE;
 
   getToken_ExpectAndReturn(openBrace0);    //"{"
   getToken_ExpectAndReturn(NAME1);         //"NAME1"
@@ -318,7 +563,7 @@ void test_Finding_Element_in_Recursion_JSON_List()
   getToken_ExpectAndReturn(coma);          //","
   getToken_ExpectAndReturn(NAME3);         //"NAME3"
   getToken_ExpectAndReturn(colon3);        //":"
-  getToken_ExpectAndReturn(Yen);           //"Yen"
+  getToken_ExpectAndReturn(YEN);           //"YEN"
   getToken_ExpectAndReturn(closeBrace0);   //"}"
   getToken_ExpectAndReturn(closeBrace1);   //"}"
   getToken_ExpectAndReturn(NULL);
@@ -328,13 +573,7 @@ void test_Finding_Element_in_Recursion_JSON_List()
   Try{
     jsonTok=jsonParse(jsonObj);
   }Catch(err){
-    switch(err->errorCode){
-    case ERR_EXPECT_COLON     :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_EXPECT_OPERATOR  :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_EXPECT_IDEN      :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_ILLEGAL_VALUE    :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_ACCESS_DENIED    :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    }
+    TEST_FAIL_MESSAGE(err->errorMsg);
   }
 
   TEST_ASSERT_EQUAL(END,jsonObj->state);
@@ -343,7 +582,7 @@ void test_Finding_Element_in_Recursion_JSON_List()
   findKey=(ListElement *)(keyFind(((JsonToken *)(((OperatorToken *)(findKey->value))->token[1]))->list, "NAME3", strCompare));
   findVal=(Token *)(getElementValue(findKey));
 
-  TEST_ASSERT_EQUAL_STRING(((StringToken *)(Yen))->name,((StringToken *)(findVal))->name);
+  TEST_ASSERT_EQUAL_STRING(((StringToken *)(YEN))->name,((StringToken *)(findVal))->name);
 
   free(jsonObj);
   free(jsonTok);
@@ -352,129 +591,4 @@ void test_Finding_Element_in_Recursion_JSON_List()
   free(findVal);
 
 }
-
-void test_Recursion_JSON_List_with_TryCatch()
-{
-  JsonObject *jsonObj;
-  ErrorObject *err;
-  Token *jsonTok;
-
-  Token *openBrace0=createOperatorToken("{");
-  Token *openBrace1=createOperatorToken("{");
-  Token *closeBrace0=createOperatorToken("}");
-  Token *closeBrace1=createOperatorToken("}");
-  Token *coma=createOperatorToken(",");
-  Token *colon0=createOperatorToken(":");
-  Token *colon1=createOperatorToken(":");
-  Token *colon2=createOperatorToken(":");
-  Token *colon3=createOperatorToken(":");
-  Token *NAME1=createIdentifierToken("NAME1");
-  Token *AGE=createIdentifierToken("AGE");
-  Token *NAME2=createIdentifierToken("NAME2");
-  Token *NAME3=createIdentifierToken("NAME3");
-  Token *JS=createStringToken("JS");
-  Token *STEVEN=createStringToken("STEVEN");
-  Token *Yen=createStringToken("Yen");
-  Token *int20=createIntegerToken(20);
-
-  getToken_ExpectAndReturn(openBrace0);    //"{"
-  getToken_ExpectAndReturn(NAME1);         //"NAME1"
-  getToken_ExpectAndReturn(colon0);        //":"
-  getToken_ExpectAndReturn(int20);         //"JS"
-  getToken_ExpectAndReturn(coma);          //","
-  getToken_ExpectAndReturn(AGE);           //"AGE"
-  getToken_ExpectAndReturn(colon1);        //":"
-  getToken_ExpectAndReturn(openBrace1);    //"{"
-  getToken_ExpectAndReturn(NAME2);         //"NAME2"
-  getToken_ExpectAndReturn(colon2);        //":"
-  getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
-  getToken_ExpectAndReturn(coma);          //","
-  getToken_ExpectAndReturn(NAME3);         //"NAME3"
-  getToken_ExpectAndReturn(colon3);        //":"
-  getToken_ExpectAndReturn(Yen);           //"Yen"
-  getToken_ExpectAndReturn(closeBrace0);   //"}"
-  getToken_ExpectAndReturn(closeBrace1);   //"}"
-  getToken_ExpectAndReturn(NULL);
-
-  jsonObj=createJsonObject();
-
-  Try{
-    jsonTok=jsonParse(jsonObj);
-  }Catch(err){
-    switch(err->errorCode){
-    case ERR_EXPECT_COLON     :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_EXPECT_OPERATOR  :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_EXPECT_IDEN      :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_ILLEGAL_VALUE    :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_ACCESS_DENIED    :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    }
-  }
-
-  TEST_ASSERT_EQUAL(END,jsonObj->state);
-
-  free(jsonObj);
-  free(jsonTok);
-  free(err);
-}
-
-void test_jsonParse()
-{
-  JsonObject *jsonObj;
-  ErrorObject *err;
-  Token *jsonTok;
-
-  Token *openBrace0=createOperatorToken("{");
-  Token *openBrace1=createOperatorToken("{");
-  Token *closeBrace0=createOperatorToken("}");
-  Token *closeBrace1=createOperatorToken("}");
-  Token *coma=createOperatorToken(",");
-  Token *colon0=createOperatorToken(":");
-  Token *colon1=createOperatorToken(":");
-  Token *colon2=createOperatorToken(":");
-  Token *colon3=createOperatorToken(":");
-  Token *NAME1=createIdentifierToken("NAME1");
-  Token *AGE=createIdentifierToken("AGE");
-  Token *NAME2=createIdentifierToken("NAME2");
-  Token *NAME3=createIdentifierToken("NAME3");
-  Token *JS=createStringToken("JS");
-  Token *STEVEN=createStringToken("STEVEN");
-  Token *Yen=createStringToken("Yen");
-  Token *int20=createIntegerToken(20);
-
-  getToken_ExpectAndReturn(openBrace0);    //"{"
-  getToken_ExpectAndReturn(NAME1);         //"NAME1"
-  getToken_ExpectAndReturn(colon0);        //":"
-  getToken_ExpectAndReturn(int20);         //"JS"
-  getToken_ExpectAndReturn(coma);          //","
-  getToken_ExpectAndReturn(AGE);           //"AGE"
-  getToken_ExpectAndReturn(colon1);        //":"
-  getToken_ExpectAndReturn(openBrace1);    //"{"
-  getToken_ExpectAndReturn(NAME2);         //"NAME2"
-  getToken_ExpectAndReturn(colon2);        //":"
-  getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
-  getToken_ExpectAndReturn(coma);          //","
-  getToken_ExpectAndReturn(NAME3);         //"NAME3"
-  getToken_ExpectAndReturn(colon3);        //":"
-  getToken_ExpectAndReturn(Yen);           //"Yen"
-  getToken_ExpectAndReturn(closeBrace0);   //"}"
-  getToken_ExpectAndReturn(closeBrace1);   //"}"
-  getToken_ExpectAndReturn(NULL);
-
-
-  jsonObj=createJsonObject();
-
-  Try{
-    jsonTok=jsonParse(jsonObj);
-  }Catch(err){
-    switch(err->errorCode){
-    case ERR_EXPECT_COLON     :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_EXPECT_OPERATOR  :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_EXPECT_IDEN      :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_ILLEGAL_VALUE    :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    case ERR_ACCESS_DENIED    :TEST_FAIL_MESSAGE(err->errorMsg);break;
-    }
-  }
-  TEST_ASSERT_EQUAL(END,jsonObj->state);
-}
-
 

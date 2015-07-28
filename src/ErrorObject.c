@@ -16,7 +16,6 @@ void freeError(ErrorObject *err){
 }
 
 void throwError(ErrorCode errCode,char *msg , ...){
-
   ErrorObject *errorObj=malloc(sizeof(ErrorObject));
 
   char *msgBuffer;
