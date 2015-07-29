@@ -7,8 +7,12 @@
 #define TOKEN_DECLARE                               \
   Token *openBrace0=createOperatorToken("{");       \
   Token *openBrace1=createOperatorToken("{");       \
+  Token *openBrace2=createOperatorToken("{");       \
+  Token *openBrace3=createOperatorToken("{");       \
   Token *closeBrace0=createOperatorToken("}");      \
   Token *closeBrace1=createOperatorToken("}");      \
+  Token *closeBrace2=createOperatorToken("}");      \
+  Token *closeBrace3=createOperatorToken("}");      \
   Token *caret=createOperatorToken("^");            \
   Token *coma=createOperatorToken(",");             \
   Token *colon0=createOperatorToken(":");           \
@@ -22,10 +26,10 @@
   Token *JS=createStringToken("JS");                \
   Token *STEVEN=createStringToken("STEVEN");        \
   Token *YEN=createStringToken("YEN");              \
-  Token *int20=createIntegerToken(20)
+  Token *int20=createIntegerToken(20);              \
+  Token *int30=createIntegerToken(30)
 
 #define DUMP_REMAIN_TOKEN                           \
-  Token *dumpToken;                                 \
   dumpToken=getToken();                             \
   while(dumpToken!=NULL){                           \
     dumpToken=getToken();                           \

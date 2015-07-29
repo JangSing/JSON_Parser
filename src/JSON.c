@@ -52,7 +52,8 @@ Token *jsonParse(JsonObject *jsonObj){
   JsonToken *jsonTok=malloc(sizeof(JsonToken));
   LinkedList *list=malloc(sizeof(LinkedList));
 
-  Token *token;
+  JsonObject *recurJsonObj;
+  Token *token,*dumpToken;
   ListElement *newNode;
   Token *leftToken,*rightToken;
   char *errMsg;
@@ -68,6 +69,11 @@ Token *jsonParse(JsonObject *jsonObj){
     newNode=createListElement(createOperatorToken("{"));
     addLast(newNode,list);
     token=getToken();
+    if(token==NULL){
+      recur=0;
+      jsonTok->list=list;
+      return (Token *)jsonTok;
+    }
   }
 
   do{
@@ -113,9 +119,9 @@ Token *jsonParse(JsonObject *jsonObj){
           jsonObj->state=VALUE;
         }
         else{
-          recur=0;
           jsonObj->state=ERROR;
           DUMP_REMAIN_TOKEN;
+          recur=0;
           if(token-> type==TOKEN_OPERATOR_TYPE){
             throwError(ERR_EXPECT_OPERATOR,"ERROR:Expected ':' but get '%s'.",((OperatorToken *)(token))->symbol);
           }
@@ -133,12 +139,15 @@ Token *jsonParse(JsonObject *jsonObj){
       case VALUE :
         if(token->type==TOKEN_OPERATOR_TYPE){
           if(strcmp(((OperatorToken *)(token))->symbol,"{")==0){
-            JsonObject *recurJsonObj;
+
             jsonObj->state=WAIT_FOR_OPERATOR;
 
             recur=1;
             recurJsonObj=createJsonObject();
             token=jsonParse(recurJsonObj);
+            if(recurJsonObj->state!=END){
+              throwError(ERR_ACCESS_DENIED,"ERROR:ACCESS DENIED!!!The Json List is not completed.");
+            }
             newNode=createListElement(link2Tokens(leftToken, ":", token));
             addLast(newNode,list);
           }
@@ -271,6 +280,7 @@ Token *jsonParse(JsonObject *jsonObj){
         }break;
 
       case END :
+        recur=0;
         throwError(ERR_ACCESS_DENIED,"ERROR:ACCESS DENIED!!!The Json List already completed.");break;
 
       default:
@@ -281,30 +291,34 @@ Token *jsonParse(JsonObject *jsonObj){
     }
 
     token=getToken();
-
-    if(recur==1 && token->type==TOKEN_OPERATOR_TYPE){
-      if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
-        if(jsonObj->state==STRING || jsonObj->state==NUMBER){
-          jsonObj->state=END;
-          newNode=createListElement(createOperatorToken("}"));
-          addLast(newNode,list);
-          recur=0;
-          break;
+    if(token!=NULL){
+      if(recur==1 && token->type==TOKEN_OPERATOR_TYPE){
+        if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
+          if(jsonObj->state==STRING || jsonObj->state==NUMBER){
+            jsonObj->state=END;
+            newNode=createListElement(createOperatorToken("}"));
+            addLast(newNode,list);
+            recur=0;
+            break;
+          }
+          else{
+            recur=0;
+            jsonObj->state=ERROR;
+            DUMP_REMAIN_TOKEN;
+            throwError(ERR_ILLEGAL_VALUE,"ERROR:Illegal Value.");
+          }
         }
-        else{
-          recur=0;
-          jsonObj->state=ERROR;
-          DUMP_REMAIN_TOKEN;
-          throwError(ERR_ILLEGAL_VALUE,"ERROR:Illegal Value.");
-        }
+        else{}
       }
-      else{}
     }
+    else
+      break;
 
   }while(token!=NULL);
 
   if(jsonObj->state!=END){
-    throwError(ERR_ACCESS_DENIED,"ERROR:ACCESS DENIED!!!The Json List is not completed.Expected '}'.");
+    recur=0;
+    throwError(ERR_ACCESS_DENIED,"ERROR:ACCESS DENIED!!!The Json List is not completed.");
   }
   else{
     jsonTok->list=list;
