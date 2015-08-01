@@ -60,5 +60,3 @@ void test_create_String_Token_passing_in_value_should_return_Token(void)
   TEST_ASSERT_EQUAL(TOKEN_STRING_TYPE,((StringToken *)(strTok))->type);
   TEST_ASSERT_EQUAL_STRING("JS",((StringToken *)(strTok))->name);
 }
-
-

@@ -14,7 +14,10 @@
   Token *closeBrace2=createOperatorToken("}");      \
   Token *closeBrace3=createOperatorToken("}");      \
   Token *caret=createOperatorToken("^");            \
-  Token *coma=createOperatorToken(",");             \
+  Token *coma0=createOperatorToken(",");             \
+  Token *coma1=createOperatorToken(",");             \
+  Token *coma2=createOperatorToken(",");             \
+  Token *coma3=createOperatorToken(",");             \
   Token *colon0=createOperatorToken(":");           \
   Token *colon1=createOperatorToken(":");           \
   Token *colon2=createOperatorToken(":");           \
@@ -28,6 +31,34 @@
   Token *YEN=createStringToken("YEN");              \
   Token *int20=createIntegerToken(20);              \
   Token *int30=createIntegerToken(30)
+
+#define TOKEN_FREE        \
+  free(openBrace0);       \
+  free(openBrace1);       \
+  free(openBrace2);       \
+  free(openBrace3);       \
+  free(closeBrace0);      \
+  free(closeBrace1);      \
+  free(closeBrace2);      \
+  free(closeBrace3);      \
+  free(caret);            \
+  free(coma0);            \
+  free(coma1);            \
+  free(coma2);            \
+  free(coma3);            \
+  free(colon0);           \
+  free(colon1);           \
+  free(colon2);           \
+  free(colon3);           \
+  free(NAME1);            \
+  free(AGE);              \
+  free(NAME2);            \
+  free(NAME3);            \
+  free(JS);               \
+  free(STEVEN);           \
+  free(YEN);              \
+  free(int20);            \
+  free(int30)
 
 #define DUMP_REMAIN_TOKEN                           \
   dumpToken=getToken();                             \

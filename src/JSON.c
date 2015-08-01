@@ -50,14 +50,13 @@ JsonObject *createJsonObject(){
 
 Token *jsonParse(JsonObject *jsonObj){
   JsonToken *jsonTok=malloc(sizeof(JsonToken));
-  LinkedList *list=malloc(sizeof(LinkedList));
+  LinkedList *list;
 
   JsonObject *recurJsonObj;
   Token *token,*dumpToken;
   ListElement *newNode;
   Token *leftToken,*rightToken;
   char *errMsg;
-
 
   list=createLinkedList();
 
@@ -311,9 +310,9 @@ Token *jsonParse(JsonObject *jsonObj){
         else{}
       }
     }
-    else
+    else{
       break;
-
+    }
   }while(token!=NULL);
 
   if(jsonObj->state!=END){
