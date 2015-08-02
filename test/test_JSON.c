@@ -24,36 +24,25 @@ void tearDown()
 
 void test_getToken()
 {
-  Token *INT=malloc(sizeof(Token));
-  Token *FLOAT=malloc(sizeof(Token));
-  Token *IDEN=malloc(sizeof(Token));
-  Token *STR=malloc(sizeof(Token));
-  Token *OPE=malloc(sizeof(Token));
-
-  ((IntegerToken *)(INT))-> value=100;
-  ((FloatToken *)(FLOAT))-> value=12.34;
-  ((IdentifierToken *)(IDEN))-> name="JangSing";
-  ((StringToken *)(STR))-> name="Wong";
-  ((OperatorToken *)(OPE))-> symbol="{";
+  Token *INT=createIntegerToken(100);
+  Token *IDEN=createIdentifierToken("JangSing");
+  Token *STR=createStringToken("Wong");
+  Token *OPE=createOperatorToken("{");;
 
   getToken_ExpectAndReturn(INT);
-  getToken_ExpectAndReturn(FLOAT);
   getToken_ExpectAndReturn(IDEN);
   getToken_ExpectAndReturn(STR);
   getToken_ExpectAndReturn(OPE);
 
   TEST_ASSERT_EQUAL(100,((IntegerToken *)(getToken()))-> value);
-  TEST_ASSERT_EQUAL_FLOAT(12.34,((FloatToken *)(getToken()))-> value);
   TEST_ASSERT_EQUAL_STRING("JangSing",((IdentifierToken *)(getToken()))-> name);
   TEST_ASSERT_EQUAL_STRING("Wong",((StringToken *)(getToken()))-> name);
   TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(getToken()))-> symbol);
 
   free(INT);
-  free(FLOAT);
   free(IDEN);
   free(STR);
   free(OPE);
-
 }
 
 /**
