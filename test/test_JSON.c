@@ -77,14 +77,15 @@ void test_Simple_JSON_List_with_only_close_Brace_should_Throw_Error()
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected '{' but get '}'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -96,7 +97,7 @@ void test_Simple_JSON_List_with_only_close_Brace_should_Throw_Error()
  *  }{}{
  *
  */
-void test_Simple_JSON_List_with_keep_Passing_Token_after_Error_occur_should_Throw_Error_and_ignore_the_remain_Token()
+void test_Simple_JSON_List_with_keep_Passing_Token_after_Error_occur_should_Throw_Error_and_ignore_remain_Token()
 {
   JsonObject *jsonObj;
   Token *jsonTok;
@@ -113,13 +114,14 @@ void test_Simple_JSON_List_with_keep_Passing_Token_after_Error_occur_should_Thro
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected '{' but get '}'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -145,13 +147,14 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_open_Brace_Token_should
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -178,13 +181,14 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token_sh
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_IDEN but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected an Identifier for 'Key'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_IDEN,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -211,13 +215,14 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Throw_
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -245,13 +250,14 @@ void test_Simple_JSON_List_with_Close_Brace_Token_Passed_in_after_Key_Token_shou
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected ':' but get '}'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -279,13 +285,14 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Key_Token_should_Th
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected ':' but get 'JS'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -313,13 +320,14 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_should_T
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected ':' but get '20'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -347,13 +355,14 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_Thro
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -382,13 +391,14 @@ void test_Simple_JSON_List_with_Operator_Token_Passed_in_after_Colon_Token_shoul
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ILLEGAL_VALUE but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Illegal Value.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ILLEGAL_VALUE,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -400,7 +410,7 @@ void test_Simple_JSON_List_with_Operator_Token_Passed_in_after_Colon_Token_shoul
  *  { "NAME1":"JS"
  *
  */
-void test_Simple_JSON_List_with_no_Token_Passed_in_after_str_Value_Token_should_Throw_Error()
+void test_Simple_JSON_List_with_no_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
   JsonObject *jsonObj;
   Token *jsonTok;
@@ -417,13 +427,14 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_str_Value_Token_should_
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -435,7 +446,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_str_Value_Token_should_
  *  { "NAME1":"JS"^
  *
  */
-void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_str_Value_Token_should_Throw_Error()
+void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
   JsonObject *jsonObj;
   Token *jsonTok;
@@ -453,13 +464,14 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_str_Value_Token_shou
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -471,7 +483,7 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_str_Value_Token_shou
  *  { "NAME1":"JS""NAME2"
  *
  */
-void test_Simple_JSON_List_with_Identifier_Token_Passed_in_after_str_Value_Token_should_Throw_Error()
+void test_Simple_JSON_List_with_Identifier_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
   JsonObject *jsonObj;
   Token *jsonTok;
@@ -489,13 +501,14 @@ void test_Simple_JSON_List_with_Identifier_Token_Passed_in_after_str_Value_Token
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get 'NAME2'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -507,7 +520,7 @@ void test_Simple_JSON_List_with_Identifier_Token_Passed_in_after_str_Value_Token
  *  { "NAME1":"JS"20
  *
  */
-void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_str_Value_Token_should_Throw_Error()
+void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
   JsonObject *jsonObj;
   Token *jsonTok;
@@ -525,13 +538,14 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_str_Value_Token_sh
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '20'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -543,7 +557,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_str_Value_Token_sh
  *  { "NAME1":20
  *
  */
-void test_Simple_JSON_List_with_no_Token_Passed_in_after_int_Value_Token_should_Throw_Error()
+void test_Simple_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
   JsonObject *jsonObj;
   Token *jsonTok;
@@ -560,13 +574,14 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_int_Value_Token_should_
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -578,7 +593,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_int_Value_Token_should_
  *  { "NAME1":20^
  *
  */
-void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_int_Value_Token_should_Throw_Error()
+void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
   JsonObject *jsonObj;
   Token *jsonTok;
@@ -596,13 +611,14 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_int_Value_Token_shou
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -614,7 +630,7 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_int_Value_Token_shou
  *  { "NAME1":20"JS"
  *
  */
-void test_Simple_JSON_List_with_String_Token_Passed_in_after_int_Value_Token_should_Throw_Error()
+void test_Simple_JSON_List_with_String_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
   JsonObject *jsonObj;
   Token *jsonTok;
@@ -632,13 +648,14 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_int_Value_Token_sho
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get 'JS'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -650,7 +667,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_int_Value_Token_sho
  *  { "NAME1":20 30
  *
  */
-void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_int_Value_Token_should_Throw_Error()
+void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
   JsonObject *jsonObj;
   Token *jsonTok;
@@ -668,13 +685,14 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_int_Value_Token_sh
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '30'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -704,13 +722,14 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Coma_Token_should_Throw
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
+    free(err);
   }
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -747,7 +766,8 @@ void test_Simple_JSON_List_for_complete_form()
   Try{
     jsonTok=jsonParse(jsonObj);
   }Catch(err){
-    TEST_FAIL_MESSAGE(err->errorMsg);
+    TEST_FAIL_JSON("unexpected error occurred =>'%s'",err->errorMsg);
+    free(err);
   }
 
   TEST_ASSERT_EQUAL(END,jsonObj->state);
@@ -764,7 +784,52 @@ void test_Simple_JSON_List_for_complete_form()
   free(jsonObj);
   free(jsonTok);
   free(iter);
-  free(err);
+
+  TOKEN_FREE;
+}
+
+/**
+ * Test if Extra Token Passed into complete Simple JsonList
+ *
+ *  {
+ *    "NAME1":"JS",
+ *    "NAME2":"STEVEN"
+ *  }^
+ */
+void test_JSON_List_with_Extra_Token_Passed_into_Simple_JSON_List()
+{
+  JsonObject *jsonObj;
+  Token *jsonTok;
+  Iterator *iter;
+  ErrorObject *err;
+
+  TOKEN_DECLARE;
+
+  getToken_ExpectAndReturn(openBrace0);    //"{"
+  getToken_ExpectAndReturn(NAME1);         //"NAME1"
+  getToken_ExpectAndReturn(colon0);        //":"
+  getToken_ExpectAndReturn(JS);            //"JS"
+  getToken_ExpectAndReturn(coma0);         //","
+  getToken_ExpectAndReturn(AGE);           //"AGE"
+  getToken_ExpectAndReturn(colon1);        //":"
+  getToken_ExpectAndReturn(int20);         //20
+  getToken_ExpectAndReturn(closeBrace0);   //"}"
+  getToken_ExpectAndReturn(caret);         //"^"
+  getToken_ExpectAndReturn(NULL);
+
+  jsonObj=createJsonObject();
+  Try{
+    jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+  }Catch(err){
+    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List already completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
+    free(err);
+  }
+
+  free(jsonObj);
+  free(jsonTok);
+  free(iter);
 
   TOKEN_FREE;
 }
@@ -798,14 +863,15 @@ void test_Recursion_JSON_List_with_not_completed_List_should_Throw_Error()
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -841,14 +907,15 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_IDEN but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected an Identifier for 'Key'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_IDEN,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -884,14 +951,15 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Thr
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -928,14 +996,15 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Key_Token_should_
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected ':' but get '^'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -972,14 +1041,15 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Key_Token_should
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected ':' but get 'STEVEN'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -1016,14 +1086,15 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_shoul
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected ':' but get '20'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -1060,14 +1131,15 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_T
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -1105,14 +1177,15 @@ void test_Recursion_JSON_List_with_close_Brace_Token_Passed_in_after_Colon_Token
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ILLEGAL_VALUE but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Illegal Value.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ILLEGAL_VALUE,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -1150,14 +1223,15 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_String_Token_should_
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -1196,14 +1270,15 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_String_Token_shou
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -1242,14 +1317,15 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_String_Token_sho
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get 'YEN'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -1288,14 +1364,15 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_String_Token_sh
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '20'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -1333,14 +1410,15 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -1379,14 +1457,15 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_sho
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -1425,14 +1504,15 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Integer_Token_sh
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get 'YEN'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -1471,14 +1551,15 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_s
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '30'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -1517,14 +1598,15 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_coma_Token_should_Th
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -1568,14 +1650,15 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_close_Brace_Token_sh
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
+    free(err);
   }
 
   free(jsonObj);
   free(jsonTok);
-  free(err);
 
   TOKEN_FREE;
 }
@@ -1589,7 +1672,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_close_Brace_Token_sh
  *              "NAME3":"YEN"}
  *  }
  */
-void test_JSON_List_with_Recursion_JSON_List()
+void test_Recursion_JSON_List_for_complete_form()
 {
   JsonObject *jsonObj;
   Token *jsonTok;
@@ -1621,7 +1704,8 @@ void test_JSON_List_with_Recursion_JSON_List()
   Try{
     jsonTok=jsonParse(jsonObj);
   }Catch(err){
-    TEST_FAIL_MESSAGE(err->errorMsg);
+    TEST_FAIL_JSON("unexpected error occurred =>'%s'",err->errorMsg);
+    free(err);
   }
 
   TEST_ASSERT_EQUAL(END,jsonObj->state);
@@ -1647,8 +1731,130 @@ void test_JSON_List_with_Recursion_JSON_List()
   free(jsonTok);
   free(iter2);
   free(iter1);
-  free(err);
 
   TOKEN_FREE;
 }
+
+/**
+ * Test if extra Token passed into Recursion JsonList
+ *
+ *  {
+ *    "NAME1":"JS",
+ *    "AGE"  :{ "NAME2":"STEVEN",
+ *              "NAME3":"YEN"}
+ *  }^
+ */
+void test_JSON_List_with_Extra_Token_Passed_into_Recursion_JSON_List()
+{
+  JsonObject *jsonObj;
+  Token *jsonTok;
+  Iterator *iter1,*iter2;
+  ErrorObject *err;
+
+  TOKEN_DECLARE;
+
+  getToken_ExpectAndReturn(openBrace0);    //"{"
+  getToken_ExpectAndReturn(NAME1);         //"NAME1"
+  getToken_ExpectAndReturn(colon0);        //":"
+  getToken_ExpectAndReturn(JS);            //"JS"
+  getToken_ExpectAndReturn(coma0);          //","
+  getToken_ExpectAndReturn(AGE);           //"AGE"
+  getToken_ExpectAndReturn(colon1);        //":"
+  getToken_ExpectAndReturn(openBrace1);    //"{"
+  getToken_ExpectAndReturn(NAME2);         //"NAME2"
+  getToken_ExpectAndReturn(colon2);        //":"
+  getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
+  getToken_ExpectAndReturn(coma1);          //","
+  getToken_ExpectAndReturn(NAME3);         //"NAME3"
+  getToken_ExpectAndReturn(colon3);        //":"
+  getToken_ExpectAndReturn(YEN);           //"YEN"
+  getToken_ExpectAndReturn(closeBrace0);   //"}"
+  getToken_ExpectAndReturn(closeBrace1);   //"}"
+  getToken_ExpectAndReturn(caret);         //"^"
+  getToken_ExpectAndReturn(NULL);
+
+  jsonObj=createJsonObject();
+  Try{
+    jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+  }Catch(err){
+    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List already completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
+    free(err);
+  }
+
+  free(jsonObj);
+  free(jsonTok);
+  free(iter2);
+  free(iter1);
+
+  TOKEN_FREE;
+}
+
+
+/**
+ * Test Complex JsonList
+ *
+ *  {
+ *    "NAME1":"JS",
+ *    "AGE"  :{ "NAME2":"STEVEN",
+ *              "NAME3":{ "NAME4":"ABU" },
+ *              "NAME4":"YEN"
+ *            },
+ *    "ADD"  : 30
+ *  }
+ */
+void test_Complex_Json_List()
+{
+  JsonObject *jsonObj;
+  Token *jsonTok;
+  ErrorObject *err;
+
+  TOKEN_DECLARE;
+
+  getToken_ExpectAndReturn(openBrace0);    //"{"
+  getToken_ExpectAndReturn(NAME1);         //"NAME1"
+  getToken_ExpectAndReturn(colon0);        //":"
+  getToken_ExpectAndReturn(JS);            //"JS"
+  getToken_ExpectAndReturn(coma0);         //","
+  getToken_ExpectAndReturn(AGE);           //"AGE"
+  getToken_ExpectAndReturn(colon1);        //":"
+  getToken_ExpectAndReturn(openBrace1);    //"{"
+  getToken_ExpectAndReturn(NAME2);         //"NAME2"
+  getToken_ExpectAndReturn(colon2);        //":"
+  getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
+  getToken_ExpectAndReturn(coma1);         //","
+  getToken_ExpectAndReturn(NAME3);         //"NAME3"
+  getToken_ExpectAndReturn(colon3);        //":"
+  getToken_ExpectAndReturn(openBrace2);    //"{"
+  getToken_ExpectAndReturn(NAME4);         //"NAME4"
+  getToken_ExpectAndReturn(colon4);        //":"
+  getToken_ExpectAndReturn(ABU);           //"ABU"
+  getToken_ExpectAndReturn(closeBrace0);   //"}"
+  getToken_ExpectAndReturn(coma2);         //","
+  getToken_ExpectAndReturn(NAME4);         //"NAME4"
+  getToken_ExpectAndReturn(colon5);        //":"
+  getToken_ExpectAndReturn(YEN);           //"YEN"
+  getToken_ExpectAndReturn(closeBrace1);   //"}"
+  getToken_ExpectAndReturn(coma3);         //","
+  getToken_ExpectAndReturn(ADD);           //"ADD"
+  getToken_ExpectAndReturn(colon6);        //":"
+  getToken_ExpectAndReturn(int30);         //"30"
+  getToken_ExpectAndReturn(closeBrace2);   //"}"
+  getToken_ExpectAndReturn(NULL);
+
+  jsonObj=createJsonObject();
+  Try{
+    jsonTok=jsonParse(jsonObj);
+  }Catch(err){
+    TEST_FAIL_JSON("unexpected error occurred =>'%s'",err->errorMsg);
+    free(err);
+  }
+
+  free(jsonObj);
+  free(jsonTok);
+
+  TOKEN_FREE;
+}
+
 

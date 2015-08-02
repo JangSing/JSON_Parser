@@ -141,7 +141,7 @@ Token *jsonParse(JsonObject *jsonObj){
 
             jsonObj->state=WAIT_FOR_OPERATOR;
 
-            recur=1;
+            recur++;
             recurJsonObj=createJsonObject();
             token=jsonParse(recurJsonObj);
             if(recurJsonObj->state!=END){
@@ -280,6 +280,8 @@ Token *jsonParse(JsonObject *jsonObj){
 
       case END :
         recur=0;
+        jsonObj->state=ERROR;
+        DUMP_REMAIN_TOKEN;
         throwError(ERR_ACCESS_DENIED,"ERROR:ACCESS DENIED!!!The Json List already completed.");break;
 
       default:
@@ -291,13 +293,13 @@ Token *jsonParse(JsonObject *jsonObj){
 
     token=getToken();
     if(token!=NULL){
-      if(recur==1 && token->type==TOKEN_OPERATOR_TYPE){
+      if(recur!=0 && token->type==TOKEN_OPERATOR_TYPE){
         if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
-          if(jsonObj->state==STRING || jsonObj->state==NUMBER){
+          if(jsonObj->state==STRING || jsonObj->state==NUMBER || jsonObj->state==WAIT_FOR_OPERATOR){
             jsonObj->state=END;
             newNode=createListElement(createOperatorToken("}"));
             addLast(newNode,list);
-            recur=0;
+            recur--;
             break;
           }
           else{

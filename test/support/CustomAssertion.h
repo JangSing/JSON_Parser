@@ -19,7 +19,13 @@
 #define CUSTOM_TEST_FAIL(msg,...)              {                                                                              \
                                                char buffer[256];                                                              \
                                                sprintf(buffer,msg, ## __VA_ARGS__);                                           \
-                                               UNITY_TEST_FAIL(lineNo, buffer); \
+                                               UNITY_TEST_FAIL(lineNo, buffer);                                               \
+                                               }
+
+#define TEST_FAIL_JSON(msg,...)                {                                                                              \
+                                               char buffer[256];                                                              \
+                                               sprintf(buffer,msg, ## __VA_ARGS__);                                           \
+                                               UNITY_TEST_FAIL(__LINE__, buffer);                                             \
                                                }
 
 
