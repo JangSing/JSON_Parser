@@ -61,14 +61,14 @@ void test_Simple_JSON_List_with_only_close_Brace_should_Throw_Error()
   TOKEN_DECLARE;
 
   getToken_ExpectAndReturn(closeBrace0);   //"}"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected '{' but get '}'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected '{' but get '}'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -98,14 +98,14 @@ void test_Simple_JSON_List_with_keep_Passing_Token_after_Error_occur_should_Thro
   getToken_ExpectAndReturn(openBrace0);     //"{"
   getToken_ExpectAndReturn(closeBrace1);    //"}"
   getToken_ExpectAndReturn(openBrace1);     //"{"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected '{' but get '}'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected '{' but get '}'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -131,14 +131,14 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_open_Brace_Token_should
   TOKEN_DECLARE;
 
   getToken_ExpectAndReturn(openBrace0);   //"{"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
     free(err);
   }
@@ -165,14 +165,14 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token_sh
 
   getToken_ExpectAndReturn(openBrace0);   //"{"
   getToken_ExpectAndReturn(JS);           //"JS"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_IDEN but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected an Identifier for 'Key'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[8]:Expected an Identifier for 'Key'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_IDEN,err->errorCode);
     free(err);
   }
@@ -199,14 +199,14 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Throw_
 
   getToken_ExpectAndReturn(openBrace0);   //"{"
   getToken_ExpectAndReturn(NAME1);        //"NAME1"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
     free(err);
   }
@@ -234,14 +234,14 @@ void test_Simple_JSON_List_with_Close_Brace_Token_Passed_in_after_Key_Token_shou
   getToken_ExpectAndReturn(openBrace0);   //"{"
   getToken_ExpectAndReturn(NAME1);        //"NAME1"
   getToken_ExpectAndReturn(closeBrace0);  //"}"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected ':' but get '}'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' but get '}'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -269,14 +269,14 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Key_Token_should_Th
   getToken_ExpectAndReturn(openBrace0);   //"{"
   getToken_ExpectAndReturn(NAME1);        //"NAME1"
   getToken_ExpectAndReturn(JS);           //"JS"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected ':' but get 'JS'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' but get 'JS'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -304,14 +304,14 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_should_T
   getToken_ExpectAndReturn(openBrace0);   //"{"
   getToken_ExpectAndReturn(NAME1);        //"NAME1"
   getToken_ExpectAndReturn(int20);        //"20"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected ':' but get '20'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' but get '20'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -339,14 +339,14 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_Thro
   getToken_ExpectAndReturn(openBrace0);   //"{"
   getToken_ExpectAndReturn(NAME1);        //"NAME1"
   getToken_ExpectAndReturn(colon0);       //":"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
     free(err);
   }
@@ -375,14 +375,14 @@ void test_Simple_JSON_List_with_Operator_Token_Passed_in_after_Colon_Token_shoul
   getToken_ExpectAndReturn(NAME1);        //"NAME1"
   getToken_ExpectAndReturn(colon0);       //":"
   getToken_ExpectAndReturn(closeBrace0);  //"}"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ILLEGAL_VALUE but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Illegal Value.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[10]:Illegal Value.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ILLEGAL_VALUE,err->errorCode);
     free(err);
   }
@@ -411,14 +411,14 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_String_Token_should_Thr
   getToken_ExpectAndReturn(NAME1);        //"NAME1"
   getToken_ExpectAndReturn(colon0);       //":"
   getToken_ExpectAndReturn(JS);           //"JS"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
     free(err);
   }
@@ -448,14 +448,14 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_String_Token_should_
   getToken_ExpectAndReturn(colon0);       //":"
   getToken_ExpectAndReturn(JS);           //"JS"
   getToken_ExpectAndReturn(caret);        //"^"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -485,14 +485,14 @@ void test_Simple_JSON_List_with_Identifier_Token_Passed_in_after_String_Token_sh
   getToken_ExpectAndReturn(colon0);       //":"
   getToken_ExpectAndReturn(JS);           //"JS"
   getToken_ExpectAndReturn(NAME2);        //"NAME2"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get 'NAME2'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get 'NAME2'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -522,14 +522,14 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_String_Token_shoul
   getToken_ExpectAndReturn(colon0);       //":"
   getToken_ExpectAndReturn(JS);           //"JS"
   getToken_ExpectAndReturn(int20);        //"20"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '20'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get '20'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -558,14 +558,14 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should_Th
   getToken_ExpectAndReturn(NAME1);        //"NAME1"
   getToken_ExpectAndReturn(colon0);       //":"
   getToken_ExpectAndReturn(int20);        //"20"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
     free(err);
   }
@@ -595,14 +595,14 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_should
   getToken_ExpectAndReturn(colon0);       //":"
   getToken_ExpectAndReturn(int20);        //"20"
   getToken_ExpectAndReturn(caret);        //"^"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -632,14 +632,14 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Integer_Token_shoul
   getToken_ExpectAndReturn(colon0);       //":"
   getToken_ExpectAndReturn(int20);        //"20"
   getToken_ExpectAndReturn(JS);           //"JS"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get 'JS'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get 'JS'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -669,14 +669,14 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_shou
   getToken_ExpectAndReturn(colon0);       //":"
   getToken_ExpectAndReturn(int20);        //"20"
   getToken_ExpectAndReturn(int30);        //"30"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '30'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get '30'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -706,14 +706,14 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Coma_Token_should_Throw
   getToken_ExpectAndReturn(colon0);       //":"
   getToken_ExpectAndReturn(int20);        //"20"
   getToken_ExpectAndReturn(coma0);        //","
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
     free(err);
   }
@@ -749,7 +749,7 @@ void test_Simple_JSON_List_for_complete_form()
   getToken_ExpectAndReturn(colon1);        //":"
   getToken_ExpectAndReturn(int20);         //20
   getToken_ExpectAndReturn(closeBrace0);   //"}"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
@@ -804,14 +804,14 @@ void test_JSON_List_with_Extra_Token_Passed_into_Simple_JSON_List()
   getToken_ExpectAndReturn(int20);         //20
   getToken_ExpectAndReturn(closeBrace0);   //"}"
   getToken_ExpectAndReturn(caret);         //"^"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List already completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List already completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
     free(err);
   }
@@ -847,14 +847,14 @@ void test_Recursion_JSON_List_with_not_completed_List_should_Throw_Error()
   getToken_ExpectAndReturn(AGE);           //"AGE"
   getToken_ExpectAndReturn(colon1);        //":"
   getToken_ExpectAndReturn(openBrace1);    //"{"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
     free(err);
   }
@@ -891,14 +891,14 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token
   getToken_ExpectAndReturn(colon1);        //":"
   getToken_ExpectAndReturn(openBrace1);    //"{"
   getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_IDEN but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected an Identifier for 'Key'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[8]:Expected an Identifier for 'Key'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_IDEN,err->errorCode);
     free(err);
   }
@@ -935,14 +935,14 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Thr
   getToken_ExpectAndReturn(colon1);        //":"
   getToken_ExpectAndReturn(openBrace1);    //"{"
   getToken_ExpectAndReturn(NAME2);         //"NAME2"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
     free(err);
   }
@@ -980,14 +980,14 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Key_Token_should_
   getToken_ExpectAndReturn(openBrace1);    //"{"
   getToken_ExpectAndReturn(NAME2);         //"NAME2"
   getToken_ExpectAndReturn(caret);         //"^"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected ':' but get '^'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' but get '^'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1025,14 +1025,14 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Key_Token_should
   getToken_ExpectAndReturn(openBrace1);    //"{"
   getToken_ExpectAndReturn(NAME2);         //"NAME2"
   getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected ':' but get 'STEVEN'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' but get 'STEVEN'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1070,14 +1070,14 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_shoul
   getToken_ExpectAndReturn(openBrace1);    //"{"
   getToken_ExpectAndReturn(NAME2);         //"NAME2"
   getToken_ExpectAndReturn(int20);         //"20"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected ':' but get '20'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' but get '20'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1115,14 +1115,14 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_T
   getToken_ExpectAndReturn(openBrace1);    //"{"
   getToken_ExpectAndReturn(NAME2);         //"NAME2"
   getToken_ExpectAndReturn(colon2);        //":"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
     free(err);
   }
@@ -1161,14 +1161,14 @@ void test_Recursion_JSON_List_with_close_Brace_Token_Passed_in_after_Colon_Token
   getToken_ExpectAndReturn(NAME2);         //"NAME2"
   getToken_ExpectAndReturn(colon2);        //":"
   getToken_ExpectAndReturn(closeBrace0);   //"}"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ILLEGAL_VALUE but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Illegal Value.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[10]:Illegal Value.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ILLEGAL_VALUE,err->errorCode);
     free(err);
   }
@@ -1207,14 +1207,14 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_String_Token_should_
   getToken_ExpectAndReturn(NAME2);         //"NAME2"
   getToken_ExpectAndReturn(colon2);        //":"
   getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
     free(err);
   }
@@ -1254,14 +1254,14 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_String_Token_shou
   getToken_ExpectAndReturn(colon2);        //":"
   getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
   getToken_ExpectAndReturn(caret);         //"^"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1301,14 +1301,14 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_String_Token_sho
   getToken_ExpectAndReturn(colon2);        //":"
   getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
   getToken_ExpectAndReturn(YEN);           //"YEN"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get 'YEN'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get 'YEN'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1348,14 +1348,14 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_String_Token_sh
   getToken_ExpectAndReturn(colon2);        //":"
   getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
   getToken_ExpectAndReturn(int20);         //"20"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '20'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get '20'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1394,14 +1394,14 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should
   getToken_ExpectAndReturn(NAME2);         //"NAME2"
   getToken_ExpectAndReturn(colon2);        //":"
   getToken_ExpectAndReturn(int20);         //"20"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
     free(err);
   }
@@ -1441,14 +1441,14 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_sho
   getToken_ExpectAndReturn(colon2);        //":"
   getToken_ExpectAndReturn(int20);         //"20"
   getToken_ExpectAndReturn(caret);         //"^"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1488,14 +1488,14 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Integer_Token_sh
   getToken_ExpectAndReturn(colon2);        //":"
   getToken_ExpectAndReturn(int20);         //"20"
   getToken_ExpectAndReturn(YEN);           //"YEN"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get 'YEN'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get 'YEN'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1535,14 +1535,14 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_s
   getToken_ExpectAndReturn(colon2);        //":"
   getToken_ExpectAndReturn(int20);         //"20"
   getToken_ExpectAndReturn(int30);         //"30"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:Expected Operator '}' or ',' but get '30'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get '30'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1582,14 +1582,14 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_coma_Token_should_Th
   getToken_ExpectAndReturn(colon2);        //":"
   getToken_ExpectAndReturn(int20);         //"20"
   getToken_ExpectAndReturn(coma1);         //","
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
     free(err);
   }
@@ -1634,14 +1634,14 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_close_Brace_Token_sh
   getToken_ExpectAndReturn(colon3);        //":"
   getToken_ExpectAndReturn(YEN);           //"YEN"
   getToken_ExpectAndReturn(closeBrace0);   //"}"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
     free(err);
   }
@@ -1687,7 +1687,7 @@ void test_Recursion_JSON_List_for_complete_form()
   getToken_ExpectAndReturn(YEN);           //"YEN"
   getToken_ExpectAndReturn(closeBrace0);   //"}"
   getToken_ExpectAndReturn(closeBrace1);   //"}"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
@@ -1760,14 +1760,14 @@ void test_JSON_List_with_Extra_Token_Passed_into_Recursion_JSON_List()
   getToken_ExpectAndReturn(closeBrace0);   //"}"
   getToken_ExpectAndReturn(closeBrace1);   //"}"
   getToken_ExpectAndReturn(caret);         //"^"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR:ACCESS DENIED!!!The Json List already completed.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List already completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
     free(err);
   }
@@ -1797,6 +1797,7 @@ void test_Complex_Json_List()
 {
   JsonObject *jsonObj;
   Token *jsonTok;
+  Iterator *iter1,*iter2,*iter3;
   ErrorObject *err;
 
   TOKEN_DECLARE;
@@ -1830,7 +1831,7 @@ void test_Complex_Json_List()
   getToken_ExpectAndReturn(colon6);        //":"
   getToken_ExpectAndReturn(int30);         //"30"
   getToken_ExpectAndReturn(closeBrace2);   //"}"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   Try{
@@ -1840,8 +1841,40 @@ void test_Complex_Json_List()
     free(err);
   }
 
+  TEST_ASSERT_EQUAL(END,jsonObj->state);
+
+  iter1=createIterator(((JsonToken *)jsonTok)->list);
+  TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(iter1->current->value))->symbol);
+  iter1=iteratorGetNext(iter1);
+  TEST_ASSERT_KEY_VALUE(NAME1,JS, iter1->current);
+  iter1=iteratorGetNext(iter1);
+  TEST_ASSERT_KEY(AGE,iter1->current);
+  iter2=createIterator(((JsonToken *)(((OperatorToken *)(iter1->current->value))->token[1]))->list);
+  TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(iter2->current->value))->symbol);
+  iter2=iteratorGetNext(iter2);
+  TEST_ASSERT_KEY_VALUE(NAME2,STEVEN, iter2->current);
+  iter2=iteratorGetNext(iter2);
+  TEST_ASSERT_KEY(NAME3,iter2->current);
+  iter3=createIterator(((JsonToken *)(((OperatorToken *)(iter2->current->value))->token[1]))->list);
+  TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(iter3->current->value))->symbol);
+  iter3=iteratorGetNext(iter3);
+  TEST_ASSERT_KEY_VALUE(NAME4,ABU, iter3->current);
+  iter3=iteratorGetNext(iter3);
+  TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter3->current->value))->symbol);
+  iter2=iteratorGetNext(iter2);
+  TEST_ASSERT_KEY_VALUE(NAME4,YEN, iter2->current);
+  iter2=iteratorGetNext(iter2);
+  TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter2->current->value))->symbol);
+  iter1=iteratorGetNext(iter1);
+  TEST_ASSERT_KEY_VALUE(ADD,int30, iter1->current);
+  iter1=iteratorGetNext(iter1);
+  TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter1->current->value))->symbol);
+
   free(jsonObj);
   free(jsonTok);
+  free(iter1);
+  free(iter2);
+  free(iter3);
 
   TOKEN_FREE;
 }

@@ -25,6 +25,7 @@
   Token *colon4=createOperatorToken(":");           \
   Token *colon5=createOperatorToken(":");           \
   Token *colon6=createOperatorToken(":");           \
+  Token *dollarSign=createOperatorToken("$");       \
   Token *NAME1=createIdentifierToken("NAME1");      \
   Token *NAME2=createIdentifierToken("NAME2");      \
   Token *NAME3=createIdentifierToken("NAME3");      \
@@ -66,10 +67,12 @@
   free(int20);            \
   free(int30)
 
-#define DUMP_REMAIN_TOKEN                           \
-  dumpToken=getToken();                             \
-  while(dumpToken!=NULL){                           \
-    dumpToken=getToken();                           \
+#define DUMP_REMAIN_TOKEN                                                                               \
+  dumpToken=getToken();                                                                                 \
+  while(1){                                                                                             \
+    if(dumpToken->type==TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(dumpToken))->symbol,"$")==0)   \
+      break;                                                                                            \
+    dumpToken=getToken();                                                                               \
   }
 
 typedef struct {

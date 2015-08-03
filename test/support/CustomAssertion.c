@@ -47,7 +47,7 @@ void customTestAssertKeyValue(void *key, void *value, ListElement *actual, int l
       }
     }
     else{
-      CUSTOM_TEST_FAIL("ERROR:Unexpected Token type.");
+      CUSTOM_TEST_FAIL("ERROR:Unexpected KEY Token type.Expected an Identifier Token.");
     }
 
     //test for VALUE token
@@ -76,7 +76,7 @@ void customTestAssertKeyValue(void *key, void *value, ListElement *actual, int l
       }
     }
     else{
-      CUSTOM_TEST_FAIL("ERROR:Unexpected Token type.");
+      CUSTOM_TEST_FAIL("ERROR:Unexpected VALUE Token type.Expected String,Integer or a Float Token.");
     }
   }
 
@@ -107,7 +107,7 @@ void customTestAssertKey(void *key, ListElement *actual, int lineNo){
       }
     }
     else{
-      CUSTOM_TEST_FAIL("ERROR:Unexpected Token type.");
+      CUSTOM_TEST_FAIL("ERROR:Unexpected KEY Token type.Expected an Identifier Token.");
     }
   }
 
@@ -161,7 +161,7 @@ void customTestAssertValue(void *value, ListElement *actual, int lineNo){
       }
     }
     else{
-      CUSTOM_TEST_FAIL("ERROR:Unexpected Token type.");
+      CUSTOM_TEST_FAIL("ERROR:Unexpected VALUE Token type.Expected String,Integer or a Float Token.");
     }
   }
 

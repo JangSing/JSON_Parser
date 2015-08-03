@@ -91,7 +91,7 @@ void test_Finding_Element_in_Simple_JSON_List()
   getToken_ExpectAndReturn(colon1);        //":"
   getToken_ExpectAndReturn(int20);         //20
   getToken_ExpectAndReturn(closeBrace0);   //"}"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
 
@@ -150,7 +150,7 @@ void test_Finding_Element_in_Recursion_JSON_List()
   getToken_ExpectAndReturn(YEN);           //"YEN"
   getToken_ExpectAndReturn(closeBrace0);   //"}"
   getToken_ExpectAndReturn(closeBrace1);   //"}"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
 

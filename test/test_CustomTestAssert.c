@@ -10,6 +10,12 @@
 #include "LinkedList.h"
 #include "CustomAssertion.h"
 
+#include <stdarg.h>
+#include <malloc.h>
+#include <stdio.h>
+#include <assert.h>
+#include <ctype.h>
+
 void setUp()
 {
 }
@@ -25,18 +31,14 @@ void test_Custom_Test_Assert_Key_Value()
   JsonObject *jsonObj;
   Token *jsonTok;
 
-  Token *openBrace=createOperatorToken("{");
-  Token *closeBrace=createOperatorToken("}");
-  Token *colon0=createOperatorToken(":");
-  Token *NAME1=createIdentifierToken("NAME1");
-  Token *JS=createStringToken("JS");
+  TOKEN_DECLARE;
 
-  getToken_ExpectAndReturn(openBrace);     //"{"
-  getToken_ExpectAndReturn(NAME1);         //"NAME1"
-  getToken_ExpectAndReturn(colon0);        //":"
-  getToken_ExpectAndReturn(JS);            //"JS"
-  getToken_ExpectAndReturn(closeBrace);    //"}"
-  getToken_ExpectAndReturn(NULL);
+  getToken_ExpectAndReturn(openBrace0);     //"{"
+  getToken_ExpectAndReturn(NAME1);          //"NAME1"
+  getToken_ExpectAndReturn(colon0);         //":"
+  getToken_ExpectAndReturn(JS);             //"JS"
+  getToken_ExpectAndReturn(closeBrace0);    //"}"
+  getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
   jsonTok=jsonParse(jsonObj);
@@ -52,4 +54,6 @@ void test_Custom_Test_Assert_Key_Value()
   TEST_ASSERT_KEY_VALUE(NAME1,JS, iter->current);
   iter=iteratorGetNext(iter);
   TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter->current->value))->symbol);
+
+  TOKEN_FREE;
 }
