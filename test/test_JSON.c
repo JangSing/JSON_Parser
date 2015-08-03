@@ -172,7 +172,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token_sh
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_IDEN but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[8]:Expected an Identifier for 'Key'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[8]:Illegal 'Key'.Expected an Identifier for 'Key'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_IDEN,err->errorCode);
     free(err);
   }
@@ -382,7 +382,7 @@ void test_Simple_JSON_List_with_Operator_Token_Passed_in_after_Colon_Token_shoul
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ILLEGAL_VALUE but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[10]:Illegal Value.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[10]:Illegal 'Value'.Expected an Integer/String/Float for 'Value'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ILLEGAL_VALUE,err->errorCode);
     free(err);
   }
@@ -898,7 +898,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_IDEN but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[8]:Expected an Identifier for 'Key'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[8]:Illegal 'Key'.Expected an Identifier for 'Key'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_IDEN,err->errorCode);
     free(err);
   }
@@ -1168,7 +1168,7 @@ void test_Recursion_JSON_List_with_close_Brace_Token_Passed_in_after_Colon_Token
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ILLEGAL_VALUE but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[10]:Illegal Value.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[10]:Illegal 'Value'.Expected an Integer/String/Float for 'Value'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ILLEGAL_VALUE,err->errorCode);
     free(err);
   }
@@ -1840,7 +1840,7 @@ void test_Complex_Json_List()
     TEST_FAIL_JSON("unexpected error occurred =>'%s'",err->errorMsg);
     free(err);
   }
-
+  
   TEST_ASSERT_EQUAL(END,jsonObj->state);
 
   iter1=createIterator(((JsonToken *)jsonTok)->list);

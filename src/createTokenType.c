@@ -58,6 +58,20 @@ Token *createIntegerToken(int value){
   }
 }
 
+Token *createFloatToken(double value){
+  if(&value==NULL){
+    return NULL;
+  }
+  else{
+    FloatToken *floatTok =malloc(sizeof(FloatToken));
+
+    floatTok->type=TOKEN_FLOAT_TYPE;
+    floatTok->value=value;
+
+    return (Token *)floatTok;
+  }
+}
+
 Token *createStringToken(char *value){
   if(value==NULL){
     return NULL;
