@@ -45,6 +45,38 @@ void test_getToken()
   free(OPE);
 }
 
+
+/**
+ * at state WAIT_FOR_TOKEN,
+ * Test if Empty String been passed into the list
+ *
+ */
+void test_JSON_List_with_Empty_String_Passed_in_should_Throw_Error()
+{
+  JsonObject *jsonObj=NULL;
+  Token *jsonTok;
+  ErrorObject *err;
+
+  TOKEN_DECLARE;
+
+  getToken_ExpectAndReturn(dollarSign);
+
+  jsonObj=createJsonObject();
+  Try{
+    jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+  }Catch(err){
+    TEST_ASSERT_EQUAL_STRING("ERROR[13]:Empty String passing into the JsonParse.",err->errorMsg);
+    TEST_ASSERT_EQUAL(ERR_EMPTY_STRING,err->errorCode);
+    free(err);
+  }
+
+  free(jsonObj);
+  free(jsonTok);
+
+  TOKEN_FREE;
+}
+
 /**
  * at state WAIT_FOR_TOKEN,
  * Test only '}' token has been passed into the list
@@ -54,7 +86,7 @@ void test_getToken()
  */
 void test_Simple_JSON_List_with_only_close_Brace_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -88,7 +120,7 @@ void test_Simple_JSON_List_with_only_close_Brace_should_Throw_Error()
  */
 void test_Simple_JSON_List_with_keep_Passing_Token_after_Error_occur_should_Throw_Error_and_ignore_remain_Token()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -124,7 +156,7 @@ void test_Simple_JSON_List_with_keep_Passing_Token_after_Error_occur_should_Thro
  */
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_open_Brace_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -157,7 +189,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_open_Brace_Token_should
  */
 void test_Simple_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -191,7 +223,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token_sh
  */
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -225,7 +257,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Throw_
  */
 void test_Simple_JSON_List_with_Close_Brace_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -260,7 +292,7 @@ void test_Simple_JSON_List_with_Close_Brace_Token_Passed_in_after_Key_Token_shou
  */
 void test_Simple_JSON_List_with_String_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -295,7 +327,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Key_Token_should_Th
  */
 void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -330,7 +362,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_should_T
  */
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_Throw_Error1()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -365,7 +397,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_Thro
  */
 void test_Simple_JSON_List_with_Operator_Token_Passed_in_after_Colon_Token_should_Throw_Error1()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -401,7 +433,7 @@ void test_Simple_JSON_List_with_Operator_Token_Passed_in_after_Colon_Token_shoul
  */
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -437,7 +469,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_String_Token_should_Thr
  */
 void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -474,7 +506,7 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_String_Token_should_
  */
 void test_Simple_JSON_List_with_Identifier_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -511,7 +543,7 @@ void test_Simple_JSON_List_with_Identifier_Token_Passed_in_after_String_Token_sh
  */
 void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -548,7 +580,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_String_Token_shoul
  */
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -584,7 +616,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should_Th
  */
 void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -621,7 +653,7 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_should
  */
 void test_Simple_JSON_List_with_String_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -658,7 +690,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Integer_Token_shoul
  */
 void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -695,7 +727,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_shou
  */
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_Coma_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -733,7 +765,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Coma_Token_should_Throw
  */
 void test_Simple_JSON_List_for_complete_form()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   Iterator *iter;
   ErrorObject *err;
@@ -787,7 +819,7 @@ void test_Simple_JSON_List_for_complete_form()
  */
 void test_JSON_List_with_Extra_Token_Passed_into_Simple_JSON_List()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   Iterator *iter;
   ErrorObject *err;
@@ -833,7 +865,7 @@ void test_JSON_List_with_Extra_Token_Passed_into_Simple_JSON_List()
  */
 void test_Recursion_JSON_List_with_not_completed_List_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -876,7 +908,7 @@ void test_Recursion_JSON_List_with_not_completed_List_should_Throw_Error()
  */
 void test_Recursion_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -920,7 +952,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token
  */
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -964,7 +996,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Thr
  */
 void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -1009,7 +1041,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Key_Token_should_
  */
 void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -1054,7 +1086,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Key_Token_should
  */
 void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -1099,7 +1131,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_shoul
  */
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -1144,7 +1176,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_T
  */
 void test_Recursion_JSON_List_with_close_Brace_Token_Passed_in_after_Colon_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -1190,7 +1222,7 @@ void test_Recursion_JSON_List_with_close_Brace_Token_Passed_in_after_Colon_Token
  */
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -1236,7 +1268,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_String_Token_should_
  */
 void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -1283,7 +1315,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_String_Token_shou
  */
 void test_Recursion_JSON_List_with_String_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -1330,7 +1362,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_String_Token_sho
  */
 void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -1377,7 +1409,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_String_Token_sh
  */
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -1423,7 +1455,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should
  */
 void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -1470,7 +1502,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_sho
  */
 void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -1517,7 +1549,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Integer_Token_sh
  */
 void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -1564,7 +1596,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_s
  */
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_coma_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -1612,7 +1644,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_coma_Token_should_Th
  */
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_close_Brace_Token_should_Throw_Error()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
 
@@ -1663,7 +1695,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_close_Brace_Token_sh
  */
 void test_Recursion_JSON_List_for_complete_form()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   Iterator *iter1,*iter2;
   ErrorObject *err;
@@ -1735,7 +1767,7 @@ void test_Recursion_JSON_List_for_complete_form()
  */
 void test_JSON_List_with_Extra_Token_Passed_into_Recursion_JSON_List()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   Iterator *iter1,*iter2;
   ErrorObject *err;
@@ -1795,7 +1827,7 @@ void test_JSON_List_with_Extra_Token_Passed_into_Recursion_JSON_List()
  */
 void test_Complex_Json_List()
 {
-  JsonObject *jsonObj;
+  JsonObject *jsonObj=NULL;
   Token *jsonTok;
   Iterator *iter1,*iter2,*iter3;
   ErrorObject *err;

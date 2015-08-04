@@ -26,7 +26,7 @@ void customTestAssertKeyValue(void *key, void *value, ListElement *actual, int l
     int  intValue=((IntegerToken *)(value))->value;
     double  floatValue=((FloatToken *)(value))->value;
 
-    char *leftToken=((IdentifierToken *)(opTokActual->token[0]))->name;
+    char *idenLeftToken=((IdentifierToken *)(opTokActual->token[0]))->name;
     char *charRightToken=((StringToken *)(opTokActual->token[1]))->name;
     int  intRightToken=((IntegerToken *)(opTokActual->token[1]))->value;
     double  floatRightToken=((FloatToken *)(opTokActual->token[1]))->value;
@@ -40,10 +40,10 @@ void customTestAssertKeyValue(void *key, void *value, ListElement *actual, int l
     //test for KEY token
     if(opTokActual->token[0]->type==TOKEN_IDENTIFIER_TYPE){
       if(((Token *)(key))->type==TOKEN_IDENTIFIER_TYPE){
-        UNITY_TEST_ASSERT_EQUAL_STRING(idenKey,leftToken,lineNo, NULL);
+        UNITY_TEST_ASSERT_EQUAL_STRING(idenKey,idenLeftToken,lineNo, NULL);
       }
       else{
-        CUSTOM_TEST_FAIL("ERROR:Actual value for KEY was %s",leftToken);
+        CUSTOM_TEST_FAIL("ERROR:Actual value for KEY was %s",idenLeftToken);
       }
     }
     else{
@@ -93,17 +93,17 @@ void customTestAssertKey(void *key, ListElement *actual, int lineNo){
     OperatorToken *opTokActual=((OperatorToken *)(actual->value));
 
     char *idenKey=((IdentifierToken *)(key))->name;
-    char *leftToken=((IdentifierToken *)(opTokActual->token[0]))->name;
+    char *idenLeftToken=((IdentifierToken *)(opTokActual->token[0]))->name;
 
     UNITY_TEST_ASSERT_EQUAL_STRING(":", opTokActual->symbol, lineNo, NULL);
 
     //test for KEY token
     if(opTokActual->token[0]->type==TOKEN_IDENTIFIER_TYPE){
       if(((Token *)(key))->type==TOKEN_IDENTIFIER_TYPE){
-        UNITY_TEST_ASSERT_EQUAL_STRING(idenKey,leftToken,lineNo, NULL);
+        UNITY_TEST_ASSERT_EQUAL_STRING(idenKey,idenLeftToken,lineNo, NULL);
       }
       else{
-        CUSTOM_TEST_FAIL("ERROR:Actual value for KEY was %s",leftToken);
+        CUSTOM_TEST_FAIL("ERROR:Actual value for KEY was %s",idenLeftToken);
       }
     }
     else{

@@ -11,7 +11,7 @@ typedef enum{
   ARRAY,
   NUMBER,
   STRING,
-  END_OR_CON,
+  END_OR_CONTINUE,
   END,
   WAIT_FOR_OPERATOR,
   ERROR,
