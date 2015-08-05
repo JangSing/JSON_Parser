@@ -32,6 +32,7 @@ void test_create_Operator_Token_passing_in_Operator_should_return_Token(void)
   TEST_ASSERT_NOT_NULL(opTok);
   TEST_ASSERT_EQUAL(TOKEN_OPERATOR_TYPE,((OperatorToken *)(opTok))->type);
   TEST_ASSERT_EQUAL_STRING("{",((OperatorToken *)(opTok))->symbol);
+  TEST_ASSERT_EQUAL(1,((OperatorToken *)(opTok))->length);
 }
 
 void test_create_Identifier_Token_passing_in_key_should_return_Token(void)
@@ -41,6 +42,7 @@ void test_create_Identifier_Token_passing_in_key_should_return_Token(void)
   TEST_ASSERT_NOT_NULL(idenTok);
   TEST_ASSERT_EQUAL(TOKEN_IDENTIFIER_TYPE,((IdentifierToken *)(idenTok))->type);
   TEST_ASSERT_EQUAL_STRING("NAME",((IdentifierToken *)(idenTok))->name);
+  TEST_ASSERT_EQUAL(4,((IdentifierToken *)(idenTok))->length);
 }
 
 void test_create_Integer_Token_passing_in_value_should_return_Token(void)
@@ -50,6 +52,7 @@ void test_create_Integer_Token_passing_in_value_should_return_Token(void)
   TEST_ASSERT_NOT_NULL(intTok);
   TEST_ASSERT_EQUAL(TOKEN_INTEGER_TYPE,((IntegerToken *)(intTok))->type);
   TEST_ASSERT_EQUAL(20,((IntegerToken *)(intTok))->value);
+  TEST_ASSERT_EQUAL(2,((IntegerToken *)(intTok))->length);
 }
 
 void test_create_String_Token_passing_in_value_should_return_Token(void)
@@ -59,4 +62,5 @@ void test_create_String_Token_passing_in_value_should_return_Token(void)
   TEST_ASSERT_NOT_NULL(strTok);
   TEST_ASSERT_EQUAL(TOKEN_STRING_TYPE,((StringToken *)(strTok))->type);
   TEST_ASSERT_EQUAL_STRING("JS",((StringToken *)(strTok))->name);
+  TEST_ASSERT_EQUAL(2,((StringToken *)(strTok))->length);
 }

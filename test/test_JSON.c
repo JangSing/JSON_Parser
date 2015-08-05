@@ -53,6 +53,7 @@ void test_getToken()
  */
 void test_JSON_List_with_Empty_String_Passed_in_should_Throw_Error()
 {
+  printf("JSON list test No.1");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -75,6 +76,7 @@ void test_JSON_List_with_Empty_String_Passed_in_should_Throw_Error()
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -86,6 +88,7 @@ void test_JSON_List_with_Empty_String_Passed_in_should_Throw_Error()
  */
 void test_Simple_JSON_List_with_only_close_Brace_should_Throw_Error()
 {
+  printf("JSON list test No.2");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -100,7 +103,7 @@ void test_Simple_JSON_List_with_only_close_Brace_should_Throw_Error()
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected '{' but get '}'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected '{' at the beginning of JsonList but get '}'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -109,7 +112,9 @@ void test_Simple_JSON_List_with_only_close_Brace_should_Throw_Error()
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
+
 
 /**
  * at state WAIT_FOR_TOKEN,
@@ -120,6 +125,7 @@ void test_Simple_JSON_List_with_only_close_Brace_should_Throw_Error()
  */
 void test_Simple_JSON_List_with_keep_Passing_Token_after_Error_occur_should_Throw_Error_and_ignore_remain_Token()
 {
+  printf("JSON list test No.3");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -137,7 +143,7 @@ void test_Simple_JSON_List_with_keep_Passing_Token_after_Error_occur_should_Thro
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected '{' but get '}'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected '{' at the beginning of JsonList but get '}'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -145,6 +151,7 @@ void test_Simple_JSON_List_with_keep_Passing_Token_after_Error_occur_should_Thro
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -156,6 +163,7 @@ void test_Simple_JSON_List_with_keep_Passing_Token_after_Error_occur_should_Thro
  */
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_open_Brace_Token_should_Throw_Error()
 {
+    printf("JSON list test No.4");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -178,6 +186,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_open_Brace_Token_should
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -189,6 +198,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_open_Brace_Token_should
  */
 void test_Simple_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token_should_Throw_Error()
 {
+  printf("JSON list test No.5");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -204,7 +214,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token_sh
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_IDEN but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[8]:Illegal 'Key'.Expected an Identifier for 'Key'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[8]:Expected an Identifier for 'Key' but get 'JS'.\n\n{'JS'\n ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_IDEN,err->errorCode);
     free(err);
   }
@@ -212,6 +222,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token_sh
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -223,6 +234,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token_sh
  */
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
+  printf("JSON list test No.6");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -246,6 +258,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Throw_
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -257,6 +270,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Throw_
  */
 void test_Simple_JSON_List_with_Close_Brace_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
+  printf("JSON list test No.7");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -273,7 +287,7 @@ void test_Simple_JSON_List_with_Close_Brace_Token_Passed_in_after_Key_Token_shou
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' but get '}'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get '}'.\n\n{'NAME1'}\n        ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -281,6 +295,7 @@ void test_Simple_JSON_List_with_Close_Brace_Token_Passed_in_after_Key_Token_shou
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -292,6 +307,7 @@ void test_Simple_JSON_List_with_Close_Brace_Token_Passed_in_after_Key_Token_shou
  */
 void test_Simple_JSON_List_with_String_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
+  printf("JSON list test No.8");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -308,7 +324,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Key_Token_should_Th
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' but get 'JS'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get 'JS'.\n\n{'NAME1''JS'\n        ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -316,6 +332,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Key_Token_should_Th
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -327,6 +344,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Key_Token_should_Th
  */
 void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
+  printf("JSON list test No.9");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -343,7 +361,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_should_T
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' but get '20'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get '20'.\n\n{'NAME1'20\n        ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -351,6 +369,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_should_T
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -362,6 +381,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_should_T
  */
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_Throw_Error1()
 {
+  printf("JSON list test No.10");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -386,6 +406,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_Thro
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -397,6 +418,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_Thro
  */
 void test_Simple_JSON_List_with_Operator_Token_Passed_in_after_Colon_Token_should_Throw_Error1()
 {
+  printf("JSON list test No.11");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -414,7 +436,7 @@ void test_Simple_JSON_List_with_Operator_Token_Passed_in_after_Colon_Token_shoul
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ILLEGAL_VALUE but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[10]:Illegal 'Value'.Expected an Integer/String/Float for 'Value'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[10]:Expected an Integer/String/Float/{ for 'Value' but get }.\n\n'NAME1':}\n        ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ILLEGAL_VALUE,err->errorCode);
     free(err);
   }
@@ -422,6 +444,7 @@ void test_Simple_JSON_List_with_Operator_Token_Passed_in_after_Colon_Token_shoul
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -433,6 +456,7 @@ void test_Simple_JSON_List_with_Operator_Token_Passed_in_after_Colon_Token_shoul
  */
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
+  printf("JSON list test No.12");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -458,6 +482,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_String_Token_should_Thr
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -469,6 +494,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_String_Token_should_Thr
  */
 void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
+  printf("JSON list test No.13");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -487,7 +513,7 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_String_Token_should_
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '^'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -495,6 +521,7 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_String_Token_should_
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -506,6 +533,7 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_String_Token_should_
  */
 void test_Simple_JSON_List_with_Identifier_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
+  printf("JSON list test No.14");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -524,7 +552,7 @@ void test_Simple_JSON_List_with_Identifier_Token_Passed_in_after_String_Token_sh
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get 'NAME2'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get 'NAME2'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -532,6 +560,7 @@ void test_Simple_JSON_List_with_Identifier_Token_Passed_in_after_String_Token_sh
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -543,6 +572,7 @@ void test_Simple_JSON_List_with_Identifier_Token_Passed_in_after_String_Token_sh
  */
 void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
+  printf("JSON list test No.15");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -561,7 +591,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_String_Token_shoul
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get '20'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '20'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -569,6 +599,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_String_Token_shoul
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -580,6 +611,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_String_Token_shoul
  */
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
+  printf("JSON list test No.16");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -605,6 +637,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should_Th
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -616,6 +649,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should_Th
  */
 void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
+  printf("JSON list test No.17");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -634,7 +668,7 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_should
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '^'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -642,6 +676,7 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_should
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -653,6 +688,7 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_should
  */
 void test_Simple_JSON_List_with_String_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
+  printf("JSON list test No.18");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -671,7 +707,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Integer_Token_shoul
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get 'JS'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get 'JS'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -679,6 +715,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Integer_Token_shoul
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -690,6 +727,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Integer_Token_shoul
  */
 void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
+  printf("JSON list test No.19");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -708,7 +746,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_shou
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get '30'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '30'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -716,6 +754,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_shou
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -727,6 +766,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_shou
  */
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_Coma_Token_should_Throw_Error()
 {
+  printf("JSON list test No.20");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -753,6 +793,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Coma_Token_should_Throw
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -765,6 +806,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Coma_Token_should_Throw
  */
 void test_Simple_JSON_List_for_complete_form()
 {
+  printf("JSON list test No.21");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   Iterator *iter;
@@ -807,6 +849,7 @@ void test_Simple_JSON_List_for_complete_form()
   free(iter);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -819,6 +862,7 @@ void test_Simple_JSON_List_for_complete_form()
  */
 void test_JSON_List_with_Extra_Token_Passed_into_Simple_JSON_List()
 {
+  printf("JSON list test No.22");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   Iterator *iter;
@@ -853,6 +897,7 @@ void test_JSON_List_with_Extra_Token_Passed_into_Simple_JSON_List()
   free(iter);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -865,6 +910,7 @@ void test_JSON_List_with_Extra_Token_Passed_into_Simple_JSON_List()
  */
 void test_Recursion_JSON_List_with_not_completed_List_should_Throw_Error()
 {
+  printf("JSON list test No.23");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -895,6 +941,7 @@ void test_Recursion_JSON_List_with_not_completed_List_should_Throw_Error()
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -908,6 +955,7 @@ void test_Recursion_JSON_List_with_not_completed_List_should_Throw_Error()
  */
 void test_Recursion_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token_should_Throw_Error()
 {
+  printf("JSON list test No.24");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -930,7 +978,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_IDEN but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[8]:Illegal 'Key'.Expected an Identifier for 'Key'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[8]:Expected an Identifier for 'Key' but get 'STEVEN'.\n\n{'STEVEN'\n ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_IDEN,err->errorCode);
     free(err);
   }
@@ -939,6 +987,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -952,6 +1001,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token
  */
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
+  printf("JSON list test No.25");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -983,6 +1033,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Thr
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -996,6 +1047,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Thr
  */
 void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
+  printf("JSON list test No.26");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -1019,7 +1071,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Key_Token_should_
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' but get '^'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get '^'.\n\n{'NAME2'^\n        ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1028,6 +1080,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Key_Token_should_
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -1041,6 +1094,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Key_Token_should_
  */
 void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
+  printf("JSON list test No.27");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -1064,7 +1118,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Key_Token_should
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' but get 'STEVEN'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get 'STEVEN'.\n\n{'NAME2''STEVEN'\n        ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1073,6 +1127,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Key_Token_should
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -1086,6 +1141,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Key_Token_should
  */
 void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
+  printf("JSON list test No.28");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -1109,7 +1165,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_shoul
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' but get '20'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get '20'.\n\n{'NAME2'20\n        ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1118,6 +1174,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_shoul
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -1131,6 +1188,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_shoul
  */
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_Throw_Error()
 {
+  printf("JSON list test No.29");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -1163,6 +1221,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_T
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -1171,11 +1230,12 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_T
  *
  *  {
  *    "NAME1":"JS",
- *    "AGE"  :{"NAME2":}
+ *    "AGE"  :{"NAME2":^
  *
  */
-void test_Recursion_JSON_List_with_close_Brace_Token_Passed_in_after_Colon_Token_should_Throw_Error()
+void test_Recursion_JSON_List_with_caret_Token_Passed_in_after_Colon_Token_should_Throw_Error()
 {
+  printf("JSON list test No.30");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -1192,7 +1252,7 @@ void test_Recursion_JSON_List_with_close_Brace_Token_Passed_in_after_Colon_Token
   getToken_ExpectAndReturn(openBrace1);    //"{"
   getToken_ExpectAndReturn(NAME2);         //"NAME2"
   getToken_ExpectAndReturn(colon2);        //":"
-  getToken_ExpectAndReturn(closeBrace0);   //"}"
+  getToken_ExpectAndReturn(caret);         //"^"
   getToken_ExpectAndReturn(dollarSign);
 
   jsonObj=createJsonObject();
@@ -1200,7 +1260,7 @@ void test_Recursion_JSON_List_with_close_Brace_Token_Passed_in_after_Colon_Token
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_ILLEGAL_VALUE but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[10]:Illegal 'Value'.Expected an Integer/String/Float for 'Value'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[10]:Expected an Integer/String/Float/{ for 'Value' but get ^.\n\n'NAME2':^\n        ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ILLEGAL_VALUE,err->errorCode);
     free(err);
   }
@@ -1209,6 +1269,7 @@ void test_Recursion_JSON_List_with_close_Brace_Token_Passed_in_after_Colon_Token
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -1222,6 +1283,7 @@ void test_Recursion_JSON_List_with_close_Brace_Token_Passed_in_after_Colon_Token
  */
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
+  printf("JSON list test No.31");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -1255,6 +1317,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_String_Token_should_
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -1268,6 +1331,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_String_Token_should_
  */
 void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
+  printf("JSON list test No.32");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -1293,7 +1357,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_String_Token_shou
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '^'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1302,6 +1366,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_String_Token_shou
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -1315,6 +1380,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_String_Token_shou
  */
 void test_Recursion_JSON_List_with_String_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
+  printf("JSON list test No.33");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -1340,7 +1406,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_String_Token_sho
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get 'YEN'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get 'YEN'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1349,6 +1415,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_String_Token_sho
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -1362,6 +1429,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_String_Token_sho
  */
 void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
+  printf("JSON list test No.34");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -1387,7 +1455,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_String_Token_sh
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get '20'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '20'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1396,6 +1464,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_String_Token_sh
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -1409,6 +1478,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_String_Token_sh
  */
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
+  printf("JSON list test No.35");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -1442,6 +1512,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -1455,6 +1526,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should
  */
 void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
+  printf("JSON list test No.36");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -1480,7 +1552,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_sho
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get '^'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '^'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1489,6 +1561,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_sho
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -1502,6 +1575,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_sho
  */
 void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
+  printf("JSON list test No.37");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -1527,7 +1601,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Integer_Token_sh
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get 'YEN'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get 'YEN'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1536,6 +1610,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Integer_Token_sh
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -1549,6 +1624,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Integer_Token_sh
  */
 void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
+  printf("JSON list test No.38");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -1574,7 +1650,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_s
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' but get '30'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '30'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1583,6 +1659,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_s
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -1596,6 +1673,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_s
  */
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_coma_Token_should_Throw_Error()
 {
+  printf("JSON list test No.39");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -1630,6 +1708,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_coma_Token_should_Th
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -1644,6 +1723,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_coma_Token_should_Th
  */
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_close_Brace_Token_should_Throw_Error()
 {
+  printf("JSON list test No.40");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -1682,6 +1762,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_close_Brace_Token_sh
   free(jsonTok);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -1695,6 +1776,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_close_Brace_Token_sh
  */
 void test_Recursion_JSON_List_for_complete_form()
 {
+  printf("JSON list test No.41");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   Iterator *iter1,*iter2;
@@ -1754,6 +1836,7 @@ void test_Recursion_JSON_List_for_complete_form()
   free(iter1);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 /**
@@ -1767,6 +1850,7 @@ void test_Recursion_JSON_List_for_complete_form()
  */
 void test_JSON_List_with_Extra_Token_Passed_into_Recursion_JSON_List()
 {
+  printf("JSON list test No.42");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   Iterator *iter1,*iter2;
@@ -1810,6 +1894,7 @@ void test_JSON_List_with_Extra_Token_Passed_into_Recursion_JSON_List()
   free(iter1);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 
@@ -1827,6 +1912,7 @@ void test_JSON_List_with_Extra_Token_Passed_into_Recursion_JSON_List()
  */
 void test_Complex_Json_List()
 {
+  printf("JSON list test No.43");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   Iterator *iter1,*iter2,*iter3;
@@ -1872,7 +1958,7 @@ void test_Complex_Json_List()
     TEST_FAIL_JSON("unexpected error occurred =>'%s'",err->errorMsg);
     free(err);
   }
-  
+
   TEST_ASSERT_EQUAL(END,jsonObj->state);
 
   iter1=createIterator(((JsonToken *)jsonTok)->list);
@@ -1909,6 +1995,7 @@ void test_Complex_Json_List()
   free(iter3);
 
   TOKEN_FREE;
+  printf("\n\n");
 }
 
 

@@ -50,9 +50,7 @@ JsonObject *createJsonObject(){
 }
 
 Token *jsonParse(JsonObject *jsonObj){
-  if(jsonObj==NULL){
-    throwError(ERR_EMPTY_OBJECT,"ERROR[%d]:Empty object passing into the JsonParse.",ERR_EMPTY_OBJECT);
-  }
+
   JsonToken *jsonTok=malloc(sizeof(JsonToken));
   LinkedList *list;
 
@@ -61,14 +59,24 @@ Token *jsonParse(JsonObject *jsonObj){
   ListElement *newNode;
   Token *leftToken,*rightToken;
   char *errMsg;
+  int i;
+
+  if(jsonObj==NULL){
+    printf("\n\n");
+    errMsg="ERROR[%d]:Empty object passing into the JsonParse.";
+    printf(errMsg,ERR_EMPTY_OBJECT);
+    throwError(ERR_EMPTY_OBJECT,errMsg,ERR_EMPTY_OBJECT);
+  }
 
   list=createLinkedList();
-
 
   if(recur==0){
     token=getToken();
     if(token->type==TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(token))->symbol,"$")==0){
-      throwError(ERR_EMPTY_STRING,"ERROR[%d]:Empty String passing into the JsonParse.",ERR_EMPTY_STRING);
+      printf("\n");
+      errMsg="ERROR[%d]:Empty String passing into the JsonParse.";
+      printf(errMsg,ERR_EMPTY_STRING);
+      throwError(ERR_EMPTY_STRING,errMsg,ERR_EMPTY_STRING);
     }
   }
   else{
@@ -87,6 +95,7 @@ Token *jsonParse(JsonObject *jsonObj){
     switch(jsonObj->state){
       case WAIT_FOR_TOKEN :
         if(token-> type==TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(token))->symbol,"{")==0){
+          // printf("{\n");
           jsonObj->state=OBJECT;
           newNode=createListElement(token);
           addLast(newNode,list);
@@ -97,21 +106,36 @@ Token *jsonParse(JsonObject *jsonObj){
           DUMP_REMAIN_TOKEN;
           // Check Token type and Throw the Error.
           if(token-> type==TOKEN_OPERATOR_TYPE){
-            throwError(ERR_EXPECT_OPERATOR,"ERROR[%d]:Expected '{' but get '%s'.",ERR_EXPECT_OPERATOR,((OperatorToken *)(token))->symbol);
+            printf("\n");
+            errMsg="ERROR[%d]:Expected '{' at the beginning of JsonList but get '%s'.";
+            printf(errMsg,ERR_EXPECT_OPERATOR,((OperatorToken *)(token))->symbol);
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((OperatorToken *)(token))->symbol);
           }
           else if(token-> type==TOKEN_IDENTIFIER_TYPE || token-> type==TOKEN_STRING_TYPE){
-            throwError(ERR_EXPECT_OPERATOR,"ERROR[%d]:Expected '{' but get '%s'.",ERR_EXPECT_OPERATOR,((StringToken *)(token))->name);
+            printf("\n");
+            errMsg="ERROR[%d]:Expected '{' at the beginning of JsonList but get '%s'.";
+            printf(errMsg,ERR_EXPECT_OPERATOR,((StringToken *)(token))->name);
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((StringToken *)(token))->name);
           }
           else if (token-> type==TOKEN_INTEGER_TYPE){
-            throwError(ERR_EXPECT_OPERATOR,"ERROR[%d]:Expected '{' but get '%d'.",ERR_EXPECT_OPERATOR,((IntegerToken *)(token))->value);
+            printf("\n");
+            errMsg="ERROR[%d]:Expected '{' at the beginning of JsonList but get '%d'.";
+            printf(errMsg,ERR_EXPECT_OPERATOR,((IntegerToken *)(token))->value);
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((IntegerToken *)(token))->value);
           }
           else{
-            throwError(ERR_EXPECT_OPERATOR,"ERROR[%d]:Expected '{'.");
+            printf("\n");
+            errMsg="ERROR[%d]:Expected '{' at the beginning of JsonList.";
+            printf(errMsg,ERR_EXPECT_OPERATOR);
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR);
           }
         }break;
 
       case OBJECT :
         if(token->type==TOKEN_IDENTIFIER_TYPE){
+          // for(i=recur;i!=0;i--){
+            // printf("\t\t");
+          // }printf("\t%s\t",((IdentifierToken *)token)->name);
           jsonObj->state=WAIT_FOR_COLON;
           leftToken=token;
         }
@@ -119,11 +143,36 @@ Token *jsonParse(JsonObject *jsonObj){
           recur=0;
           jsonObj->state=ERROR;
           DUMP_REMAIN_TOKEN;
-          throwError(ERR_EXPECT_IDEN,"ERROR[%d]:Illegal 'Key'.Expected an Identifier for 'Key'.",ERR_EXPECT_IDEN);
+          // Check Token type and Throw the Error.
+          if(token-> type==TOKEN_OPERATOR_TYPE){
+            printf("\n");
+            errMsg="ERROR[%d]:Expected an Identifier for 'Key' but get '%s'.\n\n{'%s'\n%*s^\n";
+            printf(errMsg,ERR_EXPECT_IDEN,((OperatorToken *)(token))->symbol,((OperatorToken *)(token))->symbol,1,"");
+            throwError(ERR_EXPECT_IDEN,errMsg,ERR_EXPECT_IDEN,((OperatorToken *)(token))->symbol);
+          }
+          else if(token-> type==TOKEN_IDENTIFIER_TYPE || token-> type==TOKEN_STRING_TYPE){
+            printf("\n");
+            errMsg="ERROR[%d]:Expected an Identifier for 'Key' but get '%s'.\n\n{'%s'\n%*s^\n";
+            printf(errMsg,ERR_EXPECT_IDEN,((StringToken *)(token))->name,((StringToken *)(token))->name,1,"");
+            throwError(ERR_EXPECT_IDEN,errMsg,ERR_EXPECT_IDEN,((StringToken *)(token))->name,((StringToken *)(token))->name,1,"");
+          }
+          else if (token-> type==TOKEN_INTEGER_TYPE){
+            printf("\n");
+            errMsg="ERROR[%d]:Expected an Identifier for 'Key' but get '%d'.\n\n{%d\n%*s^\n";
+            printf(errMsg,ERR_EXPECT_IDEN,((IntegerToken *)(token))->value,((IntegerToken *)(token))->value,1,"");
+            throwError(ERR_EXPECT_IDEN,errMsg,ERR_EXPECT_IDEN,((IntegerToken *)(token))->value,((IntegerToken *)(token))->value,1,"");
+          }
+          else{
+            printf("\n");
+            errMsg="ERROR[%d]:Expected an Identifier for 'Key'.";
+            printf(errMsg,ERR_EXPECT_IDEN);
+            throwError(ERR_EXPECT_IDEN,errMsg,ERR_EXPECT_IDEN);
+          }
         }break;
 
       case WAIT_FOR_COLON :
         if(token->type==TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(token))->symbol,":")==0){
+          // printf(":");
           jsonObj->state=VALUE;
         }
         else{
@@ -132,39 +181,52 @@ Token *jsonParse(JsonObject *jsonObj){
           DUMP_REMAIN_TOKEN;
           // Check Token type and Throw the Error.
           if(token-> type==TOKEN_OPERATOR_TYPE){
-            throwError(ERR_EXPECT_OPERATOR,"ERROR[%d]:Expected ':' but get '%s'.",ERR_EXPECT_OPERATOR,((OperatorToken *)(token))->symbol);
+            printf("\n");
+            errMsg="ERROR[%d]:Expected ':' after 'Key' but get '%s'.\n\n{'%s'%s\n%*s^\n";
+            printf(errMsg,ERR_EXPECT_OPERATOR,((OperatorToken *)(token))->symbol,((IdentifierToken *)(leftToken))->name,
+                   ((OperatorToken *)(token))->symbol,(leftToken->length)+3,"");
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((OperatorToken *)(token))->symbol,((IdentifierToken *)(leftToken))->name,
+                   ((OperatorToken *)(token))->symbol,(leftToken->length)+3,"");
           }
           else if(token-> type==TOKEN_IDENTIFIER_TYPE || token-> type==TOKEN_STRING_TYPE){
-            throwError(ERR_EXPECT_OPERATOR,"ERROR[%d]:Expected ':' but get '%s'.",ERR_EXPECT_OPERATOR,((StringToken *)(token))->name);
+            printf("\n");
+            errMsg="ERROR[%d]:Expected ':' after 'Key' but get '%s'.\n\n{'%s''%s'\n%*s^\n";
+            printf(errMsg,ERR_EXPECT_OPERATOR,((StringToken *)(token))->name,((IdentifierToken *)(leftToken))->name,
+                   ((StringToken *)(token))->name,(leftToken->length)+3,"");
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((StringToken *)(token))->name,((IdentifierToken *)(leftToken))->name,
+                   ((StringToken *)(token))->name,(leftToken->length)+3,"");
           }
           else if (token-> type==TOKEN_INTEGER_TYPE){
-            throwError(ERR_EXPECT_OPERATOR,"ERROR[%d]:Expected ':' but get '%d'.",ERR_EXPECT_OPERATOR,((IntegerToken *)(token))->value);
+            printf("\n");
+            errMsg="ERROR[%d]:Expected ':' after 'Key' but get '%d'.\n\n{'%s'%d\n%*s^\n";
+            printf(errMsg,ERR_EXPECT_OPERATOR,((IntegerToken *)(token))->value,((IdentifierToken *)(leftToken))->name,
+                   ((IntegerToken *)(token))->value,(leftToken->length)+3,"");
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((IntegerToken *)(token))->value,((IdentifierToken *)(leftToken))->name,
+                   ((IntegerToken *)(token))->value,(leftToken->length)+3,"");
           }
           else{
-            throwError(ERR_EXPECT_OPERATOR,"ERROR[%d]:Expected ':'.",ERR_EXPECT_OPERATOR);
+            printf("\n");
+            errMsg="ERROR[%d]:Expected ':' after 'Key'.";
+            printf(errMsg,ERR_EXPECT_OPERATOR);
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR);
           }
         }break;
 
       case VALUE :
         if(token->type==TOKEN_OPERATOR_TYPE){
           if(strcmp(((OperatorToken *)(token))->symbol,"{")==0){
-
+            // printf("{\n");
             jsonObj->state=WAIT_FOR_OPERATOR;
 
             recur++;
             recurJsonObj=createJsonObject();
             rightToken=jsonParse(recurJsonObj);
             if(recurJsonObj->state!=END){
-              throwError(ERR_ACCESS_DENIED,"ERROR[%d]:ACCESS DENIED!!!The Json List is not completed.",ERR_ACCESS_DENIED);
+              printf("\n");
+              errMsg="ERROR[%d]:ACCESS DENIED!!!The Json List is not completed.";
+              printf(errMsg,ERR_ACCESS_DENIED);
+              throwError(ERR_ACCESS_DENIED,errMsg,ERR_ACCESS_DENIED);
             }
-            newNode=createListElement(link2Tokens(leftToken, ":", rightToken));
-            addLast(newNode,list);
-          }
-          else if(strcmp(((OperatorToken *)(token))->symbol,"[")==0){
-            jsonObj->state=ARRAY;
-            array++;
-            recurJsonObj=createJsonObject();
-            rightToken=jsonParse(recurJsonObj);
             newNode=createListElement(link2Tokens(leftToken, ":", rightToken));
             addLast(newNode,list);
           }
@@ -172,10 +234,19 @@ Token *jsonParse(JsonObject *jsonObj){
             recur=0;
             jsonObj->state=ERROR;
             DUMP_REMAIN_TOKEN;
-            throwError(ERR_ILLEGAL_VALUE,"ERROR[%d]:Illegal 'Value'.Expected an Integer/String/Float for 'Value'.",ERR_ILLEGAL_VALUE);
+            printf("\n");
+            errMsg="ERROR[%d]:Expected an Integer/String/Float/{ for 'Value' but get %s.\n\n'%s'%s%s\n%*s^\n";
+            printf(errMsg,ERR_ILLEGAL_VALUE,((OperatorToken *)(token))->symbol,((IdentifierToken *)(leftToken))->name,":",((OperatorToken *)(token))->symbol,(leftToken->length)+3,"");
+            throwError(ERR_ILLEGAL_VALUE,errMsg,ERR_ILLEGAL_VALUE,((OperatorToken *)(token))->symbol,((IdentifierToken *)(leftToken))->name,":",((OperatorToken *)(token))->symbol,(leftToken->length)+3,"");
           }
         }
         else if(token->type==TOKEN_STRING_TYPE || token->type==TOKEN_INTEGER_TYPE || token->type==TOKEN_FLOAT_TYPE){
+          // if(token->type==TOKEN_STRING_TYPE)
+            // printf("%s",((StringToken *)token)->name);
+          // else if(token->type==TOKEN_INTEGER_TYPE)
+            // printf("%d",((IntegerToken *)token)->value);
+          // else
+            // printf("%d",((FloatToken *)token)->value);
           jsonObj->state=WAIT_FOR_OPERATOR;
           rightToken=token;
           newNode=createListElement(link2Tokens(leftToken, ":", rightToken));
@@ -185,24 +256,32 @@ Token *jsonParse(JsonObject *jsonObj){
           recur=0;
           jsonObj->state=ERROR;
           DUMP_REMAIN_TOKEN;
-          throwError(ERR_ILLEGAL_VALUE,"ERROR[%d]:Illegal 'Value'.Expected an Integer/String/Float for 'Value'.",ERR_ILLEGAL_VALUE);
+          printf("\n");
+          errMsg="ERROR[%d]:Expected an Integer/String/Float/{ for 'Value'.";
+          printf(errMsg,ERR_ILLEGAL_VALUE);
+          throwError(ERR_ILLEGAL_VALUE,errMsg,ERR_ILLEGAL_VALUE);
         }break;
 
       case WAIT_FOR_OPERATOR :
         if(token->type==TOKEN_OPERATOR_TYPE){
           if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
+            // printf("\n}\n");
             jsonObj->state=END;
             newNode=createListElement(token);
             addLast(newNode,list);
           }
           else if(strcmp(((OperatorToken *)(token))->symbol,",")==0){
+            // printf(",\n");
             jsonObj->state=OBJECT;
           }
           else{
             recur=0;
             jsonObj->state=ERROR;
             DUMP_REMAIN_TOKEN;
-            throwError(ERR_EXPECT_OPERATOR,"ERROR[%d]:Expected Operator '}' or ',' but get '%s'.",ERR_EXPECT_OPERATOR,((OperatorToken *)(token))->symbol);
+            printf("\n");
+            errMsg="ERROR[%d]:Expected Operator '}' or ',' after 'Value' but get '%s'.";
+            printf(errMsg,ERR_EXPECT_OPERATOR,((OperatorToken *)(token))->symbol);
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((OperatorToken *)(token))->symbol);
           }
         }
         else{
@@ -211,13 +290,22 @@ Token *jsonParse(JsonObject *jsonObj){
           DUMP_REMAIN_TOKEN;
           // Check Token type and Throw the Error.
           if(token-> type==TOKEN_IDENTIFIER_TYPE || token-> type==TOKEN_STRING_TYPE){
-            throwError(ERR_EXPECT_OPERATOR,"ERROR[%d]:Expected Operator '}' or ',' but get '%s'.",ERR_EXPECT_OPERATOR,((StringToken *)(token))->name);
+            printf("\n");
+            errMsg="ERROR[%d]:Expected Operator '}' or ',' after 'Value' but get '%s'.";
+            printf(errMsg,ERR_EXPECT_OPERATOR,((StringToken *)(token))->name);
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((StringToken *)(token))->name);
           }
           else if (token-> type==TOKEN_INTEGER_TYPE){
-            throwError(ERR_EXPECT_OPERATOR,"ERROR[%d]:Expected Operator '}' or ',' but get '%d'.",ERR_EXPECT_OPERATOR,((IntegerToken *)(token))->value);
+            printf("\n");
+            errMsg="ERROR[%d]:Expected Operator '}' or ',' after 'Value' but get '%d'.";
+            printf(errMsg,ERR_EXPECT_OPERATOR,((IntegerToken *)(token))->value);
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((IntegerToken *)(token))->value);
           }
           else{
-            throwError(ERR_EXPECT_OPERATOR,"ERROR[%d]:Expected an Operator '}' or ','.",ERR_EXPECT_OPERATOR);
+            printf("\n");
+            errMsg="ERROR[%d]:Expected an Operator '}' or ',' after 'Value'.";
+            printf(errMsg,ERR_EXPECT_OPERATOR);
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR);
           }
         }break;
 
@@ -225,13 +313,19 @@ Token *jsonParse(JsonObject *jsonObj){
         recur=0;
         jsonObj->state=ERROR;
         DUMP_REMAIN_TOKEN;
-        throwError(ERR_ACCESS_DENIED,"ERROR[%d]:ACCESS DENIED!!!The Json List already completed.",ERR_ACCESS_DENIED);break;
+        printf("\n");
+        errMsg="ERROR[%d]:ACCESS DENIED!!!The Json List already completed.";
+        printf(errMsg,ERR_ACCESS_DENIED);
+        throwError(ERR_ACCESS_DENIED,errMsg,ERR_ACCESS_DENIED);break;
 
       default:
         recur=0;
         jsonObj->state=ERROR;
         DUMP_REMAIN_TOKEN;
-        throwError(ERR_UNKNOWN_ERROR,"ERROR[%d]:Unknown Error",ERR_UNKNOWN_ERROR);
+        printf("\n");
+        errMsg="ERROR[%d]:Unknown Error";
+        printf(errMsg,ERR_UNKNOWN_ERROR);
+        throwError(ERR_UNKNOWN_ERROR,errMsg,ERR_UNKNOWN_ERROR);
     }
 
     token=getToken();
@@ -242,6 +336,10 @@ Token *jsonParse(JsonObject *jsonObj){
       if(recur!=0 && token->type==TOKEN_OPERATOR_TYPE){
         if(strcmp(((OperatorToken *)(token))->symbol,"}")==0){
           if(jsonObj->state==STRING || jsonObj->state==NUMBER || jsonObj->state==WAIT_FOR_OPERATOR){
+            // printf("\n");
+            // for(i=recur;i!=0;i--){
+              // printf("\t\t");
+            // }printf("}");
             jsonObj->state=END;
             newNode=createListElement(token);
             addLast(newNode,list);
@@ -252,7 +350,10 @@ Token *jsonParse(JsonObject *jsonObj){
             recur=0;
             jsonObj->state=ERROR;
             DUMP_REMAIN_TOKEN;
-            throwError(ERR_ILLEGAL_VALUE,"ERROR[%d]:Illegal 'Value'.Expected an Integer/String/Float for 'Value'.",ERR_ILLEGAL_VALUE);
+            printf("\n");
+            errMsg="ERROR[%d]:Expected an Integer/String/Float/{ for 'Value' but get %s.\n\n'%s'%s%s\n%*s^\n";
+            printf(errMsg,ERR_ILLEGAL_VALUE,((OperatorToken *)(token))->symbol,((IdentifierToken *)(leftToken))->name,":",((OperatorToken *)(token))->symbol,(leftToken->length)+3,"");
+            throwError(ERR_ILLEGAL_VALUE,errMsg,ERR_ILLEGAL_VALUE,((OperatorToken *)(token))->symbol,((IdentifierToken *)(leftToken))->name,":",((OperatorToken *)(token))->symbol,(leftToken->length)+3,"");
           }
         }
         else{}
@@ -265,7 +366,10 @@ Token *jsonParse(JsonObject *jsonObj){
   if(jsonObj->state!=END){
     recur=0;
     jsonObj->state=ERROR;
-    throwError(ERR_ACCESS_DENIED,"ERROR[%d]:ACCESS DENIED!!!The Json List is not completed.",ERR_ACCESS_DENIED);
+    printf("\n");
+    errMsg="ERROR[%d]:ACCESS DENIED!!!The Json List is not completed.";
+    printf(errMsg,ERR_ACCESS_DENIED);
+    throwError(ERR_ACCESS_DENIED,errMsg,ERR_ACCESS_DENIED);
   }
   else{
     jsonTok->list=list;
