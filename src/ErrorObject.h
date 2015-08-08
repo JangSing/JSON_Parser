@@ -17,15 +17,14 @@ typedef enum {
   ERR_ILLEGAL_VALUE,
   ERR_UNKNOWN_ERROR,
   ERR_EMPTY_OBJECT,
-  ERR_EMPTY_STRING
+  ERR_EMPTY_STRING,
+  ERR_KEY_NOT_FOUND
 }ErrorCode;
 
 typedef struct{
   char *errorMsg;
   ErrorCode errorCode;
 }ErrorObject;
-
-void freeError(ErrorObject *err);
 
 void throwError(ErrorCode errCode, char *msg, ...);
 

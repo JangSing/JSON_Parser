@@ -113,7 +113,7 @@ JsonObject *createJsonObject();
 
 Token *link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue);
 
-Token *getElementValue(ListElement *findKey);
+
 
 
 #endif // JSON_H

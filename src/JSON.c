@@ -16,7 +16,6 @@
 #include <ctype.h>
 
 int recur=0;
-int array=0;
 
 Token *link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue){
   if( leftValue==NULL || operatorSymbol==NULL || rightValue==NULL){
@@ -31,15 +30,6 @@ Token *link2Tokens(Token *leftValue, char *operatorSymbol, Token *rightValue){
     opTok->token[1]=rightValue;
 
     return (Token *)opTok;
-  }
-}
-
-Token *getElementValue(ListElement *findKey){
-  if(findKey==NULL){
-    return NULL;
-  }
-  else{
-    return ((OperatorToken *)(findKey->value))->token[1];
   }
 }
 
@@ -148,21 +138,21 @@ Token *jsonParse(JsonObject *jsonObj){
           // Check Token type and Throw the Error.
           if(token-> type==TOKEN_OPERATOR_TYPE){
             printf("\n");
-            errMsg="ERROR[%d]:Expected an Identifier for 'Key' but get '%s'.\n\n{'%s'\n%*s^\n";
-            printf(errMsg,ERR_EXPECT_IDEN,opCurrentTok,opCurrentTok,1,"");
+            errMsg="ERROR[%d]:Expected an Identifier for 'Key' but get '%s'.";
+            printf(errMsg,ERR_EXPECT_IDEN,opCurrentTok);
             throwError(ERR_EXPECT_IDEN,errMsg,ERR_EXPECT_IDEN,opCurrentTok);
           }
           else if(token-> type==TOKEN_IDENTIFIER_TYPE || token-> type==TOKEN_STRING_TYPE){
             printf("\n");
-            errMsg="ERROR[%d]:Expected an Identifier for 'Key' but get '%s'.\n\n{'%s'\n%*s^\n";
-            printf(errMsg,ERR_EXPECT_IDEN,strCurrentTok,strCurrentTok,1,"");
-            throwError(ERR_EXPECT_IDEN,errMsg,ERR_EXPECT_IDEN,strCurrentTok,strCurrentTok,1,"");
+            errMsg="ERROR[%d]:Expected an Identifier for 'Key' but get '%s'.";
+            printf(errMsg,ERR_EXPECT_IDEN,strCurrentTok);
+            throwError(ERR_EXPECT_IDEN,errMsg,ERR_EXPECT_IDEN,strCurrentTok);
           }
           else if (token-> type==TOKEN_INTEGER_TYPE){
             printf("\n");
-            errMsg="ERROR[%d]:Expected an Identifier for 'Key' but get '%d'.\n\n{%d\n%*s^\n";
-            printf(errMsg,ERR_EXPECT_IDEN,intCurrentTok,intCurrentTok,1,"");
-            throwError(ERR_EXPECT_IDEN,errMsg,ERR_EXPECT_IDEN,intCurrentTok,intCurrentTok,1,"");
+            errMsg="ERROR[%d]:Expected an Identifier for 'Key' but get '%d'.";
+            printf(errMsg,ERR_EXPECT_IDEN,intCurrentTok);
+            throwError(ERR_EXPECT_IDEN,errMsg,ERR_EXPECT_IDEN,intCurrentTok);
           }
           else{
             printf("\n");
@@ -377,10 +367,12 @@ Token *jsonParse(JsonObject *jsonObj){
             recur=0;
             jsonObj->state=ERROR;
             DUMP_REMAIN_TOKEN;
+            DECLARE_CURRENT_PTR;
+            DECLARE_LEFT_PTR;
             printf("\n");
             errMsg="ERROR[%d]:Expected an Integer/String/Float/{ for 'Value' but get %s.\n\n'%s'%s%s\n%*s^\n";
-            printf(errMsg,ERR_ILLEGAL_VALUE,((OperatorToken *)(token))->symbol,((IdentifierToken *)(leftToken))->name,":",((OperatorToken *)(token))->symbol,(leftToken->length)+3,"");
-            throwError(ERR_ILLEGAL_VALUE,errMsg,ERR_ILLEGAL_VALUE,((OperatorToken *)(token))->symbol,((IdentifierToken *)(leftToken))->name,":",((OperatorToken *)(token))->symbol,(leftToken->length)+3,"");
+            printf(errMsg,ERR_ILLEGAL_VALUE,opCurrentTok,idenLeftTok,":",opCurrentTok,(leftToken->length)+3,"");
+            throwError(ERR_ILLEGAL_VALUE,errMsg,ERR_ILLEGAL_VALUE,opCurrentTok,idenLeftTok,":",opCurrentTok,(leftToken->length)+3,"");
           }
         }
         else{}

@@ -19,52 +19,65 @@ ListElement *listFind(LinkedList *list, void *value, int(*compare)(void *,void *
     return NULL;
   }
   else{
-    ListElement *ptr;
-    ptr=list->head;
+    ListElement *elemPtr;
+    elemPtr=list->head;
 
-    if(value==NULL || (compare(ptr ->value , value)==-1)){
+    if(value==NULL || (compare(elemPtr ->value , value)==-1)){
       return NULL;
     }
 
     else{
       //if they are not the same then continue looping
-      while (compare(ptr ->value , value)==1){
-        ptr =ptr->next;
+      while (compare(elemPtr ->value , value)==1){
+        elemPtr =elemPtr->next;
 
-        if(ptr==NULL){
+        if(elemPtr==NULL){
           return NULL;
         }
       }
-      return ptr;
+      return elemPtr;
     }
   }
 }
 
-ListElement *keyFind(LinkedList *list, void *value, int(*compare)(void *,void *)){
+ListElement *keyFind(LinkedList *list, void *key, int(*compare)(void *,void *)){
+  char *errMsg;
+
   if(list==NULL){
     return NULL;
   }
   else{
-    ListElement *ptr;
-    ptr=list->head;
+    ListElement *elemPtr;
+    elemPtr=list->head;
 
-    if(value==NULL || (compare(ptr ->value , value)==-1)){
+    if(key==NULL || (compare(elemPtr ->value , key)==-1)){
       return NULL;
     }
 
     else{
-      ptr=ptr->next;
+      elemPtr=elemPtr->next;
       //if they are not the same then continue looping
-      while (compare(((IdentifierToken *)(((OperatorToken *)(ptr ->value))->token[0]))->name , value)==1){
-        ptr =ptr->next;
-        if (ptr==NULL){
-          return ptr;
-        }
-        if((((OperatorToken *)(ptr ->value))->token[0])==NULL){
-          ptr=ptr->next;
+      while (compare(((IdentifierToken *)(((OperatorToken *)(elemPtr ->value))->token[0]))->name , key)==1){
+        elemPtr =elemPtr->next;
+        if (((Token *)(elemPtr->value))->type==TOKEN_OPERATOR_TYPE && strcmp(((OperatorToken *)(elemPtr->value))->symbol,"}")==0){
+          errMsg="ERROR[%d]:Key not Found.Finding 'Key'=>'%s'.";
+          printf(errMsg,ERR_KEY_NOT_FOUND,(char *)(key));
+          throwError(ERR_KEY_NOT_FOUND,errMsg,ERR_KEY_NOT_FOUND,(char *)(key));
+          return NULL;
         }
       }
-      return ptr;
+
+      return elemPtr;
     }
   }
 }
+
+Token *getElementValue(ListElement *findKey){
+  if(findKey==NULL){
+    return NULL;
+  }
+  else{
+    return ((OperatorToken *)(findKey->value))->token[1];
+  }
+}
+

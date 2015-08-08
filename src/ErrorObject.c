@@ -11,10 +11,6 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
-void freeError(ErrorObject *err){
-  free(err);
-}
-
 void throwError(ErrorCode errCode,char *msg , ...){
   ErrorObject *errorObj=malloc(sizeof(ErrorObject));
 
@@ -33,5 +29,6 @@ void throwError(ErrorCode errCode,char *msg , ...){
   va_end(args);
   Throw(errorObj);
 }
+
 
 

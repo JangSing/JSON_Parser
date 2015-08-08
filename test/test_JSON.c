@@ -65,7 +65,7 @@ void test_JSON_List_with_Empty_String_Passed_in_should_Throw_Error()
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[13]:Empty String passing into the JsonParse.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EMPTY_STRING,err->errorCode);
@@ -101,7 +101,7 @@ void test_Simple_JSON_List_with_only_close_Brace_should_Throw_Error()
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected '{' at the beginning of JsonList but get '}'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -141,7 +141,7 @@ void test_Simple_JSON_List_with_keep_Passing_Token_after_Error_occur_should_Thro
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected '{' at the beginning of JsonList but get '}'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -176,7 +176,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_open_Brace_Token_should
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
@@ -212,9 +212,9 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token_sh
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_IDEN but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_IDEN to be thrown, but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[8]:Expected an Identifier for 'Key' but get 'JS'.\n\n{'JS'\n ^\n",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[8]:Expected an Identifier for 'Key' but get 'JS'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_IDEN,err->errorCode);
     free(err);
   }
@@ -248,7 +248,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Throw_
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
@@ -285,7 +285,7 @@ void test_Simple_JSON_List_with_Close_Brace_Token_Passed_in_after_Key_Token_shou
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get '}'.\n\n{'NAME1'}\n        ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -322,7 +322,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Key_Token_should_Th
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get 'JS'.\n\n{'NAME1''JS'\n        ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -359,7 +359,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_should_T
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get '20'.\n\n{'NAME1'20\n        ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -396,7 +396,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_Thro
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
@@ -434,7 +434,7 @@ void test_Simple_JSON_List_with_Operator_Token_Passed_in_after_Colon_Token_shoul
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ILLEGAL_VALUE but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ILLEGAL_VALUE to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[10]:Expected an Integer/String/Float/{ for 'Value' but get }.\n\n'NAME1':}\n        ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ILLEGAL_VALUE,err->errorCode);
@@ -472,7 +472,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_String_Token_should_Thr
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
@@ -511,7 +511,7 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_String_Token_should_
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '^'.\n\n'NAME1':'JS'^\n            ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -550,7 +550,7 @@ void test_Simple_JSON_List_with_Identifier_Token_Passed_in_after_String_Token_sh
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get 'NAME2'.\n\n'NAME1':'JS''NAME2'\n            ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -589,7 +589,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_String_Token_shoul
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '20'.\n\n'NAME1':'JS'20\n            ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -627,7 +627,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should_Th
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
@@ -666,7 +666,7 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_should
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '^'.\n\n'NAME1':20^\n          ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -705,7 +705,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Integer_Token_shoul
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get 'JS'.\n\n'NAME1':20'JS'\n          ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -744,7 +744,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_shou
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '30'.\n\n'NAME1':20 30\n           ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -783,7 +783,7 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Coma_Token_should_Throw
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
@@ -843,7 +843,7 @@ void test_Simple_JSON_List_for_complete_form()
   TEST_ASSERT_KEY_VALUE(AGE,int20, iter->current);
   iter=iteratorGetNext(iter);
   TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter->current->value))->symbol);
-
+  
   free(jsonObj);
   free(jsonTok);
   free(iter);
@@ -885,7 +885,7 @@ void test_JSON_List_with_Extra_Token_Passed_into_Simple_JSON_List()
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List already completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
@@ -930,7 +930,7 @@ void test_Recursion_JSON_List_with_not_completed_List_should_Throw_Error()
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
@@ -976,9 +976,9 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_IDEN but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_IDEN to be thrown, but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[8]:Expected an Identifier for 'Key' but get 'STEVEN'.\n\n{'STEVEN'\n ^\n",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[8]:Expected an Identifier for 'Key' but get 'STEVEN'.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_IDEN,err->errorCode);
     free(err);
   }
@@ -1022,7 +1022,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Thr
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
@@ -1069,7 +1069,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Key_Token_should_
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get '^'.\n\n{'NAME2'^\n        ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -1116,7 +1116,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Key_Token_should
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get 'STEVEN'.\n\n{'NAME2''STEVEN'\n        ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -1163,7 +1163,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_shoul
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get '20'.\n\n{'NAME2'20\n        ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -1210,7 +1210,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_T
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
@@ -1258,7 +1258,7 @@ void test_Recursion_JSON_List_with_caret_Token_Passed_in_after_Colon_Token_shoul
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ILLEGAL_VALUE but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ILLEGAL_VALUE to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[10]:Expected an Integer/String/Float/{ for 'Value' but get ^.\n\n'NAME2':^\n        ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ILLEGAL_VALUE,err->errorCode);
@@ -1306,7 +1306,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_String_Token_should_
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
@@ -1355,7 +1355,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_String_Token_shou
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '^'.\n\n'NAME2':'STEVEN'^\n                ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -1404,7 +1404,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_String_Token_sho
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get 'YEN'.\n\n'NAME2':'STEVEN''YEN'\n                ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -1453,7 +1453,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_String_Token_sh
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '20'.\n\n'NAME2':'STEVEN'20\n                ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -1501,7 +1501,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
@@ -1550,7 +1550,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_sho
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '^'.\n\n'NAME2':20^\n          ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -1599,7 +1599,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Integer_Token_sh
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get 'YEN'.\n\n'NAME2':20'YEN'\n          ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -1648,7 +1648,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_s
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '30'.\n\n'NAME2':20 30\n           ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
@@ -1697,7 +1697,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_coma_Token_should_Th
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
@@ -1751,7 +1751,7 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_close_Brace_Token_sh
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List is not completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
@@ -1881,7 +1881,7 @@ void test_JSON_List_with_Extra_Token_Passed_into_Recursion_JSON_List()
   jsonObj=createJsonObject();
   Try{
     jsonTok=jsonParse(jsonObj);
-    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED but none thrown.");
+    TEST_FAIL_MESSAGE("Expecting ERR_ACCESS_DENIED to be thrown, but none thrown.");
   }Catch(err){
     TEST_ASSERT_EQUAL_STRING("ERROR[9]:ACCESS DENIED!!!The Json List already completed.",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_ACCESS_DENIED,err->errorCode);
