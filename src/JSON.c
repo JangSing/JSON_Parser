@@ -104,24 +104,25 @@ Token *jsonParse(JsonObject *jsonObj){
           recur=0;
           jsonObj->state=ERROR;
           DUMP_REMAIN_TOKEN;
+          DECLARE_CURRENT_PTR;
           // Check Token type and Throw the Error.
           if(token-> type==TOKEN_OPERATOR_TYPE){
             printf("\n");
             errMsg="ERROR[%d]:Expected '{' at the beginning of JsonList but get '%s'.";
-            printf(errMsg,ERR_EXPECT_OPERATOR,((OperatorToken *)(token))->symbol);
-            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((OperatorToken *)(token))->symbol);
+            printf(errMsg,ERR_EXPECT_OPERATOR,opCurrentTok);
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,opCurrentTok);
           }
           else if(token-> type==TOKEN_IDENTIFIER_TYPE || token-> type==TOKEN_STRING_TYPE){
             printf("\n");
             errMsg="ERROR[%d]:Expected '{' at the beginning of JsonList but get '%s'.";
-            printf(errMsg,ERR_EXPECT_OPERATOR,((StringToken *)(token))->name);
-            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((StringToken *)(token))->name);
+            printf(errMsg,ERR_EXPECT_OPERATOR,strCurrentTok);
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,strCurrentTok);
           }
           else if (token-> type==TOKEN_INTEGER_TYPE){
             printf("\n");
             errMsg="ERROR[%d]:Expected '{' at the beginning of JsonList but get '%d'.";
-            printf(errMsg,ERR_EXPECT_OPERATOR,((IntegerToken *)(token))->value);
-            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((IntegerToken *)(token))->value);
+            printf(errMsg,ERR_EXPECT_OPERATOR,intCurrentTok);
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,intCurrentTok);
           }
           else{
             printf("\n");
@@ -143,24 +144,25 @@ Token *jsonParse(JsonObject *jsonObj){
           recur=0;
           jsonObj->state=ERROR;
           DUMP_REMAIN_TOKEN;
+          DECLARE_CURRENT_PTR;
           // Check Token type and Throw the Error.
           if(token-> type==TOKEN_OPERATOR_TYPE){
             printf("\n");
             errMsg="ERROR[%d]:Expected an Identifier for 'Key' but get '%s'.\n\n{'%s'\n%*s^\n";
-            printf(errMsg,ERR_EXPECT_IDEN,((OperatorToken *)(token))->symbol,((OperatorToken *)(token))->symbol,1,"");
-            throwError(ERR_EXPECT_IDEN,errMsg,ERR_EXPECT_IDEN,((OperatorToken *)(token))->symbol);
+            printf(errMsg,ERR_EXPECT_IDEN,opCurrentTok,opCurrentTok,1,"");
+            throwError(ERR_EXPECT_IDEN,errMsg,ERR_EXPECT_IDEN,opCurrentTok);
           }
           else if(token-> type==TOKEN_IDENTIFIER_TYPE || token-> type==TOKEN_STRING_TYPE){
             printf("\n");
             errMsg="ERROR[%d]:Expected an Identifier for 'Key' but get '%s'.\n\n{'%s'\n%*s^\n";
-            printf(errMsg,ERR_EXPECT_IDEN,((StringToken *)(token))->name,((StringToken *)(token))->name,1,"");
-            throwError(ERR_EXPECT_IDEN,errMsg,ERR_EXPECT_IDEN,((StringToken *)(token))->name,((StringToken *)(token))->name,1,"");
+            printf(errMsg,ERR_EXPECT_IDEN,strCurrentTok,strCurrentTok,1,"");
+            throwError(ERR_EXPECT_IDEN,errMsg,ERR_EXPECT_IDEN,strCurrentTok,strCurrentTok,1,"");
           }
           else if (token-> type==TOKEN_INTEGER_TYPE){
             printf("\n");
             errMsg="ERROR[%d]:Expected an Identifier for 'Key' but get '%d'.\n\n{%d\n%*s^\n";
-            printf(errMsg,ERR_EXPECT_IDEN,((IntegerToken *)(token))->value,((IntegerToken *)(token))->value,1,"");
-            throwError(ERR_EXPECT_IDEN,errMsg,ERR_EXPECT_IDEN,((IntegerToken *)(token))->value,((IntegerToken *)(token))->value,1,"");
+            printf(errMsg,ERR_EXPECT_IDEN,intCurrentTok,intCurrentTok,1,"");
+            throwError(ERR_EXPECT_IDEN,errMsg,ERR_EXPECT_IDEN,intCurrentTok,intCurrentTok,1,"");
           }
           else{
             printf("\n");
@@ -179,30 +181,26 @@ Token *jsonParse(JsonObject *jsonObj){
           recur=0;
           jsonObj->state=ERROR;
           DUMP_REMAIN_TOKEN;
+          DECLARE_CURRENT_PTR;
+          DECLARE_LEFT_PTR;
           // Check Token type and Throw the Error.
           if(token-> type==TOKEN_OPERATOR_TYPE){
             printf("\n");
             errMsg="ERROR[%d]:Expected ':' after 'Key' but get '%s'.\n\n{'%s'%s\n%*s^\n";
-            printf(errMsg,ERR_EXPECT_OPERATOR,((OperatorToken *)(token))->symbol,((IdentifierToken *)(leftToken))->name,
-                   ((OperatorToken *)(token))->symbol,(leftToken->length)+3,"");
-            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((OperatorToken *)(token))->symbol,((IdentifierToken *)(leftToken))->name,
-                   ((OperatorToken *)(token))->symbol,(leftToken->length)+3,"");
+            printf(errMsg,ERR_EXPECT_OPERATOR,opCurrentTok,idenLeftTok,opCurrentTok,(leftToken->length)+3,"");
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,opCurrentTok,idenLeftTok,opCurrentTok,(leftToken->length)+3,"");
           }
           else if(token-> type==TOKEN_IDENTIFIER_TYPE || token-> type==TOKEN_STRING_TYPE){
             printf("\n");
             errMsg="ERROR[%d]:Expected ':' after 'Key' but get '%s'.\n\n{'%s''%s'\n%*s^\n";
-            printf(errMsg,ERR_EXPECT_OPERATOR,((StringToken *)(token))->name,((IdentifierToken *)(leftToken))->name,
-                   ((StringToken *)(token))->name,(leftToken->length)+3,"");
-            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((StringToken *)(token))->name,((IdentifierToken *)(leftToken))->name,
-                   ((StringToken *)(token))->name,(leftToken->length)+3,"");
+            printf(errMsg,ERR_EXPECT_OPERATOR,strCurrentTok,idenLeftTok,strCurrentTok,(leftToken->length)+3,"");
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,strCurrentTok,idenLeftTok,strCurrentTok,(leftToken->length)+3,"");
           }
           else if (token-> type==TOKEN_INTEGER_TYPE){
             printf("\n");
             errMsg="ERROR[%d]:Expected ':' after 'Key' but get '%d'.\n\n{'%s'%d\n%*s^\n";
-            printf(errMsg,ERR_EXPECT_OPERATOR,((IntegerToken *)(token))->value,((IdentifierToken *)(leftToken))->name,
-                   ((IntegerToken *)(token))->value,(leftToken->length)+3,"");
-            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((IntegerToken *)(token))->value,((IdentifierToken *)(leftToken))->name,
-                   ((IntegerToken *)(token))->value,(leftToken->length)+3,"");
+            printf(errMsg,ERR_EXPECT_OPERATOR,intCurrentTok,idenLeftTok,intCurrentTok,(leftToken->length)+3,"");
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,intCurrentTok,idenLeftTok,intCurrentTok,(leftToken->length)+3,"");
           }
           else{
             printf("\n");
@@ -234,10 +232,12 @@ Token *jsonParse(JsonObject *jsonObj){
             recur=0;
             jsonObj->state=ERROR;
             DUMP_REMAIN_TOKEN;
+            DECLARE_CURRENT_PTR;
+            DECLARE_LEFT_PTR;
             printf("\n");
             errMsg="ERROR[%d]:Expected an Integer/String/Float/{ for 'Value' but get %s.\n\n'%s'%s%s\n%*s^\n";
-            printf(errMsg,ERR_ILLEGAL_VALUE,((OperatorToken *)(token))->symbol,((IdentifierToken *)(leftToken))->name,":",((OperatorToken *)(token))->symbol,(leftToken->length)+3,"");
-            throwError(ERR_ILLEGAL_VALUE,errMsg,ERR_ILLEGAL_VALUE,((OperatorToken *)(token))->symbol,((IdentifierToken *)(leftToken))->name,":",((OperatorToken *)(token))->symbol,(leftToken->length)+3,"");
+            printf(errMsg,ERR_ILLEGAL_VALUE,opCurrentTok,idenLeftTok,":",opCurrentTok,(leftToken->length)+3,"");
+            throwError(ERR_ILLEGAL_VALUE,errMsg,ERR_ILLEGAL_VALUE,opCurrentTok,idenLeftTok,":",opCurrentTok,(leftToken->length)+3,"");
           }
         }
         else if(token->type==TOKEN_STRING_TYPE || token->type==TOKEN_INTEGER_TYPE || token->type==TOKEN_FLOAT_TYPE){
@@ -278,28 +278,55 @@ Token *jsonParse(JsonObject *jsonObj){
             recur=0;
             jsonObj->state=ERROR;
             DUMP_REMAIN_TOKEN;
+            DECLARE_CURRENT_PTR;
+            DECLARE_LEFT_PTR;
+            DECLARE_RIGHT_PTR;
             printf("\n");
-            errMsg="ERROR[%d]:Expected Operator '}' or ',' after 'Value' but get '%s'.";
-            printf(errMsg,ERR_EXPECT_OPERATOR,((OperatorToken *)(token))->symbol);
-            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((OperatorToken *)(token))->symbol);
+            if(rightToken->type==TOKEN_INTEGER_TYPE){
+              errMsg="ERROR[%d]:Expected Operator '}' or ',' after 'Value' but get '%s'.\n\n'%s'%s%d%s\n%*s^\n";
+              printf(errMsg,ERR_EXPECT_OPERATOR,opCurrentTok,idenLeftTok,":",intRightTok,opCurrentTok,(leftToken->length)+(rightToken->length)+3,"");
+              throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,opCurrentTok,idenLeftTok,":",intRightTok,opCurrentTok,(leftToken->length)+(rightToken->length)+3,"");
+            }
+            else{
+              errMsg="ERROR[%d]:Expected Operator '}' or ',' after 'Value' but get '%s'.\n\n'%s'%s'%s'%s\n%*s^\n";
+              printf(errMsg,ERR_EXPECT_OPERATOR,opCurrentTok,idenLeftTok,":",strRightTok,opCurrentTok,(leftToken->length)+(rightToken->length)+5,"");
+              throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,opCurrentTok,idenLeftTok,":",strRightTok,opCurrentTok,(leftToken->length)+(rightToken->length)+5,"");
+            }
           }
         }
         else{
           recur=0;
           jsonObj->state=ERROR;
           DUMP_REMAIN_TOKEN;
+          DECLARE_CURRENT_PTR;
+          DECLARE_LEFT_PTR;
+          DECLARE_RIGHT_PTR;
           // Check Token type and Throw the Error.
           if(token-> type==TOKEN_IDENTIFIER_TYPE || token-> type==TOKEN_STRING_TYPE){
             printf("\n");
-            errMsg="ERROR[%d]:Expected Operator '}' or ',' after 'Value' but get '%s'.";
-            printf(errMsg,ERR_EXPECT_OPERATOR,((StringToken *)(token))->name);
-            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((StringToken *)(token))->name);
+            if(rightToken->type==TOKEN_INTEGER_TYPE){
+              errMsg="ERROR[%d]:Expected Operator '}' or ',' after 'Value' but get '%s'.\n\n'%s'%s%d'%s'\n%*s^\n";
+              printf(errMsg,ERR_EXPECT_OPERATOR,strCurrentTok,idenLeftTok,":",intRightTok,strCurrentTok,(leftToken->length)+(rightToken->length)+3,"");
+              throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,strCurrentTok,idenLeftTok,":",intRightTok,strCurrentTok,(leftToken->length)+(rightToken->length)+3,"");
+            }
+            else{
+              errMsg="ERROR[%d]:Expected Operator '}' or ',' after 'Value' but get '%s'.\n\n'%s'%s'%s''%s'\n%*s^\n";
+              printf(errMsg,ERR_EXPECT_OPERATOR,strCurrentTok,idenLeftTok,":",strRightTok,strCurrentTok,(leftToken->length)+(rightToken->length)+5,"");
+              throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,strCurrentTok,idenLeftTok,":",strRightTok,strCurrentTok,(leftToken->length)+(rightToken->length)+5,"");
+            }
           }
           else if (token-> type==TOKEN_INTEGER_TYPE){
             printf("\n");
-            errMsg="ERROR[%d]:Expected Operator '}' or ',' after 'Value' but get '%d'.";
-            printf(errMsg,ERR_EXPECT_OPERATOR,((IntegerToken *)(token))->value);
-            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,((IntegerToken *)(token))->value);
+            if(rightToken->type==TOKEN_INTEGER_TYPE){
+              errMsg="ERROR[%d]:Expected Operator '}' or ',' after 'Value' but get '%d'.\n\n'%s'%s%d %d\n%*s^\n";
+              printf(errMsg,ERR_EXPECT_OPERATOR,intCurrentTok,idenLeftTok,":",intRightTok,intCurrentTok,(leftToken->length)+(rightToken->length)+4,"");
+              throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,intCurrentTok,idenLeftTok,":",intRightTok,intCurrentTok,(leftToken->length)+(rightToken->length)+4,"");
+            }
+            else{
+              errMsg="ERROR[%d]:Expected Operator '}' or ',' after 'Value' but get '%d'.\n\n'%s'%s'%s'%d\n%*s^\n";
+              printf(errMsg,ERR_EXPECT_OPERATOR,intCurrentTok,idenLeftTok,":",strRightTok,intCurrentTok,(leftToken->length)+(rightToken->length)+5,"");
+              throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,intCurrentTok,idenLeftTok,":",strRightTok,intCurrentTok,(leftToken->length)+(rightToken->length)+5,"");
+            }
           }
           else{
             printf("\n");

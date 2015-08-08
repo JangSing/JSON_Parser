@@ -37,7 +37,7 @@
   Token *YEN=createStringToken("YEN");              \
   Token *ABU=createStringToken("ABU");              \
   Token *int20=createIntegerToken(20);              \
-  Token *int30=createIntegerToken(30)
+  Token *int30=createIntegerToken(30);
 
 #define TOKEN_FREE        \
   free(openBrace0);       \
@@ -65,7 +65,7 @@
   free(STEVEN);           \
   free(YEN);              \
   free(int20);            \
-  free(int30)
+  free(int30);
 
 #define DUMP_REMAIN_TOKEN                                                                               \
   dumpToken=getToken();                                                                                 \
@@ -74,6 +74,25 @@
       break;                                                                                            \
     dumpToken=getToken();                                                                               \
   }
+
+#define DECLARE_CURRENT_PTR                                                                                       \
+  char *opCurrentTok=((OperatorToken *)(token))->symbol;                                                          \
+  int intCurrentTok=((IntegerToken *)(token))->value;                                                             \
+  char *strCurrentTok=((StringToken *)(token))->name;                                                             \
+  char *idenCurrentTok=((IdentifierToken *)(token))->name;
+
+#define DECLARE_RIGHT_PTR                                                                                         \
+  char *opRightTok=((OperatorToken *)(rightToken))->symbol;                                                       \
+  int intRightTok=((IntegerToken *)(rightToken))->value;                                                          \
+  char *strRightTok=((StringToken *)(rightToken))->name;                                                          \
+  char *idenRightTok=((IdentifierToken *)(rightToken))->name;
+
+#define DECLARE_LEFT_PTR                                                                                          \
+  char *opLeftTok=((OperatorToken *)(leftToken))->symbol;                                                         \
+  int intLeftTok=((IntegerToken *)(leftToken))->value;                                                            \
+  char *strLeftTok=((StringToken *)(leftToken))->name;                                                            \
+  char *idenLeftTok=((IdentifierToken *)(leftToken))->name;
+
 
 typedef struct {
   JsonState state;

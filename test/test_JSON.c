@@ -513,7 +513,7 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_String_Token_should_
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '^'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '^'.\n\n'NAME1':'JS'^\n            ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -552,7 +552,7 @@ void test_Simple_JSON_List_with_Identifier_Token_Passed_in_after_String_Token_sh
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get 'NAME2'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get 'NAME2'.\n\n'NAME1':'JS''NAME2'\n            ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -591,7 +591,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_String_Token_shoul
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '20'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '20'.\n\n'NAME1':'JS'20\n            ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -668,7 +668,7 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_should
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '^'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '^'.\n\n'NAME1':20^\n          ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -707,7 +707,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Integer_Token_shoul
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get 'JS'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get 'JS'.\n\n'NAME1':20'JS'\n          ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -746,7 +746,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_shou
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '30'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '30'.\n\n'NAME1':20 30\n           ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1357,7 +1357,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_String_Token_shou
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '^'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '^'.\n\n'NAME2':'STEVEN'^\n                ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1406,7 +1406,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_String_Token_sho
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get 'YEN'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get 'YEN'.\n\n'NAME2':'STEVEN''YEN'\n                ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1455,7 +1455,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_String_Token_sh
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '20'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '20'.\n\n'NAME2':'STEVEN'20\n                ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1552,7 +1552,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_sho
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '^'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '^'.\n\n'NAME2':20^\n          ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1601,7 +1601,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Integer_Token_sh
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get 'YEN'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get 'YEN'.\n\n'NAME2':20'YEN'\n          ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1650,7 +1650,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_s
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '30'.",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected Operator '}' or ',' after 'Value' but get '30'.\n\n'NAME2':20 30\n           ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
