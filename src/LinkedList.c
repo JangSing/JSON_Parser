@@ -38,6 +38,23 @@ ListElement *createListElement(void *value){
   return newNode;
 }
 
+void addFirst(LinkedList *list,ListElement *newElem){
+
+  if(newElem==NULL || list==NULL){}
+
+  else{
+    if(list->head==NULL && list->tail==NULL){
+      list->head=newElem;
+      list->tail=list->head;
+    }
+    else{
+      newElem->next=list->head;
+      list->head=newElem;
+    }
+    (list->length)++;
+  }
+}
+
 void addLast(ListElement *newEle,LinkedList *list ){
 
   Iterator *iter;
@@ -56,23 +73,6 @@ void addLast(ListElement *newEle,LinkedList *list ){
       iter->current=newEle;
       list->tail->next=iter->current;
       list->tail=list->tail->next;
-    }
-    (list->length)++;
-  }
-}
-
-void addFirst(LinkedList *list,ListElement *newElem){
-
-  if(newElem==NULL || list==NULL){}
-
-  else{
-    if(list->head==NULL && list->tail==NULL){
-      list->head=newElem;
-      list->tail=list->head;
-    }
-    else{
-      newElem->next=list->head;
-      list->head=newElem;
     }
     (list->length)++;
   }

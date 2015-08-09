@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <assert.h>
 
+
 //*** Find Element function start here ***
 ListElement *listFind(LinkedList *list, void *value, int(*compare)(void *,void *)){
   if(list==NULL){
@@ -63,21 +64,31 @@ ListElement *keyFind(LinkedList *list, void *key, int(*compare)(void *,void *)){
           errMsg="ERROR[%d]:Key not Found.Finding 'Key'=>'%s'.";
           printf(errMsg,ERR_KEY_NOT_FOUND,(char *)(key));
           throwError(ERR_KEY_NOT_FOUND,errMsg,ERR_KEY_NOT_FOUND,(char *)(key));
-          return NULL;
         }
       }
-
+      printf("Finding 'Value' for 'Key'='%s'\n",(char *)(key));
       return elemPtr;
     }
   }
 }
 
 Token *getElementValue(ListElement *findKey){
+  Token *leftToken=((OperatorToken *)(findKey->value))->token[0];
+  Token *rightToken=((OperatorToken *)(findKey->value))->token[1];
   if(findKey==NULL){
     return NULL;
   }
+  else if(rightToken->type==TOKEN_OPERATOR_TYPE){
+    return NULL;
+  }
   else{
-    return ((OperatorToken *)(findKey->value))->token[1];
+    if(rightToken->type==TOKEN_STRING_TYPE){
+      printf("The 'Value' for '%s' is '%s'\n",((IdentifierToken *)leftToken)->name,((StringToken *)rightToken)->name); 
+    }
+    else if(rightToken->type==TOKEN_INTEGER_TYPE){
+      printf("The 'Value' for '%s' is '%d'\n",((IdentifierToken *)leftToken)->name,((IntegerToken *)rightToken)->value); 
+    }
+    return rightToken;
   }
 }
 

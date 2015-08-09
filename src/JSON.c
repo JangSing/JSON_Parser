@@ -176,21 +176,21 @@ Token *jsonParse(JsonObject *jsonObj){
           // Check Token type and Throw the Error.
           if(token-> type==TOKEN_OPERATOR_TYPE){
             printf("\n");
-            errMsg="ERROR[%d]:Expected ':' after 'Key' but get '%s'.\n\n{'%s'%s\n%*s^\n";
-            printf(errMsg,ERR_EXPECT_OPERATOR,opCurrentTok,idenLeftTok,opCurrentTok,(leftToken->length)+3,"");
-            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,opCurrentTok,idenLeftTok,opCurrentTok,(leftToken->length)+3,"");
+            errMsg="ERROR[%d]:Expected ':' after 'Key' but get '%s'.\n\n'%s'%s\n%*s^\n";
+            printf(errMsg,ERR_EXPECT_OPERATOR,opCurrentTok,idenLeftTok,opCurrentTok,(leftToken->length)+2,"");
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,opCurrentTok,idenLeftTok,opCurrentTok,(leftToken->length)+2,"");
           }
           else if(token-> type==TOKEN_IDENTIFIER_TYPE || token-> type==TOKEN_STRING_TYPE){
             printf("\n");
-            errMsg="ERROR[%d]:Expected ':' after 'Key' but get '%s'.\n\n{'%s''%s'\n%*s^\n";
-            printf(errMsg,ERR_EXPECT_OPERATOR,strCurrentTok,idenLeftTok,strCurrentTok,(leftToken->length)+3,"");
-            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,strCurrentTok,idenLeftTok,strCurrentTok,(leftToken->length)+3,"");
+            errMsg="ERROR[%d]:Expected ':' after 'Key' but get '%s'.\n\n'%s''%s'\n%*s^\n";
+            printf(errMsg,ERR_EXPECT_OPERATOR,strCurrentTok,idenLeftTok,strCurrentTok,(leftToken->length)+2,"");
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,strCurrentTok,idenLeftTok,strCurrentTok,(leftToken->length)+2,"");
           }
           else if (token-> type==TOKEN_INTEGER_TYPE){
             printf("\n");
-            errMsg="ERROR[%d]:Expected ':' after 'Key' but get '%d'.\n\n{'%s'%d\n%*s^\n";
-            printf(errMsg,ERR_EXPECT_OPERATOR,intCurrentTok,idenLeftTok,intCurrentTok,(leftToken->length)+3,"");
-            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,intCurrentTok,idenLeftTok,intCurrentTok,(leftToken->length)+3,"");
+            errMsg="ERROR[%d]:Expected ':' after 'Key' but get '%d'.\n\n'%s'%d\n%*s^\n";
+            printf(errMsg,ERR_EXPECT_OPERATOR,intCurrentTok,idenLeftTok,intCurrentTok,(leftToken->length)+2,"");
+            throwError(ERR_EXPECT_OPERATOR,errMsg,ERR_EXPECT_OPERATOR,intCurrentTok,idenLeftTok,intCurrentTok,(leftToken->length)+2,"");
           }
           else{
             printf("\n");

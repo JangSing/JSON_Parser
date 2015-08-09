@@ -45,6 +45,57 @@ void test_getToken()
   free(OPE);
 }
 
+/**
+ * Test function link2Tokens if leftToken/operatorSymbol/rightToken are NULL should return NULL; 
+ *
+ */
+void test_function_link2Tokens_with_NULL_input_should_return_NULL()
+{
+  Token *token1,*token2,*token3,*token4;
+  
+  token1=link2Tokens(NULL,":", token2);
+  TEST_ASSERT_NULL(token1);
+  token2=link2Tokens(token1,":",NULL);
+  TEST_ASSERT_NULL(token2);
+  token3=link2Tokens(token1,NULL,token2);
+  TEST_ASSERT_NULL(token3);
+  token4=link2Tokens(NULL,NULL,NULL);
+  TEST_ASSERT_NULL(token4);
+  
+  free(token1);
+  free(token2);
+  free(token3);
+  free(token4);
+}
+
+/**
+ * Test if Empty Object been passed into the list
+ *
+ */
+void test_JSON_List_with_Empty_Object_Passed_in_should_Throw_Error()
+{
+  printf("JSON list test No.0");
+  JsonObject *jsonObj=NULL;
+  Token *jsonTok;
+  ErrorObject *err;
+
+  TOKEN_DECLARE;
+
+  Try{
+    jsonTok=jsonParse(jsonObj);
+    TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
+  }Catch(err){
+    TEST_ASSERT_EQUAL_STRING("ERROR[12]:Empty object passing into the JsonParse.",err->errorMsg);
+    TEST_ASSERT_EQUAL(ERR_EMPTY_OBJECT,err->errorCode);
+    free(err);
+  }
+
+  free(jsonObj);
+  free(jsonTok);
+
+  TOKEN_FREE;
+  printf("\n\n");
+}
 
 /**
  * at state WAIT_FOR_TOKEN,
@@ -163,7 +214,7 @@ void test_Simple_JSON_List_with_keep_Passing_Token_after_Error_occur_should_Thro
  */
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_open_Brace_Token_should_Throw_Error()
 {
-    printf("JSON list test No.4");
+  printf("JSON list test No.4");
   JsonObject *jsonObj=NULL;
   Token *jsonTok;
   ErrorObject *err;
@@ -287,7 +338,7 @@ void test_Simple_JSON_List_with_Close_Brace_Token_Passed_in_after_Key_Token_shou
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get '}'.\n\n{'NAME1'}\n        ^\n",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get '}'.\n\n'NAME1'}\n       ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -324,7 +375,7 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Key_Token_should_Th
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get 'JS'.\n\n{'NAME1''JS'\n        ^\n",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get 'JS'.\n\n'NAME1''JS'\n       ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -361,7 +412,7 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_should_T
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get '20'.\n\n{'NAME1'20\n        ^\n",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get '20'.\n\n'NAME1'20\n       ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1071,7 +1122,7 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Key_Token_should_
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get '^'.\n\n{'NAME2'^\n        ^\n",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get '^'.\n\n'NAME2'^\n       ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1118,7 +1169,7 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Key_Token_should
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get 'STEVEN'.\n\n{'NAME2''STEVEN'\n        ^\n",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get 'STEVEN'.\n\n'NAME2''STEVEN'\n       ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1165,7 +1216,7 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_shoul
     jsonTok=jsonParse(jsonObj);
     TEST_FAIL_MESSAGE("Expecting ERR_EXPECT_OPERATOR to be thrown, but none thrown.");
   }Catch(err){
-    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get '20'.\n\n{'NAME2'20\n        ^\n",err->errorMsg);
+    TEST_ASSERT_EQUAL_STRING("ERROR[7]:Expected ':' after 'Key' but get '20'.\n\n'NAME2'20\n       ^\n",err->errorMsg);
     TEST_ASSERT_EQUAL(ERR_EXPECT_OPERATOR,err->errorCode);
     free(err);
   }
@@ -1899,7 +1950,7 @@ void test_JSON_List_with_Extra_Token_Passed_into_Recursion_JSON_List()
 
 
 /**
- * Test Complex JsonList
+ * Test for Complex JsonList
  *
  *  {
  *    "NAME1":"JS",

@@ -20,12 +20,13 @@ void tearDown()
 }
 
 
-/**
- *  Compare Function
- *  -if values are equal, function will return 0.
- *  -if either values are NULL, function will return -1.
- *  -else the function will return 1.
- */
+/*********************************************************************
+ *  test for Compare Function. (intCompare & strCompare)             *
+ *  -if values are equal, function will return 0.                    *
+ *  -if either values are NULL, function will return -1.             *
+ *  -else the function will return 1.                                *
+ *                                                                   *
+ *********************************************************************/
 void test_function_intCompare()
 {
   int value[10]={1212,2121,1556,1556};

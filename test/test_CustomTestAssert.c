@@ -24,6 +24,21 @@ void tearDown()
 {
 }
 
+/****************************************************************************************************
+ * This test is to test whether the TEST_ASSERT_KEY_VALUE are able to function.                     *
+ * The purpose of the TEST_ASSERT_KEY_VALUE is to test the Key and Value at the same time.          *
+ * For Example,                                                                                     *
+ *                                                                                                  *
+ *                         ____                                                                     *
+ *                        | : |                                                                     *
+ *                        ----                                                                      *
+ *                      /     \                                                                     *
+ *                  'NAME1'   'JS'                                                                  *
+ *                                                                                                  *
+ * The TEST_ASSERT_KEY_VALUE will pass in the whole tree shown above to test.                       *
+ * Test whether the expected 'Key' and 'Value' are the same with the 'Key' and 'Value' in the tree. *
+ *                                                                                                  *
+ ****************************************************************************************************/
 void test_Custom_Test_Assert_Key_Value()
 {
   LinkedList *list;

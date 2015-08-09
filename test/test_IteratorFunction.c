@@ -18,7 +18,7 @@ void tearDown()
 {
 }
 
-void test_iteratorGetNext()
+void test_iteratorGetNext_given_current_iterator_should_return_next_iterator()
 {
   int value[]={1,3,4};
 
