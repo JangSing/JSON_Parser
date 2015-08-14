@@ -4,7 +4,6 @@
 #include "Token.h"
 #include "LinkedList.h"
 
-ListElement *listFind(LinkedList *list,void *value, int(*compare)(void *,void *));
 ListElement *keyFind(LinkedList *list, void *key, int(*compare)(void *,void *));
 Token *getElementValue(ListElement *findKey);
 

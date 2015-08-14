@@ -14,6 +14,64 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+/****************************************************************************************************************************************************
+ *                                                                                                                                                  *
+ * An Example of a Simple JsonList is as shown below.                                                                                               *
+ *                                                                                                                                                  *
+ *  {                                                                                                                                               *
+ *    "NAME1":"JS",                                                                                                                                 *
+ *    "NAME2":"STEVEN"                                                                                                                              *
+ *  }                                                                                                                                               *
+ *                                                                                                                                                  *
+ * An Example of a JsonList with Recursion is as shown below.                                                                                       *
+ *                                                                                                                                                  *
+ *  {                                                                                                                                               *
+ *    "NAME1":"JS",                                                                                                                                 *
+ *    "AGE"  :{ "NAME2":"STEVEN",                                                                                                                   *
+ *              "NAME3":"YEN"}                                                                                                                      *
+ *  }                                                                                                                                               *
+ *                                                                                                                                                  *
+ * When creating the JSON list, a single object is as shown below.                                                                                  *
+ * E.g.                                                                                                                                             *
+ *                         ____                                                                                                                     *
+ *                        | : |                                                                                                                     *
+ *                        ----                                                                                                                      *
+ *                      /     \                                                                                                                     *
+ *                  'NAME1'   'JS'                                                                                                                  *
+ *                                                                                                                                                  *
+ * Each of the OBJECT token will be linked by using the Linked List to form the JSON list.                                                          *
+ * For every single OBJECT that has created above is a ListElement of the Linked List.                                                              *
+ * When the input Token passing in is "{", then a Linked List has been created. So the object can be linked together by using the function AddLast. *
+ * the Linking of the JSON list is as shown below,                                                                                                  *
+ * E.g.                                                                                                                                             *
+ *                         ____                                                                                                                     *
+ *               {------->| : |------>}------>NULL                                                                                                  *
+ *                        ----                                                                                                                      *
+ *                      /     \                                                                                                                     *
+ *                  'NAME1'   'JS'                                                                                                                  *
+ *                                                                                                                                                  *
+ * The Linking of the Simple JsonList mentioned above is as shown below.                                                                            *
+ *                         ____                 ____                                                                                                *
+ *               {------->| : |--------------->| : |--------->}------>NULL                                                                          *
+ *                        ----                 ----                                                                                                 *
+ *                      /     \              /     \                                                                                                *
+ *                  'NAME1'   'JS'       'NAME2'  'STEVEN'                                                                                          *
+ *                                                                                                                                                  *
+ * The Linking of the Recursion JsonList mentioned above is as shown below.                                                                         *
+ *                         ____                 ____                                                                                                *
+ *               {------->| : |--------------->| : |--------->}------->NULL                                                                         *
+ *                        ----                 ----                                                                                                 *
+ *                      /     \              /     \           ____                 ____                                                            *
+ *                  'NAME1'   'JS'       'AGE'      {-------->| : |--------------->| : |--------->}----->NULL                                       *
+ *                                                            ----                 ----                                                             *
+ *                                                          /     \               /     \                                                           *
+ *                                                    'NAME2'    'STEVEN'    'NAME3'    'YEN'                                                       *
+ *                                                                                                                                                  *
+ ****************************************************************************************************************************************************
+ */
+
+
+
 void setUp()
 {
 }
@@ -46,13 +104,13 @@ void test_getToken()
 }
 
 /**
- * Test function link2Tokens if leftToken/operatorSymbol/rightToken are NULL should return NULL; 
+ * Test function link2Tokens if leftToken/operatorSymbol/rightToken are NULL should return NULL;
  *
  */
 void test_function_link2Tokens_with_NULL_input_should_return_NULL()
 {
   Token *token1,*token2,*token3,*token4;
-  
+
   token1=link2Tokens(NULL,":", token2);
   TEST_ASSERT_NULL(token1);
   token2=link2Tokens(token1,":",NULL);
@@ -61,7 +119,7 @@ void test_function_link2Tokens_with_NULL_input_should_return_NULL()
   TEST_ASSERT_NULL(token3);
   token4=link2Tokens(NULL,NULL,NULL);
   TEST_ASSERT_NULL(token4);
-  
+
   free(token1);
   free(token2);
   free(token3);
@@ -894,7 +952,7 @@ void test_Simple_JSON_List_for_complete_form()
   TEST_ASSERT_KEY_VALUE(AGE,int20, iter->current);
   iter=iteratorGetNext(iter);
   TEST_ASSERT_EQUAL_STRING("}",((OperatorToken *)(iter->current->value))->symbol);
-  
+
   free(jsonObj);
   free(jsonTok);
   free(iter);

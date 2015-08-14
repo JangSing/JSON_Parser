@@ -38,23 +38,6 @@ ListElement *createListElement(void *value){
   return newNode;
 }
 
-void addFirst(LinkedList *list,ListElement *newElem){
-
-  if(newElem==NULL || list==NULL){}
-
-  else{
-    if(list->head==NULL && list->tail==NULL){
-      list->head=newElem;
-      list->tail=list->head;
-    }
-    else{
-      newElem->next=list->head;
-      list->head=newElem;
-    }
-    (list->length)++;
-  }
-}
-
 void addLast(ListElement *newEle,LinkedList *list ){
 
   Iterator *iter;
@@ -77,58 +60,5 @@ void addLast(ListElement *newEle,LinkedList *list ){
     (list->length)++;
   }
 }
-
-ListElement *removeFirst(LinkedList *list){
-  ListElement *remEle;
-
-  if(list->head==NULL && list->tail==NULL){
-    return NULL;
-  }
-  else{
-    if(list->head->next==NULL){
-      remEle=list->head;
-      list->head=NULL;
-      list->tail=NULL;
-    }
-    else{
-      remEle=list->head;
-      list->head=list->head->next;
-    }
-    (list->length)--;
-  }
-  remEle->next=NULL;
-  return remEle;
-}
-
-ListElement *removeLast(LinkedList *list){
-  ListElement *removeEle;
-  ListElement *travel;
-
-  if(list->head==NULL && list->tail==NULL){
-    return NULL;
-  }
-  else{
-    if(list->head->next==NULL){
-      removeEle=list->head;
-      list->head=NULL;
-      list->tail=NULL;
-    }
-    else{
-      travel=list->head;
-      while (travel->next!=NULL){
-        list->tail=travel;
-        travel=travel->next;
-      }
-      removeEle=travel;
-      list->tail->next=NULL;
-    }
-    (list->length)--;
-  }
-  return removeEle;
-}
-
-
-
-
 
 

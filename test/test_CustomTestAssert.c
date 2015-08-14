@@ -26,7 +26,6 @@ void tearDown()
 
 /****************************************************************************************************
  * This test is to test whether the TEST_ASSERT_KEY_VALUE are able to function.                     *
- * The purpose of the TEST_ASSERT_KEY_VALUE is to test the Key and Value at the same time.          *
  * For Example,                                                                                     *
  *                                                                                                  *
  *                         ____                                                                     *

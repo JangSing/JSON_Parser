@@ -23,28 +23,19 @@ void tearDown()
 }
 
 /************************************************************************************************************
- * This test file is to test for the Finding function for both LinkedList and JsonList.                     *
- * Whenever if NULL is passing into listFind or keyFind, the function will return NULL.                     *
- *                                                                                                          *
- *  For the function listFind,                                                                              *
- *   -if the element wanted to find is in the LinkedList the function will return the found Element.        *
- *   -else the function will return NULL.                                                                   *
+ * This test file is to test for the Finding function for both JsonList.                                    *
+ * Whenever if NULL is passing into keyFind, the function will return NULL.                                 *
  *                                                                                                          *
  *  For the function keyFind,                                                                               *
  *   -if the Key wanted to find is in the JsonList the function will return the tree of the Key.            *
  *   -else the function will ThrowError.                                                                    *
  *                                                                                                          *
+ *  For the function getElementValue,                                                                       *
+ *   -The function will return the 'Value' of the tree that passed into the function.                       *
+ *   -if the 'Value' of the tree is Operator type, the function will return NULL.                           *
+ *   -also, if NULL tree passing into the function, the function will return NULL.                          *
+ *                                                                                                          *
  ************************************************************************************************************/
-
-void test_listFind_Function_given_list_is_NULL_should_return_NULL()
-{
-  ListElement *findEle;
-  char *strTest="forTesting";
-
-  findEle=listFind(NULL,strTest,strCompare);
-
-  TEST_ASSERT_NULL(findEle);
-}
 
 void test_keyFind_Function_given_list_is_NULL_should_return_NULL()
 {
@@ -56,133 +47,42 @@ void test_keyFind_Function_given_list_is_NULL_should_return_NULL()
   TEST_ASSERT_NULL(findEle);
 }
 
-void test_listFind_Function_given_Value_is_NULL_should_return_NULL()
+void test_keyFind_Function_given_Key_is_NULL_should_return_NULL()
 {
   ListElement *findEle;
   LinkedList *list;
 
   list=createLinkedList();
-
-  findEle=listFind(list,NULL,strCompare);
-
-  TEST_ASSERT_NULL(findEle);
-}
-
-void test_keyFind_Function_given_Value_is_NULL_should_return_NULL()
-{
-  ListElement *findEle;
-  LinkedList *list;
-
-  list=createLinkedList();
-
   findEle=keyFind(list,NULL,strCompare);
 
   TEST_ASSERT_NULL(findEle);
 }
 
-void test_Find_Integer_Element_if_Element_not_in_the_List_Should_return_NULL()
+void test_keyFind_Function_given_Compare_Function_is_NULL_should_return_NULL()
 {
-	int myValue4 =8;
-  int value[]={1,3,4,6,7};
+  ListElement *findEle;
+  LinkedList *list;
+  char *strTest="forTesting";
 
-  LinkedList *ptr;
-  ListElement *elemFind;
+  list=createLinkedList();
+  findEle=keyFind(list,strTest,NULL);
 
-  ptr=createLinkedList();
-
-  addLast(createListElement(&value[0]),ptr);
-  addLast(createListElement(&value[1]),ptr);
-  addLast(createListElement(&value[2]),ptr);
-  addLast(createListElement(&value[3]),ptr);
-  addLast(createListElement(&value[4]),ptr);
-
-  elemFind=NULL;
-  elemFind=listFind(ptr,&myValue4,intCompare);
-
-  TEST_ASSERT_NOT_NULL(ptr);
-  TEST_ASSERT_NULL(elemFind);
+  TEST_ASSERT_NULL(findEle);
 }
 
-void test_findElement_integer()
-{
-	int myValue4 =4;
-  int value[]={1,3,4,6,7};
-
-  LinkedList *ptr;
-  ListElement *elemFind;
-
-  ptr=createLinkedList();
-
-  addLast(createListElement(&value[0]),ptr);
-  addLast(createListElement(&value[1]),ptr);
-  addLast(createListElement(&value[2]),ptr);
-  addLast(createListElement(&value[3]),ptr);
-  addLast(createListElement(&value[4]),ptr);
-
-  elemFind=NULL;
-  elemFind=listFind(ptr,&myValue4,intCompare);
-
-  TEST_ASSERT_NOT_NULL(ptr);
-  TEST_ASSERT_NOT_NULL(elemFind);
-  TEST_ASSERT_NOT_NULL(elemFind->value);
-  TEST_ASSERT_EQUAL(4,*(int *)(elemFind->value));
-}
-
-void test_Find_String_Element_if_Element_not_in_the_List_Should_return_NULL()
-{
-	char *myStr4="five";
-  char *str[]={"one","three","four","six","seven"};
-
-  LinkedList *ptr;
-  ListElement *elemFind;
-
-  ptr=createLinkedList();
-
-  addLast(createListElement(str[0]),ptr);
-  addLast(createListElement(str[1]),ptr);
-  addLast(createListElement(str[2]),ptr);
-  addLast(createListElement(str[3]),ptr);
-  addLast(createListElement(str[4]),ptr);
-
-  elemFind=NULL;
-  elemFind=listFind(ptr,myStr4,strCompare);
-
-  TEST_ASSERT_NOT_NULL(ptr);
-  TEST_ASSERT_NULL(elemFind);
-}
-
-void test_findElement_string()
-{
-	char *myStr4="four";
-  char *str[]={"one","three","four","six","seven"};
-
-  LinkedList *ptr;
-  ListElement *elemFind;
-
-  ptr=createLinkedList();
-
-  addLast(createListElement(str[0]),ptr);
-  addLast(createListElement(str[1]),ptr);
-  addLast(createListElement(str[2]),ptr);
-  addLast(createListElement(str[3]),ptr);
-  addLast(createListElement(str[4]),ptr);
-
-  elemFind=NULL;
-  elemFind=listFind(ptr,myStr4,strCompare);
-
-  TEST_ASSERT_NOT_NULL(ptr);
-  TEST_ASSERT_NOT_NULL(elemFind);
-  TEST_ASSERT_NOT_NULL(elemFind->value);
-  TEST_ASSERT_EQUAL("four",(char *)(elemFind->value));
-}
-
-/**
- *  {
- *    "NAME1":"JS",
- *    "NAME2":"STEVEN"
- *  }
- */
-void test_Finding_Element_if_Key_not_Found_in_the_Simple_JSON_List()
+/************************************************************************************************************
+ * The JsonList for the findElement Function to test are as shown below,                                    *
+ *                                                                                                          *
+ *  {                                                                                                       *
+ *    "NAME1":"JS",                                                                                         *
+ *    "NAME2":20,                                                                                           *
+ *    "NAME3":"STEVEN",                                                                                     *
+ *  }                                                                                                       *
+ *                                                                                                          *
+ * -Test to find the 'Key'="AGE".                                                                           *
+ *                                                                                                          *
+ ************************************************************************************************************/
+void test_Finding_Element_if_Key_not_Found_in_the_Simple_JSON_List_Should_Throw_Error()
 {
   printf("JSON list Finding Element test No.1\n");
   JsonObject *jsonObj;
@@ -201,6 +101,10 @@ void test_Finding_Element_if_Key_not_Found_in_the_Simple_JSON_List()
   getToken_ExpectAndReturn(NAME2);         //"NAME2"
   getToken_ExpectAndReturn(colon1);        //":"
   getToken_ExpectAndReturn(int20);         //20
+  getToken_ExpectAndReturn(coma1);         //","
+  getToken_ExpectAndReturn(NAME3);         //"NAME3"
+  getToken_ExpectAndReturn(colon2);        //":"
+  getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
   getToken_ExpectAndReturn(closeBrace0);   //"}"
   getToken_ExpectAndReturn(dollarSign);
 
@@ -232,13 +136,19 @@ void test_Finding_Element_if_Key_not_Found_in_the_Simple_JSON_List()
   printf("\n\n");
 }
 
-
-/**
- *  {
- *    "NAME1":"JS",
- *    "NAME2":"STEVEN"
- *  }
- */
+/************************************************************************************************************
+ * The JsonList for the findElement Function to test are as shown below,                                    *
+ *                                                                                                          *
+ *  {                                                                                                       *
+ *    "NAME1":"JS",                                                                                         *
+ *    "AGE"  :20,                                                                                           *
+ *    "NAME3":"STEVEN",                                                                                     *
+ *  }                                                                                                       *
+ *                                                                                                          *
+ * -Test to find the 'Key'="AGE".                                                                           *
+ * -Test to get the 'Value' for the 'Key' found.                                                            *
+ *                                                                                                          *
+ ************************************************************************************************************/
 void test_Finding_Element_in_Simple_JSON_List()
 {
   printf("JSON list Finding Element test No.2\n");
@@ -254,10 +164,14 @@ void test_Finding_Element_in_Simple_JSON_List()
   getToken_ExpectAndReturn(NAME1);         //"NAME1"
   getToken_ExpectAndReturn(colon0);        //":"
   getToken_ExpectAndReturn(JS);            //"JS"
-  getToken_ExpectAndReturn(coma0);          //","
+  getToken_ExpectAndReturn(coma0);         //","
   getToken_ExpectAndReturn(AGE);           //"AGE"
   getToken_ExpectAndReturn(colon1);        //":"
   getToken_ExpectAndReturn(int20);         //20
+  getToken_ExpectAndReturn(coma1);         //","
+  getToken_ExpectAndReturn(NAME3);         //"NAME3"
+  getToken_ExpectAndReturn(colon2);        //":"
+  getToken_ExpectAndReturn(STEVEN);        //"STEVEN"
   getToken_ExpectAndReturn(closeBrace0);   //"}"
   getToken_ExpectAndReturn(dollarSign);
 
@@ -268,11 +182,12 @@ void test_Finding_Element_in_Simple_JSON_List()
     TEST_ASSERT_EQUAL(END,jsonObj->state);
     findKey=keyFind(((JsonToken *)jsonTok)->list, "AGE", strCompare);
     findVal=(Token *)(getElementValue(findKey));
+    TEST_ASSERT_NOT_NULL(findVal);
   }Catch(err){
     TEST_FAIL_JSON("unexpected error occurred =>'%s'",err->errorMsg);
     free(err);
   }
-  
+
   TEST_ASSERT_EQUAL(((IntegerToken *)(int20))->value,((IntegerToken *)(findVal))->value);
 
   free(jsonObj);
@@ -285,14 +200,20 @@ void test_Finding_Element_in_Simple_JSON_List()
   printf("\n\n");
 }
 
-/**
- *{
- *  "NAME1":"JS",
- *  "AGE"  :{ "NAME2":"STEVEN",
- *            "NAME3":"YEN"}
- *}
- */
-void test_Finding_Element_if_Key_not_Found_in_the_Recursion_JSON_List()
+/************************************************************************************************************
+ * The JsonList for the findElement Function to test are as shown below,                                    *
+ *                                                                                                          *
+ *  {                                                                                                       *
+ *    "NAME1":"JS",                                                                                         *
+ *    "AGE"  :{ "NAME2":"STEVEN",                                                                           *
+ *              "NAME4":"YEN"}                                                                              *
+ *  }                                                                                                       *
+ *                                                                                                          *
+ * -Test to find the 'Key'="AGE" in recur=0.                                                                *
+ * -Test to find the 'Key'="NAME3" in recur=1.                                                              *
+ *                                                                                                          *                                                                                                         *
+ ************************************************************************************************************/
+void test_Finding_Element_if_Key_not_Found_in_the_Recursion_JSON_List_Should_Throw_Error()
 {
   printf("JSON list Finding Element test No.3\n");
   JsonObject *jsonObj;
@@ -343,7 +264,6 @@ void test_Finding_Element_if_Key_not_Found_in_the_Recursion_JSON_List()
     free(err);
   }
 
-
   free(jsonObj);
   free(jsonTok);
   free(err);
@@ -354,13 +274,20 @@ void test_Finding_Element_if_Key_not_Found_in_the_Recursion_JSON_List()
   printf("\n\n");
 }
 
-/**
- *{
- *  "NAME1":"JS",
- *  "AGE"  :{ "NAME2":"STEVEN",
- *            "NAME3":"YEN"}
- *}
- */
+/************************************************************************************************************
+ * The JsonList for the findElement Function to test are as shown below,                                    *
+ *                                                                                                          *
+ *  {                                                                                                       *
+ *    "NAME1":"JS",                                                                                         *
+ *    "AGE"  :{ "NAME2":"STEVEN",                                                                           *
+ *              "NAME3":"YEN"}                                                                              *
+ *  }                                                                                                       *
+ *                                                                                                          *
+ * -Test to find the 'Key'="AGE" in recur=0.                                                                *
+ * -Test to find the 'Key'="NAME3" in recur=1.                                                              *
+ * -Test to get the 'Value' for the 'Key' found in recur=1.                                                 *
+ *                                                                                                          *                                                                                                         *
+ ************************************************************************************************************/
 void test_Finding_Element_in_Recursion_JSON_List()
 {
   printf("JSON list Finding Element test No.4\n");
@@ -399,11 +326,12 @@ void test_Finding_Element_in_Recursion_JSON_List()
     findKey=(ListElement *)(keyFind(((JsonToken *)jsonTok)->list, "AGE", strCompare));
     findKey=(ListElement *)(keyFind(((JsonToken *)(((OperatorToken *)(findKey->value))->token[1]))->list, "NAME3", strCompare));
     findVal=(Token *)(getElementValue(findKey));
+    TEST_ASSERT_NOT_NULL(findVal);
   }Catch(err){
     TEST_FAIL_JSON("unexpected error occurred =>'%s'",err->errorMsg);
     free(err);
   }
-  
+
   TEST_ASSERT_EQUAL_STRING(((StringToken *)(YEN))->name,((StringToken *)(findVal))->name);
 
   free(jsonObj);
@@ -415,7 +343,6 @@ void test_Finding_Element_in_Recursion_JSON_List()
   TOKEN_FREE;
   printf("\n\n");
 }
-
 
 
 

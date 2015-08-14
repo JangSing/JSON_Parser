@@ -22,46 +22,94 @@ void tearDown(void)
 {
 }
 
-/**
- * Testing function LinkedList.
- *
- *    ptr---+-->head-----+
- *          |            |
- *          +-->tail-----+
- *                       |
- *                       v
- *                      NULL
- */
+/************************************************************************
+ * Testing function createLinkedList.                                   *
+ * -Initially the head and the tail are pointing to NULL.               *
+ * -the starting length of the list has set to zero.                    *
+ *                                                                      *
+ *    list---+-->head-----+                                             *   
+ *           |            |                                             *
+ *           +-->tail-----+                                             *
+ *                        |                                             *
+ *                        v                                             *
+ *                       NULL                                           *
+ *                                                                      *
+ ************************************************************************/
 void test_function_createLinkedList()
 {
-  LinkedList *ptr;
-  ptr = createLinkedList();
+  LinkedList *list;
+  list = createLinkedList();
 
-  TEST_ASSERT_NOT_NULL(ptr);
-  TEST_ASSERT_NULL(ptr->head);
-  TEST_ASSERT_NULL(ptr->tail);
-  TEST_ASSERT_EQUAL(0,ptr->length);
+  TEST_ASSERT_NOT_NULL(list);
+  TEST_ASSERT_NULL(list->head);
+  TEST_ASSERT_NULL(list->tail);
+  TEST_ASSERT_EQUAL(0,list->length);
 }
 
-/**
- * Testing function createListElement.
- *            ___________
- *   ptr---->|  value   |
- *           |__________|---->NULL
- *
- */
-
-
-void test_function_createListElement_for_NULL_value_should_return_NULL()
+/************************************************************************
+ * Testing function createListElement given NULL value.                 *
+ * -If the passing in address is NULL, the function will return NULL.   *
+ *            ____________                                              *
+ *           |  newNode  |                                              *
+ *           -------------                                              *
+ *   value   |    NULL   |                                              *
+ *           -------------                                              *
+ *           |   next    |---->NULL                                     *
+ *           -------------                                              *
+ *                                                                      *
+ ************************************************************************/
+void test_function_createListElement_given_NULL_value_should_return_NULL()
 {
   ListElement *newNode;
-  int value=1;
 
   newNode = createListElement(NULL);
 
   TEST_ASSERT_NULL(newNode);
 }
 
+/************************************************************************
+ * Testing function createListElement for any type of value.            *
+ * -This function is able to pass in any type of value.                 *
+ * -Initially the next pointer of the function is pointing to NULL.     *   
+ *                         ____________                                 *
+ *                        |  newNode  |                                 *
+ *                        -------------                                 *
+ *                        |   value   |                                 *
+ *                        -------------                                 *
+ *                        |   next    |---->NULL                        *
+ *                        -------------                                 *
+ *                                                                      *
+ *                                                                      *
+ *  For Integer Value,                                                  *
+ *                         ____________                                 *
+ *                        |  newNode  |                                 *
+ *                        -------------                                 *
+ *               value    |    1      |                                 *
+ *                        -------------                                 *
+ *                        |   next    |---->NULL                        *
+ *                        -------------                                 * 
+ *                                                                      *
+ *                                                                      *
+ *  For String Value,                                                   *
+ *                         ____________                                 *
+ *                        |  newNode  |                                 *
+ *                        -------------                                 *
+ *               value    |"JangSing" |                                 *
+ *                        -------------                                 *
+ *                        |   next    |---->NULL                        *
+ *                        -------------                                 * 
+ *                                                                      * 
+ *                                                                      * 
+ *  For Token Value,                                                    *
+ *                         ____________                                 *
+ *                        |  newNode  |                                 *
+ *                        -------------                                 *
+ *               value    |  Token    |                                 *
+ *                        -------------                                 *
+ *                        |   next    |---->NULL                        *
+ *                        -------------                                 * 
+ *                                                                      * 
+ ************************************************************************/
 void test_function_createListElement_for_Integer_value()
 {
   ListElement *newNode;
@@ -105,472 +153,186 @@ void test_function_createListElement_for_Token_value()
   TEST_ASSERT_EQUAL(TOKEN_INTEGER_TYPE,((IntegerToken *)(newNode->value))->type);
 }
 
-void test_Adding_one_element_to_LinkedList_using_function_AddLast_and_AddFirst()
+/*********************************************************************************
+ * Testing function addLast when one element added to the LinkedList.            *
+ * -The addLast function will pass in the ListElement and the List.              *
+ * -The function will add the Element to the tail of the List.                   *
+ * -If either Element or List is pointing to NULL,the function will do nothing.  *
+ *                                                                               *
+ *                                   ___________                                 *
+ *          list---+-->head-------->|  value=5 |                                 *
+ *                 |                |__________|---->NULL                        *
+ *                 |                    ^                                        *
+ *                 |                    |                                        *
+ *                 +-->tail-------------+                                        *
+ *                                                                               *
+ *********************************************************************************/           
+void test_Adding_one_element_to_LinkedList_using_function_AddLast()
 {
-  int firstValue=1;
-  int lastValue=5;
+  int value=5;
 
-  LinkedList *addLastPtr;
-  LinkedList *addFirstPtr;
+  LinkedList *list;
 
-  addLastPtr  = createLinkedList();
-  addFirstPtr = createLinkedList();
+  list  = createLinkedList();
 
-  addLast(createListElement(&lastValue),addLastPtr);
-  addFirst(addFirstPtr,createListElement(&firstValue));
+  addLast(createListElement(&value),list);
 
-  TEST_ASSERT_NOT_NULL(addLastPtr);
-  TEST_ASSERT_NOT_NULL(addLastPtr->head);
-  TEST_ASSERT_NOT_NULL(addLastPtr->tail);
-  TEST_ASSERT_NOT_NULL(addFirstPtr);
-  TEST_ASSERT_NOT_NULL(addFirstPtr->head);
-  TEST_ASSERT_NOT_NULL(addFirstPtr->tail);
+  TEST_ASSERT_NOT_NULL(list);
+  TEST_ASSERT_NOT_NULL(list->head);
+  TEST_ASSERT_NOT_NULL(list->tail);
 
-  //for add last function
-  TEST_ASSERT_EQUAL(5,*((int *)(addLastPtr->head->value)));
-  TEST_ASSERT_NULL(addLastPtr->head->next);
-  TEST_ASSERT_EQUAL(5,*((int *)(addLastPtr->tail->value)));
-  TEST_ASSERT_NULL(addLastPtr->tail->next);
-  TEST_ASSERT_EQUAL(1,addLastPtr->length);
-
-  //for add first function
-  TEST_ASSERT_EQUAL(1,*((int *)(addFirstPtr->head->value)));
-  TEST_ASSERT_NULL(addFirstPtr->head->next);
-  TEST_ASSERT_EQUAL(1,*((int *)(addFirstPtr->tail->value)));
-  TEST_ASSERT_NULL(addFirstPtr->tail->next);
-  TEST_ASSERT_EQUAL(1,addFirstPtr->length);
+  TEST_ASSERT_EQUAL(5,*((int *)(list->head->value)));
+  TEST_ASSERT_NULL(list->head->next);
+  TEST_ASSERT_EQUAL(5,*((int *)(list->tail->value)));
+  TEST_ASSERT_NULL(list->tail->next);
+  TEST_ASSERT_EQUAL(1,list->length);
 }
 
-void test_AddFirst_and_AddLast_given_Element_equal_NULL_Should_do_nothing()
+void test_addLast_Function_given_NULL_Element_Should_do_nothing()
 {
   int i;
-  int firstValue=1;
-  int lastValue=3;
+  int value1=1;
+  int value2=2;
 
-  LinkedList *addLastPtr;
-  LinkedList *addFirstPtr;
+  LinkedList *list;
+  
+  list=createLinkedList();
 
-  addFirstPtr=createLinkedList();
-  addLastPtr=createLinkedList();
+  addLast(createListElement(&value1),list);
+  addLast(NULL,list);
+  addLast(createListElement(&value2),list);
 
-  addFirst(addFirstPtr,createListElement(&firstValue));
-  addFirst(addFirstPtr,NULL);
-  addFirst(addFirstPtr,createListElement(&lastValue));
-
-  TEST_ASSERT_NOT_NULL(addFirstPtr);
-  TEST_ASSERT_EQUAL(3,*((int *)(addFirstPtr->head->value)));
-  TEST_ASSERT_EQUAL_PTR(addFirstPtr->tail,addFirstPtr->head->next);
-  TEST_ASSERT_EQUAL(1,*((int *)(addFirstPtr->tail->value)));
-  TEST_ASSERT_NULL(addFirstPtr->tail->next);
-  TEST_ASSERT_EQUAL(2,addFirstPtr->length);
-
-  addLast(createListElement(&firstValue),addLastPtr);
-  addLast(NULL,addLastPtr);
-  addLast(createListElement(&lastValue),addLastPtr);
-
-  TEST_ASSERT_NOT_NULL(addLastPtr);
-  TEST_ASSERT_EQUAL(1,*((int *)(addLastPtr->head->value)));
-  TEST_ASSERT_EQUAL_PTR(addLastPtr->tail,addLastPtr->head->next);
-  TEST_ASSERT_EQUAL(3,*((int *)(addLastPtr->tail->value)));
-  TEST_ASSERT_NULL(addLastPtr->tail->next);
-  TEST_ASSERT_EQUAL(2,addLastPtr->length);
+  TEST_ASSERT_NOT_NULL(list);
+  TEST_ASSERT_EQUAL(1,*((int *)(list->head->value)));
+  TEST_ASSERT_EQUAL_PTR(list->tail,list->head->next);
+  TEST_ASSERT_EQUAL(2,*((int *)(list->tail->value)));
+  TEST_ASSERT_NULL(list->tail->next);
+  TEST_ASSERT_EQUAL(2,list->length);
 }
 
-void test_addLast_Function_for_no_List_Passing_in_Should_do_nothing()
+void test_addLast_Function_given_NULL_List_Should_do_nothing()
 {
   int value[]={1,2};
 
-  LinkedList *ptr;
-  ptr=createLinkedList();
+  LinkedList *list;
+  list=createLinkedList();
 
   addLast(createListElement(&value[0]),NULL);
-  addLast(createListElement(&value[1]),ptr);
+  addLast(createListElement(&value[1]),list);
 
-  TEST_ASSERT_NOT_NULL(ptr);
-  TEST_ASSERT_NOT_NULL(ptr->head);
-  TEST_ASSERT_NOT_NULL(ptr->tail);
+  TEST_ASSERT_NOT_NULL(list);
+  TEST_ASSERT_NOT_NULL(list->head);
+  TEST_ASSERT_NOT_NULL(list->tail);
 
-  TEST_ASSERT_EQUAL(2,*((int *)(ptr->head->value)));
-  TEST_ASSERT_NULL(ptr->head->next);
-  TEST_ASSERT_EQUAL(2,*((int *)(ptr->tail->value)));
-  TEST_ASSERT_NULL(ptr->tail->next);
-  TEST_ASSERT_EQUAL(1,ptr->length);
+  TEST_ASSERT_EQUAL(2,*((int *)(list->head->value)));
+  TEST_ASSERT_NULL(list->head->next);
+  TEST_ASSERT_EQUAL(2,*((int *)(list->tail->value)));
+  TEST_ASSERT_NULL(list->tail->next);
+  TEST_ASSERT_EQUAL(1,list->length);
 }
 
-void test_addFirst_Function_for_no_List_Passing_in_Should_do_nothing()
-{
-  int value[]={1,2};
-
-  LinkedList *ptr;
-  ptr=createLinkedList();
-
-  addFirst(NULL,createListElement(&value[0]));
-  addFirst(ptr,createListElement(&value[1]));
-
-  TEST_ASSERT_NOT_NULL(ptr);
-  TEST_ASSERT_NOT_NULL(ptr->head);
-  TEST_ASSERT_NOT_NULL(ptr->tail);
-
-  TEST_ASSERT_EQUAL(2,*((int *)(ptr->head->value)));
-  TEST_ASSERT_NULL(ptr->head->next);
-  TEST_ASSERT_EQUAL(2,*((int *)(ptr->tail->value)));
-  TEST_ASSERT_NULL(ptr->tail->next);
-  TEST_ASSERT_EQUAL(1,ptr->length);
-}
-
-void test_Adding_two_element_to_LinkedList_using_function_AddLast()
+/**********************************************************************************
+ * Testing function addLast when two element added to the LinkedList.             *
+ *                                                                                *
+ *                      1st Ele         2nd Ele                                   *
+ *                      _________      _________                                  *
+ *   list---+-->head-->| value=1|     | value=2|                                  *
+ *          |          |________|---->|________|---->NULL                         *
+ *          |                             ^                                       *
+ *          |                             |                                       *
+ *          +-->tail----------------------+                                       *
+ *                                                                                *
+ **********************************************************************************/ 
+void test_Adding_two_element_to_LinkedList_using_function_addLast()
 {
   int i;
   int value[]={1,2};
 
-  LinkedList *ptr;
-  ptr=createLinkedList();
+  LinkedList *list;
+  list=createLinkedList();
 
   for(i=0;i<2;i++){
-    addLast(createListElement(&value[i]),ptr);
+    addLast(createListElement(&value[i]),list);
   }
 
-  TEST_ASSERT_EQUAL(1,*((int *)(ptr->head->value)));
-  TEST_ASSERT_NOT_NULL(ptr->head);
-  TEST_ASSERT_NOT_NULL(ptr->tail);
-  TEST_ASSERT_EQUAL_PTR(ptr->tail,ptr->head->next);
-  TEST_ASSERT_EQUAL(2,*((int *)(ptr->tail->value)));
-  TEST_ASSERT_NULL(ptr->tail->next);
-  TEST_ASSERT_EQUAL(2,ptr->length);
+  TEST_ASSERT_EQUAL(1,*((int *)(list->head->value)));
+  TEST_ASSERT_NOT_NULL(list->head);
+  TEST_ASSERT_NOT_NULL(list->tail);
+  TEST_ASSERT_EQUAL_PTR(list->tail,list->head->next);
+  TEST_ASSERT_EQUAL(2,*((int *)(list->tail->value)));
+  TEST_ASSERT_NULL(list->tail->next);
+  TEST_ASSERT_EQUAL(2,list->length);
 }
 
-void test_Adding_two_element_to_LinkedList_using_function_AddFirst()
-{
-  int i;
-  int value[]={1,2};
-
-  LinkedList *ptr;
-  ptr=createLinkedList();
-
-  for(i=0;i<2;i++){
-    addFirst(ptr,createListElement(&value[i]));
-  }
-
-  TEST_ASSERT_NOT_NULL(ptr);
-  TEST_ASSERT_EQUAL(2,*((int *)(ptr->head->value)));
-  TEST_ASSERT_EQUAL_PTR(ptr->tail,ptr->head->next);
-  TEST_ASSERT_EQUAL(1,*((int *)(ptr->tail->value)));
-  TEST_ASSERT_NULL(ptr->tail->next);
-  TEST_ASSERT_EQUAL(2,ptr->length);
-}
-
+/**********************************************************************************
+ * Testing function AddLast when three element added to the LinkedList.           *
+ *                                                                                *
+ *                     1st Ele        2nd Ele        3rd Ele                      *
+ *                    _________      _________      _________                     *
+ * list---+-->head-->| value=1|     | value=2|     | value=3|                     *
+ *        |          |________|---->|________|---->|________|---->NULL            *
+ *        |                                            ^                          *
+ *        |                                            |                          *
+ *        +-->tail-------------------------------------+                          *
+ *                                                                                *
+ **********************************************************************************/
 void test_Adding_three_element_to_LinkedList_using_function_addLast()
 {
   int i;
   int value[]={1,2,3};
 
-  LinkedList *ptr;
+  LinkedList *list;
   Iterator *iter;
-  ptr=createLinkedList();
+  list=createLinkedList();
 
   for(i=0;i<3;i++){
-    addLast(createListElement(&value[i]),ptr);
+    addLast(createListElement(&value[i]),list);
   }
 
-  TEST_ASSERT_NOT_NULL(ptr);
-  iter=createIterator(ptr);
-  TEST_ASSERT_EQUAL(*((int *)(ptr->head->value)),*((int *)(iter->current->value)));
+  TEST_ASSERT_NOT_NULL(list);
+  iter=createIterator(list);
+  TEST_ASSERT_EQUAL(*((int *)(list->head->value)),*((int *)(iter->current->value)));
   TEST_ASSERT_EQUAL(1,*((int *)(iter->current->value)));
   iter=iteratorGetNext(iter);
   TEST_ASSERT_EQUAL(2,*((int *)(iter->current->value)));
   iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(*((int *)(ptr->tail->value)),*((int *)(iter->current->value)));
+  TEST_ASSERT_EQUAL(*((int *)(list->tail->value)),*((int *)(iter->current->value)));
   TEST_ASSERT_EQUAL(3,*((int *)(iter->current->value)));
   iter=iteratorGetNext(iter);
   TEST_ASSERT_NULL(iter->current);
-  TEST_ASSERT_EQUAL(3,ptr->length);
+  TEST_ASSERT_EQUAL(3,list->length);
 }
 
 
-void test_Adding_three_element_to_LinkedList_using_function_AddFirst()
-{
-  int i;
-  int value[]={1,2,3};
-
-  LinkedList *ptr;
-  Iterator *iter;
-  ptr=createLinkedList();
-
-  for(i=0;i<3;i++){
-    addFirst(ptr,createListElement(&value[i]));
-  }
-
-  TEST_ASSERT_NOT_NULL(ptr);
-  iter=createIterator(ptr);
-  TEST_ASSERT_EQUAL(*((int *)(ptr->head->value)),*((int *)(iter->current->value)));
-  TEST_ASSERT_EQUAL(3,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(2,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(*((int *)(ptr->tail->value)),*((int *)(iter->current->value)));
-  TEST_ASSERT_EQUAL(1,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_NULL(iter->current);
-  TEST_ASSERT_EQUAL(3,ptr->length);
-}
-
-
-
-
-void test_Five_Element_Added_to_the_List_using_AddLast()
+void test_Adding_five_element_to_LinkedList_using_function_addLast()
 {
   int i;
   int value[]={95,100,14,111,123};
 
-  LinkedList *ptr;
+  LinkedList *list;
   Iterator *iter;
-  ptr = createLinkedList();
+  list = createLinkedList();
 
   for(i=0;i<5;i++){
-    addLast(createListElement(&value[i]),ptr);
+    addLast(createListElement(&value[i]),list);
   }
 
-  TEST_ASSERT_NOT_NULL(ptr);
-  iter=createIterator(ptr);
-  TEST_ASSERT_EQUAL(95 		, *((int *)(iter->current->value)));
+  TEST_ASSERT_NOT_NULL(list);
+  iter=createIterator(list);
+  TEST_ASSERT_EQUAL(95  ,*((int *)(iter->current->value)));
   iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(100		, *((int *)(iter->current->value)));
+  TEST_ASSERT_EQUAL(100 ,*((int *)(iter->current->value)));
   iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(14		, *((int *)(iter->current->value)));
+  TEST_ASSERT_EQUAL(14  ,*((int *)(iter->current->value)));
   iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(111		, *((int *)(iter->current->value)));
+  TEST_ASSERT_EQUAL(111 ,*((int *)(iter->current->value)));
   iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(123		, *((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_NULL(iter->current);
-  TEST_ASSERT_EQUAL(5,ptr->length);
-}
-
-void test_AddFirst_adding_five_element_into_LinkedList()
-{
-  int i;
-  int value[]={95,100,14,111,123};
-
-  LinkedList *ptr;
-  Iterator *iter;
-  ptr=createLinkedList();
-
-  for(i=0;i<5;i++){
-    addFirst(ptr,createListElement(&value[i]));
-  }
-
-  TEST_ASSERT_NOT_NULL(ptr);
-  iter=createIterator(ptr);
-  TEST_ASSERT_EQUAL(123,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(111,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(14,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(100,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(95,*((int *)(iter->current->value)));
+  TEST_ASSERT_EQUAL(123 ,*((int *)(iter->current->value)));
   iter=iteratorGetNext(iter);
   TEST_ASSERT_NULL(iter->current);
-  TEST_ASSERT_EQUAL(5,ptr->length);
+  TEST_ASSERT_EQUAL(5,list->length);
 }
 
-// Testing function removeFirst when there are no element in LinkedList.
-void test_removeFirst_given_no_element_in_LinkedList_should_remove_nothing()
-{
-  LinkedList *ptr;
-  ListElement *removedEle;
-
-  ptr=createLinkedList();
-  removedEle=removeFirst(ptr);
-
-  TEST_ASSERT_NULL(removedEle);
-  TEST_ASSERT_NULL(ptr->head);
-  TEST_ASSERT_NULL(ptr->tail);
-}
-
-// Testing function removeLast when there are no element in LinkedList.
-void test_RemoveLast_given_no_element_in_LinkedList_should_remove_nothing()
-{
-  LinkedList *ptr;
-  ListElement *removedEle;
-
-  ptr=createLinkedList();
-  removedEle=removeLast(ptr);
-
-  TEST_ASSERT_NULL(removedEle);
-  TEST_ASSERT_NULL(ptr->head);
-  TEST_ASSERT_NULL(ptr->tail);
-}
-
-void test_RemoveFirst_given_one_element_in_LinkedList_should_remove_head_Element()
-{
-  int value=1;
-
-  LinkedList *ptr;
-  ListElement *removedEle;
-
-  ptr=createLinkedList();
-  addFirst(ptr,createListElement(&value));
-  removedEle=removeFirst(ptr);
-
-  TEST_ASSERT_NOT_NULL(ptr);
-  TEST_ASSERT_EQUAL(1,*((int *)(removedEle->value)));
-  TEST_ASSERT_NULL(removedEle->next);
-
-  TEST_ASSERT_NULL(ptr->head);
-  TEST_ASSERT_NULL(ptr->tail);
-  TEST_ASSERT_EQUAL(0,ptr->length);
-}
-
-void test_RemoveLast_given_one_element_in_LinkedList_should_remove_last_Element()
-{
-  int value=1;
-
-  LinkedList *ptr;
-  ListElement *removedEle;
-
-  ptr=createLinkedList();
-  addFirst(ptr,createListElement(&value));
-  removedEle=removeLast(ptr);
-
-  TEST_ASSERT_NOT_NULL(ptr);
-  TEST_ASSERT_EQUAL(1,*((int *)(removedEle->value)));
-  TEST_ASSERT_NULL(removedEle->next);
-
-  TEST_ASSERT_NULL(ptr->head);
-  TEST_ASSERT_NULL(ptr->tail);
-  TEST_ASSERT_EQUAL(0,ptr->length);
-}
-
-void test_RemoveFirst_given_three_element_in_LinkedList_should_return_removed_head_Element()
-{
-  int i;
-  int value[]={1,2,3};
-
-  LinkedList *ptr;
-  ListElement *removedEle;
-  Iterator *iter;
-
-  ptr=createLinkedList();
-
-  for(i=0;i<3;i++){
-    addFirst(ptr,createListElement(&value[i]));
-  }
-
-  TEST_ASSERT_NOT_NULL(ptr);
-  TEST_ASSERT_EQUAL(3,ptr->length);
-
-  removedEle=removeFirst(ptr);
-
-  TEST_ASSERT_EQUAL(3,*((int *)(removedEle->value)));
-  TEST_ASSERT_NULL(removedEle->next);
-
-  //the LinkedList after removing
-  iter=createIterator(ptr);
-  TEST_ASSERT_EQUAL(2,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(1,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_NULL(iter->current);
-  TEST_ASSERT_EQUAL(2,ptr->length);
-}
-
-void test_RemoveLast_given_three_element_in_LinkedList_should_return_removed_last_Element()
-{
-  int i;
-  int value[]={1,2,3};
-
-  LinkedList *ptr;
-  ListElement *removedEle;
-  Iterator *iter;
-
-  ptr=createLinkedList();
-
-  for(i=0;i<3;i++){
-    addFirst(ptr,createListElement(&value[i]));
-  }
-
-  TEST_ASSERT_NOT_NULL(ptr);
-  TEST_ASSERT_EQUAL(3,ptr->length);
-
-  removedEle=removeLast(ptr);
-
-  TEST_ASSERT_EQUAL(1,*((int *)(removedEle->value)));
-  TEST_ASSERT_NULL(removedEle->next);
-
-  //the LinkedList after removing
-  iter=createIterator(ptr);
-  TEST_ASSERT_EQUAL(3,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(2,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_NULL(iter->current);
-  TEST_ASSERT_EQUAL(2,ptr->length);
-}
-
-void test_All_function_in_one_single_LinkedList()
-{
-  int value[]={1,2,3,4,5,6};
-
-  LinkedList *ptr;
-  ListElement *remLast;
-  ListElement *remFirst;
-  Iterator *iter,*newIter;
-
-  ptr=createLinkedList();
-
-  addLast(createListElement(&value[0]),ptr);
-  addLast(createListElement(&value[1]),ptr);
-  addFirst(ptr,createListElement(&value[2]));
-  addLast(createListElement(&value[3]),ptr);
-  addFirst(ptr,createListElement(&value[4]));
-
-  TEST_ASSERT_NOT_NULL(ptr);
-  iter=createIterator(ptr);
-  TEST_ASSERT_EQUAL(5,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(3,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(1,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(2,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_EQUAL(4,*((int *)(iter->current->value)));
-  iter=iteratorGetNext(iter);
-  TEST_ASSERT_NULL(iter->current);
-  TEST_ASSERT_EQUAL(5,ptr->length);
-
-  //removing last element in the LinkedList
-  remLast=removeLast(ptr);
-
-  TEST_ASSERT_EQUAL(4,*((int *)(remLast->value)));
-  TEST_ASSERT_EQUAL(2,*((int *)(ptr->tail->value)));
-  TEST_ASSERT_NULL(ptr->tail->next);
-  TEST_ASSERT_EQUAL(4,ptr->length);
-
-  //removing First element in the LinkedList
-  remFirst=removeFirst(ptr);
-
-  TEST_ASSERT_EQUAL(5,*((int *)(remFirst->value)));
-  TEST_ASSERT_EQUAL(3,*((int *)(ptr->head->value)));
-  TEST_ASSERT_EQUAL(3,ptr->length);
-
-  //adding element to the tail of the LinkedList
-  addLast(createListElement(&value[5]),ptr);
-
-  newIter=createIterator(ptr);
-  TEST_ASSERT_EQUAL(3,*((int *)(newIter->current->value)));
-  newIter=iteratorGetNext(newIter);
-  TEST_ASSERT_EQUAL(1,*((int *)(newIter->current->value)));
-  newIter=iteratorGetNext(newIter);
-  TEST_ASSERT_EQUAL(2,*((int *)(newIter->current->value)));
-  newIter=iteratorGetNext(newIter);
-  TEST_ASSERT_EQUAL(6,*((int *)(newIter->current->value)));
-  newIter=iteratorGetNext(newIter);
-  TEST_ASSERT_NULL(newIter->current);
-  TEST_ASSERT_EQUAL(4,ptr->length);
-}
 
 
 

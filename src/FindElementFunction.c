@@ -13,38 +13,10 @@
 #include <stdio.h>
 #include <assert.h>
 
-
-//*** Find Element function start here ***
-ListElement *listFind(LinkedList *list, void *value, int(*compare)(void *,void *)){
-  if(list==NULL){
-    return NULL;
-  }
-  else{
-    ListElement *elemPtr;
-    elemPtr=list->head;
-
-    if(value==NULL || (compare(elemPtr ->value , value)==-1)){
-      return NULL;
-    }
-
-    else{
-      //if they are not the same then continue looping
-      while (compare(elemPtr ->value , value)==1){
-        elemPtr =elemPtr->next;
-
-        if(elemPtr==NULL){
-          return NULL;
-        }
-      }
-      return elemPtr;
-    }
-  }
-}
-
 ListElement *keyFind(LinkedList *list, void *key, int(*compare)(void *,void *)){
   char *errMsg;
 
-  if(list==NULL){
+  if(list==NULL || compare==NULL){
     return NULL;
   }
   else{
@@ -75,18 +47,16 @@ ListElement *keyFind(LinkedList *list, void *key, int(*compare)(void *,void *)){
 Token *getElementValue(ListElement *findKey){
   Token *leftToken=((OperatorToken *)(findKey->value))->token[0];
   Token *rightToken=((OperatorToken *)(findKey->value))->token[1];
+
   if(findKey==NULL){
-    return NULL;
-  }
-  else if(rightToken->type==TOKEN_OPERATOR_TYPE){
     return NULL;
   }
   else{
     if(rightToken->type==TOKEN_STRING_TYPE){
-      printf("The 'Value' for '%s' is '%s'\n",((IdentifierToken *)leftToken)->name,((StringToken *)rightToken)->name); 
+      printf("The 'Value' for '%s' is '%s'\n",((IdentifierToken *)leftToken)->name,((StringToken *)rightToken)->name);
     }
     else if(rightToken->type==TOKEN_INTEGER_TYPE){
-      printf("The 'Value' for '%s' is '%d'\n",((IdentifierToken *)leftToken)->name,((IntegerToken *)rightToken)->value); 
+      printf("The 'Value' for '%s' is '%d'\n",((IdentifierToken *)leftToken)->name,((IntegerToken *)rightToken)->value);
     }
     return rightToken;
   }
