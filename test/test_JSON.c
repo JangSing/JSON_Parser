@@ -14,63 +14,61 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-/****************************************************************************************************************************************************
- *                                                                                                                                                  *
- * An Example of a Simple JsonList is as shown below.                                                                                               *
- *                                                                                                                                                  *
- *  {                                                                                                                                               *
- *    "NAME1":"JS",                                                                                                                                 *
- *    "NAME2":"STEVEN"                                                                                                                              *
- *  }                                                                                                                                               *
- *                                                                                                                                                  *
- * An Example of a JsonList with Recursion is as shown below.                                                                                       *
- *                                                                                                                                                  *
- *  {                                                                                                                                               *
- *    "NAME1":"JS",                                                                                                                                 *
- *    "AGE"  :{ "NAME2":"STEVEN",                                                                                                                   *
- *              "NAME3":"YEN"}                                                                                                                      *
- *  }                                                                                                                                               *
- *                                                                                                                                                  *
- * When creating the JSON list, a single object is as shown below.                                                                                  *
- * E.g.                                                                                                                                             *
- *                         ____                                                                                                                     *
- *                        | : |                                                                                                                     *
- *                        ----                                                                                                                      *
- *                      /     \                                                                                                                     *
- *                  'NAME1'   'JS'                                                                                                                  *
- *                                                                                                                                                  *
- * Each of the OBJECT token will be linked by using the Linked List to form the JSON list.                                                          *
- * For every single OBJECT that has created above is a ListElement of the Linked List.                                                              *
- * When the input Token passing in is "{", then a Linked List has been created. So the object can be linked together by using the function AddLast. *
- * the Linking of the JSON list is as shown below,                                                                                                  *
- * E.g.                                                                                                                                             *
- *                         ____                                                                                                                     *
- *               {------->| : |------>}------>NULL                                                                                                  *
- *                        ----                                                                                                                      *
- *                      /     \                                                                                                                     *
- *                  'NAME1'   'JS'                                                                                                                  *
- *                                                                                                                                                  *
- * The Linking of the Simple JsonList mentioned above is as shown below.                                                                            *
- *                         ____                 ____                                                                                                *
- *               {------->| : |--------------->| : |--------->}------>NULL                                                                          *
- *                        ----                 ----                                                                                                 *
- *                      /     \              /     \                                                                                                *
- *                  'NAME1'   'JS'       'NAME2'  'STEVEN'                                                                                          *
- *                                                                                                                                                  *
- * The Linking of the Recursion JsonList mentioned above is as shown below.                                                                         *
- *                         ____                 ____                                                                                                *
- *               {------->| : |--------------->| : |--------->}------->NULL                                                                         *
- *                        ----                 ----                                                                                                 *
- *                      /     \              /     \           ____                 ____                                                            *
- *                  'NAME1'   'JS'       'AGE'      {-------->| : |--------------->| : |--------->}----->NULL                                       *
- *                                                            ----                 ----                                                             *
- *                                                          /     \               /     \                                                           *
- *                                                    'NAME2'    'STEVEN'    'NAME3'    'YEN'                                                       *
- *                                                                                                                                                  *
- ****************************************************************************************************************************************************
- */
-
-
+/************************************************************************************************************************
+ *                                                                                                                      *
+ * An Example of a Simple JsonList is as shown below.                                                                   *
+ *                                                                                                                      *
+ *  {                                                                                                                   *
+ *    "NAME1":"JS",                                                                                                     *
+ *    "NAME2":"STEVEN"                                                                                                  *
+ *  }                                                                                                                   *
+ *                                                                                                                      *
+ * An Example of a JsonList with Recursion is as shown below.                                                           *
+ *                                                                                                                      *
+ *  {                                                                                                                   *
+ *    "NAME1":"JS",                                                                                                     *
+ *    "AGE"  :{ "NAME2":"STEVEN",                                                                                       *
+ *              "NAME3":"YEN"}                                                                                          *
+ *  }                                                                                                                   *
+ *                                                                                                                      *
+ * When creating the JSON list, a single object is as shown below.                                                      *
+ * E.g.                                                                                                                 *
+ *                         ____                                                                                         *
+ *                        | : |                                                                                         *
+ *                        ----                                                                                          *
+ *                      /     \                                                                                         *
+ *                  'NAME1'   'JS'                                                                                      *
+ *                                                                                                                      *
+ * For every single OBJECT that has created above is a ListElement of the Linked List.                                  *
+ * Each of the OBJECT token will be linked by using the Linked List to form the JSON list.                              *
+ * When the input Token passing in is "{", then a Linked List has been created. So the object can be linked together    *
+ * by using the function AddLast. the Linking of the JSON list is as shown below,                                       *
+ *                                                                                                                      *
+ * E.g.                                                                                                                 *
+ *                         ____                                                                                         *
+ *               {------->| : |------>}------>NULL                                                                      *
+ *                        ----                                                                                          *
+ *                      /     \                                                                                         *
+ *                  'NAME1'   'JS'                                                                                      *
+ *                                                                                                                      *
+ * The Linking of the Simple JsonList mentioned above is as shown below.                                                *
+ *                         ____                 ____                                                                    *
+ *               {------->| : |--------------->| : |--------->}------>NULL                                              *
+ *                        ----                 ----                                                                     *
+ *                      /     \              /     \                                                                    *
+ *                  'NAME1'   'JS'       'NAME2'  'STEVEN'                                                              *
+ *                                                                                                                      *
+ * The Linking of the Recursion JsonList mentioned above is as shown below.                                             *
+ *                         ____                 ____                                                                    *
+ *               {------->| : |--------------->| : |--------->}------->NULL                                             *
+ *                        ----                 ----                                                                     *
+ *                      /     \              /     \           ____                 ____                                *
+ *                  'NAME1'   'JS'       'AGE'      {-------->| : |--------------->| : |--------->}----->NULL           *
+ *                                                            ----                 ----                                 *
+ *                                                          /     \               /     \                               *
+ *                                                    'NAME2'    'STEVEN'    'NAME3'    'YEN'                           *
+ *                                                                                                                      *
+ ************************************************************************************************************************/
 
 void setUp()
 {
@@ -103,10 +101,10 @@ void test_getToken()
   free(OPE);
 }
 
-/**
- * Test function link2Tokens if leftToken/operatorSymbol/rightToken are NULL should return NULL;
- *
- */
+/****************************************************************************************************************
+ * Test function link2Tokens if leftToken/operatorSymbol/rightToken are NULL should return NULL;                *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_function_link2Tokens_with_NULL_input_should_return_NULL()
 {
   Token *token1,*token2,*token3,*token4;
@@ -126,10 +124,10 @@ void test_function_link2Tokens_with_NULL_input_should_return_NULL()
   free(token4);
 }
 
-/**
- * Test if Empty Object been passed into the list
- *
- */
+/****************************************************************************************************************
+ * Test if Empty Object been passed into the list.                                                              *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_JSON_List_with_Empty_Object_Passed_in_should_Throw_Error()
 {
   printf("JSON list test No.0");
@@ -155,11 +153,11 @@ void test_JSON_List_with_Empty_Object_Passed_in_should_Throw_Error()
   printf("\n\n");
 }
 
-/**
- * at state WAIT_FOR_TOKEN,
- * Test if Empty String been passed into the list
- *
- */
+/****************************************************************************************************************
+ * at state WAIT_FOR_TOKEN,                                                                                     *
+ * Test if Empty String been passed into the list.                                                              *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_JSON_List_with_Empty_String_Passed_in_should_Throw_Error()
 {
   printf("JSON list test No.1");
@@ -188,13 +186,13 @@ void test_JSON_List_with_Empty_String_Passed_in_should_Throw_Error()
   printf("\n\n");
 }
 
-/**
- * at state WAIT_FOR_TOKEN,
- * Test only '}' token has been passed into the list
- *
- *  }
- *
- */
+/****************************************************************************************************************
+ * at state WAIT_FOR_TOKEN,                                                                                     *
+ * Test only '}' token has been passed into the list.                                                           *
+ *                                                                                                              *
+ *  }                                                                                                           *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_only_close_Brace_should_Throw_Error()
 {
   printf("JSON list test No.2");
@@ -225,13 +223,13 @@ void test_Simple_JSON_List_with_only_close_Brace_should_Throw_Error()
 }
 
 
-/**
- * at state WAIT_FOR_TOKEN,
- * Test unexpected operator passing in beginning of JsonList
- *
- *  }{}{
- *
- */
+/**************************************************************************************************************
+ * at state WAIT_FOR_TOKEN,                                                                                   *
+ * Test unexpected operator passing in beginning of JsonList.                                                 *
+ *                                                                                                            *
+ *  }{}{                                                                                                      *
+ *                                                                                                            *
+ **************************************************************************************************************/
 void test_Simple_JSON_List_with_keep_Passing_Token_after_Error_occur_should_Throw_Error_and_ignore_remain_Token()
 {
   printf("JSON list test No.3");
@@ -263,13 +261,13 @@ void test_Simple_JSON_List_with_keep_Passing_Token_after_Error_occur_should_Thro
   printf("\n\n");
 }
 
-/**
- * at state OBJECT,
- * Test if no token has been passed in after Open Brace Token
- *
- *  {
- *
- */
+/****************************************************************************************************************
+ * at state OBJECT,                                                                                             *
+ * Test if no token has been passed in after Open Brace Token.                                                  *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_open_Brace_Token_should_Throw_Error()
 {
   printf("JSON list test No.4");
@@ -298,13 +296,13 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_open_Brace_Token_should
   printf("\n\n");
 }
 
-/**
- * at state OBJECT,
- * Test if JS token has been passed in after Open Brace
- *
- *  { "JS"
- *
- */
+/****************************************************************************************************************
+ * at state OBJECT,                                                                                             *
+ * Test if JS token has been passed in after Open Brace.                                                        *
+ *                                                                                                              *
+ *  { "JS"                                                                                                      *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token_should_Throw_Error()
 {
   printf("JSON list test No.5");
@@ -334,13 +332,13 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token_sh
   printf("\n\n");
 }
 
-/**
- * at state WAIT_FOR_COLON,
- * Test if no token has been passed in after NAME1 token
- *
- *  { "NAME1"
- *
- */
+/****************************************************************************************************************
+ * at state WAIT_FOR_COLON,                                                                                     *
+ * Test if no token has been passed in after NAME1 token.                                                       *
+ *                                                                                                              *
+ *  { "NAME1"                                                                                                   *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
   printf("JSON list test No.6");
@@ -370,13 +368,13 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Throw_
   printf("\n\n");
 }
 
-/**
- * at state WAIT_FOR_COLON,
- * Test if closeBrace token has been passed in after NAME1 token
- *
- *  { "NAME1"}
- *
- */
+/****************************************************************************************************************
+ * at state WAIT_FOR_COLON,                                                                                     *
+ * Test if closeBrace token has been passed in after NAME1 token.                                               *
+ *                                                                                                              *
+ *  { "NAME1"}                                                                                                  *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_Close_Brace_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
   printf("JSON list test No.7");
@@ -407,13 +405,13 @@ void test_Simple_JSON_List_with_Close_Brace_Token_Passed_in_after_Key_Token_shou
   printf("\n\n");
 }
 
-/**
- * at state WAIT_FOR_COLON,
- * Test if JS token has been passed in after NAME1 token
- *
- *  { "NAME1""JS"
- *
- */
+/****************************************************************************************************************
+ * at state WAIT_FOR_COLON,                                                                                     *
+ * Test if JS token has been passed in after NAME1 token.                                                       *
+ *                                                                                                              *
+ *  { "NAME1""JS"                                                                                               *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_String_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
   printf("JSON list test No.8");
@@ -444,13 +442,13 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Key_Token_should_Th
   printf("\n\n");
 }
 
-/**
- * at state WAIT_FOR_COLON,
- * Test if int20 token has been passed in after NAME1 token
- *
- *  { "NAME1"20
- *
- */
+/****************************************************************************************************************
+ * at state WAIT_FOR_COLON,                                                                                     *
+ * Test if int20 token has been passed in after NAME1 token.                                                    *
+ *                                                                                                              *
+ *  { "NAME1"20                                                                                                 *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
   printf("JSON list test No.9");
@@ -481,13 +479,13 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_should_T
   printf("\n\n");
 }
 
-/**
- * at state VALUE,
- * Test if no token has been passed in after colon token
- *
- *  { "NAME1":
- *
- */
+/****************************************************************************************************************
+ * at state VALUE,                                                                                              *
+ * Test if no token has been passed in after colon token.                                                       *
+ *                                                                                                              *
+ *  { "NAME1":                                                                                                  *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_Throw_Error1()
 {
   printf("JSON list test No.10");
@@ -518,13 +516,13 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_Thro
   printf("\n\n");
 }
 
-/**
- * at state VALUE,
- * Test if closeBrace token has been passed in after colon token
- *
- *  { "NAME1":}
- *
- */
+/****************************************************************************************************************
+ * at state VALUE,                                                                                              *
+ * Test if closeBrace token has been passed in after colon token.                                               *
+ *                                                                                                              *
+ *  { "NAME1":}                                                                                                 *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_Operator_Token_Passed_in_after_Colon_Token_should_Throw_Error1()
 {
   printf("JSON list test No.11");
@@ -556,13 +554,13 @@ void test_Simple_JSON_List_with_Operator_Token_Passed_in_after_Colon_Token_shoul
   printf("\n\n");
 }
 
-/**
- * at state STRING,
- * Test if no token has been passed in after JS token
- *
- *  { "NAME1":"JS"
- *
- */
+/****************************************************************************************************************
+ * at state STRING,                                                                                             *
+ * Test if no token has been passed in after JS token.                                                          *
+ *                                                                                                              *
+ *  { "NAME1":"JS"                                                                                              *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
   printf("JSON list test No.12");
@@ -594,13 +592,13 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_String_Token_should_Thr
   printf("\n\n");
 }
 
-/**
- * at state STRING,
- * Test if caret token has been passed in after JS token
- *
- *  { "NAME1":"JS"^
- *
- */
+/****************************************************************************************************************
+ * at state STRING,                                                                                             *
+ * Test if caret token has been passed in after JS token.                                                       *
+ *                                                                                                              *
+ *  { "NAME1":"JS"^                                                                                             *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
   printf("JSON list test No.13");
@@ -633,13 +631,13 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_String_Token_should_
   printf("\n\n");
 }
 
-/**
- * at state STRING,
- * Test if NAME2 token has been passed in after JS token
- *
- *  { "NAME1":"JS""NAME2"
- *
- */
+/****************************************************************************************************************
+ * at state STRING,                                                                                             *
+ * Test if NAME2 token has been passed in after JS token.                                                       *
+ *                                                                                                              *
+ *  { "NAME1":"JS""NAME2"                                                                                       *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_Identifier_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
   printf("JSON list test No.14");
@@ -672,13 +670,13 @@ void test_Simple_JSON_List_with_Identifier_Token_Passed_in_after_String_Token_sh
   printf("\n\n");
 }
 
-/**
- * at state STRING,
- * Test if int20 token has been passed in after JS token
- *
- *  { "NAME1":"JS"20
- *
- */
+/****************************************************************************************************************
+ * at state STRING,                                                                                             *
+ * Test if int20 token has been passed in after JS token.                                                       *
+ *                                                                                                              *
+ *  { "NAME1":"JS"20                                                                                            *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
   printf("JSON list test No.15");
@@ -711,13 +709,13 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_String_Token_shoul
   printf("\n\n");
 }
 
-/**
- * at state NUMBER,
- * Test if no token has been passed in after int20 token
- *
- *  { "NAME1":20
- *
- */
+/****************************************************************************************************************
+ * at state NUMBER,                                                                                             *
+ * Test if no token has been passed in after int20 token.                                                       *
+ *                                                                                                              *
+ *  { "NAME1":20                                                                                                *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
   printf("JSON list test No.16");
@@ -749,13 +747,13 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should_Th
   printf("\n\n");
 }
 
-/**
- * at state NUMBER,
- * Test if caret token has been passed in after int20 token
- *
- *  { "NAME1":20^
- *
- */
+/****************************************************************************************************************
+ * at state NUMBER,                                                                                             *
+ * Test if caret token has been passed in after int20 token.                                                    *
+ *                                                                                                              *
+ *  { "NAME1":20^                                                                                               *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
   printf("JSON list test No.17");
@@ -788,13 +786,13 @@ void test_Simple_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_should
   printf("\n\n");
 }
 
-/**
- * at state NUMBER,
- * Test if JS token has been passed in after int20 token
- *
- *  { "NAME1":20"JS"
- *
- */
+/****************************************************************************************************************
+ * at state NUMBER,                                                                                             *
+ * Test if JS token has been passed in after int20 token.                                                       *
+ *                                                                                                              *
+ *  { "NAME1":20"JS"                                                                                            *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_String_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
   printf("JSON list test No.18");
@@ -827,13 +825,13 @@ void test_Simple_JSON_List_with_String_Token_Passed_in_after_Integer_Token_shoul
   printf("\n\n");
 }
 
-/**
- * at state NUMBER,
- * Test if JS token has been passed in after int20 token
- *
- *  { "NAME1":20 30
- *
- */
+/****************************************************************************************************************
+ * at state NUMBER,                                                                                             *
+ * Test if JS token has been passed in after int20 token.                                                       *
+ *                                                                                                              *
+ *  { "NAME1":20 30                                                                                             *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
   printf("JSON list test No.19");
@@ -866,13 +864,13 @@ void test_Simple_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_shou
   printf("\n\n");
 }
 
-/**
- * at state OBJECT,
- * Test if no token has been passed in after coma token
- *
- *  { "NAME1":20,
- *
- */
+/****************************************************************************************************************
+ * at state OBJECT,                                                                                             *
+ * Test if no token has been passed in after coma token                                                         *
+ *                                                                                                              *
+ *  { "NAME1":20,                                                                                               *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_with_no_Token_Passed_in_after_Coma_Token_should_Throw_Error()
 {
   printf("JSON list test No.20");
@@ -905,14 +903,14 @@ void test_Simple_JSON_List_with_no_Token_Passed_in_after_Coma_Token_should_Throw
   printf("\n\n");
 }
 
-/**
- * Test for complete Simple JsonList
- *
- *  {
- *    "NAME1":"JS",
- *    "NAME2":"STEVEN"
- *  }
- */
+/****************************************************************************************************************
+ * Test for complete Simple JsonList.                                                                           *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "NAME2":"STEVEN"                                                                                          *
+ *  }                                                                                                           *
+ ****************************************************************************************************************/
 void test_Simple_JSON_List_for_complete_form()
 {
   printf("JSON list test No.21");
@@ -961,14 +959,14 @@ void test_Simple_JSON_List_for_complete_form()
   printf("\n\n");
 }
 
-/**
- * Test if Extra Token Passed into complete Simple JsonList
- *
- *  {
- *    "NAME1":"JS",
- *    "NAME2":"STEVEN"
- *  }^
- */
+/****************************************************************************************************************
+ * Test if Extra Token Passed into complete Simple JsonList.                                                    *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "NAME2":"STEVEN"                                                                                          *
+ *  }^                                                                                                          *
+ ****************************************************************************************************************/
 void test_JSON_List_with_Extra_Token_Passed_into_Simple_JSON_List()
 {
   printf("JSON list test No.22");
@@ -1009,14 +1007,14 @@ void test_JSON_List_with_Extra_Token_Passed_into_Simple_JSON_List()
   printf("\n\n");
 }
 
-/**
- * Test if the Recursion JsonList is not complete
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{
- *
- */
+/****************************************************************************************************************
+ * Test if the Recursion JsonList is not complete.                                                              *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{                                                                                                 *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_not_completed_List_should_Throw_Error()
 {
   printf("JSON list test No.23");
@@ -1053,15 +1051,15 @@ void test_Recursion_JSON_List_with_not_completed_List_should_Throw_Error()
   printf("\n\n");
 }
 
-/**
- * at state OBJECT,
- * Test if STEVEN token has been passed in after openBrace token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"STEVEN"
- *
- */
+/****************************************************************************************************************
+ * at state OBJECT,                                                                                             *
+ * Test if STEVEN token has been passed in after openBrace token.                                               *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"STEVEN"                                                                                         *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token_should_Throw_Error()
 {
   printf("JSON list test No.24");
@@ -1099,15 +1097,15 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_open_Brace_Token
   printf("\n\n");
 }
 
-/**
- * at state WAIT_FOR_COLON,
- * Test if no token has been passed in after NAME2 token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"NAME2"
- *
- */
+/****************************************************************************************************************
+ * at state WAIT_FOR_COLON,                                                                                     *
+ * Test if no token has been passed in after NAME2 token.                                                       *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"NAME2"                                                                                          *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
   printf("JSON list test No.25");
@@ -1145,15 +1143,15 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Key_Token_should_Thr
   printf("\n\n");
 }
 
-/**
- * at state WAIT_FOR_COLON,
- * Test if Caret token has been passed in after NAME2 token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"NAME2"^
- *
- */
+/****************************************************************************************************************
+ * at state WAIT_FOR_COLON,                                                                                     *
+ * Test if Caret token has been passed in after NAME2 token.                                                    *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"NAME2"^                                                                                         *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
   printf("JSON list test No.26");
@@ -1192,15 +1190,15 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Key_Token_should_
   printf("\n\n");
 }
 
-/**
- * at state WAIT_FOR_COLON,
- * Test if STEVEN token has been passed in after NAME2 token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"NAME2""STEVEN"
- *
- */
+/****************************************************************************************************************
+ * at state WAIT_FOR_COLON,                                                                                     *
+ * Test if STEVEN token has been passed in after NAME2 token.                                                   *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"NAME2""STEVEN"                                                                                  *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
   printf("JSON list test No.27");
@@ -1239,15 +1237,15 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Key_Token_should
   printf("\n\n");
 }
 
-/**
- * at state WAIT_FOR_COLON,
- * Test if int20 token has been passed in after NAME2 token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"NAME2"20
- *
- */
+/****************************************************************************************************************
+ * at state WAIT_FOR_COLON,                                                                                     *
+ * Test if int20 token has been passed in after NAME2 token.                                                    *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"NAME2"20                                                                                        *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_should_Throw_Error()
 {
   printf("JSON list test No.28");
@@ -1286,15 +1284,15 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Key_Token_shoul
   printf("\n\n");
 }
 
-/**
- * at state VALUE,
- * Test if no token has been passed in after Colon token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"NAME2":
- *
- */
+/****************************************************************************************************************
+ * at state VALUE,                                                                                              *
+ * Test if no token has been passed in after Colon token.                                                       *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"NAME2":                                                                                         *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_Throw_Error()
 {
   printf("JSON list test No.29");
@@ -1333,15 +1331,15 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Colon_Token_should_T
   printf("\n\n");
 }
 
-/**
- * at state VALUE,
- * Test if closeBrace token has been passed in after Colon token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"NAME2":^
- *
- */
+/****************************************************************************************************************
+ * at state VALUE,                                                                                              *
+ * Test if closeBrace token has been passed in after Colon token.                                               *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"NAME2":^                                                                                        *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_caret_Token_Passed_in_after_Colon_Token_should_Throw_Error()
 {
   printf("JSON list test No.30");
@@ -1381,15 +1379,15 @@ void test_Recursion_JSON_List_with_caret_Token_Passed_in_after_Colon_Token_shoul
   printf("\n\n");
 }
 
-/**
- * at state STRING,
- * Test if no token has been passed in after STEVEN token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"NAME2":"STEVEN"
- *
- */
+/****************************************************************************************************************
+ * at state STRING,                                                                                             *
+ * Test if no token has been passed in after STEVEN token.                                                      *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"NAME2":"STEVEN"                                                                                 *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
   printf("JSON list test No.31");
@@ -1429,15 +1427,15 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_String_Token_should_
   printf("\n\n");
 }
 
-/**
- * at state STRING,
- * Test if caret token has been passed in after STEVEN token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"NAME2":"STEVEN"^
- *
- */
+/****************************************************************************************************************
+ * at state STRING,                                                                                             *
+ * Test if caret token has been passed in after STEVEN token.                                                   *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"NAME2":"STEVEN"^                                                                                *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
   printf("JSON list test No.32");
@@ -1478,15 +1476,15 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_String_Token_shou
   printf("\n\n");
 }
 
-/**
- * at state STRING,
- * Test if YEN token has been passed in after STEVEN token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"NAME2":"STEVEN""YEN"
- *
- */
+/****************************************************************************************************************
+ * at state STRING,                                                                                             *
+ * Test if YEN token has been passed in after STEVEN token.                                                     *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"NAME2":"STEVEN""YEN"                                                                            *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_String_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
   printf("JSON list test No.33");
@@ -1527,15 +1525,15 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_String_Token_sho
   printf("\n\n");
 }
 
-/**
- * at state STRING,
- * Test if int20 token has been passed in after STEVEN token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"NAME2":"STEVEN"20
- *
- */
+/****************************************************************************************************************
+ * at state STRING,                                                                                             *
+ * Test if int20 token has been passed in after STEVEN token.                                                   *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"NAME2":"STEVEN"20                                                                               *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_String_Token_should_Throw_Error()
 {
   printf("JSON list test No.34");
@@ -1576,15 +1574,15 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_String_Token_sh
   printf("\n\n");
 }
 
-/**
- * at state NUMBER,
- * Test if caret token has been passed in after int20 token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"NAME2":20
- *
- */
+/****************************************************************************************************************
+ * at state NUMBER,                                                                                             *
+ * Test if caret token has been passed in after int20 token.                                                    *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"NAME2":20                                                                                       *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
   printf("JSON list test No.35");
@@ -1624,15 +1622,15 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_Integer_Token_should
   printf("\n\n");
 }
 
-/**
- * at state NUMBER,
- * Test if caret token has been passed in after int20 token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"NAME2":20^
- *
- */
+/****************************************************************************************************************
+ * at state NUMBER,                                                                                             *
+ * Test if caret token has been passed in after int20 token.                                                    *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"NAME2":20^                                                                                      *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
   printf("JSON list test No.36");
@@ -1673,15 +1671,15 @@ void test_Recursion_JSON_List_with_Caret_Token_Passed_in_after_Integer_Token_sho
   printf("\n\n");
 }
 
-/**
- * at state NUMBER,
- * Test if YEN token has been passed in after int20 token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"NAME2":20"YEN"
- *
- */
+/****************************************************************************************************************
+ * at state NUMBER,                                                                                             *
+ * Test if YEN token has been passed in after int20 token.                                                      *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"NAME2":20"YEN"                                                                                  *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
   printf("JSON list test No.37");
@@ -1722,15 +1720,15 @@ void test_Recursion_JSON_List_with_String_Token_Passed_in_after_Integer_Token_sh
   printf("\n\n");
 }
 
-/**
- * at state NUMBER,
- * Test if int30 token has been passed in after int20 token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"NAME2":20 30
- *
- */
+/****************************************************************************************************************
+ * at state NUMBER,                                                                                             *
+ * Test if int30 token has been passed in after int20 token.                                                    *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"NAME2":20 30                                                                                    *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_should_Throw_Error()
 {
   printf("JSON list test No.38");
@@ -1771,15 +1769,15 @@ void test_Recursion_JSON_List_with_Integer_Token_Passed_in_after_Integer_Token_s
   printf("\n\n");
 }
 
-/**
- * at state OBJECT
- * Test if no token has been passed in after coma token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"NAME2":20,
- *
- */
+/****************************************************************************************************************
+ * at state OBJECT                                                                                              *
+ * Test if no token has been passed in after coma token.                                                        *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"NAME2":20,                                                                                      *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_coma_Token_should_Throw_Error()
 {
   printf("JSON list test No.39");
@@ -1820,16 +1818,16 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_coma_Token_should_Th
   printf("\n\n");
 }
 
-/**
- * at state WAIT_FOR_OPERATOR
-  * Test if no token has been passed in after closeBrace token
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{"NAME2":20,
- *             "NAME3":"YEN"}
- *
- */
+/****************************************************************************************************************
+ * at state WAIT_FOR_OPERATOR                                                                                   *
+  * Test if no token has been passed in after closeBrace token.                                                 *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{"NAME2":20,                                                                                      *
+ *             "NAME3":"YEN"}                                                                                   *
+ *                                                                                                              *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_with_no_Token_Passed_in_after_close_Brace_Token_should_Throw_Error()
 {
   printf("JSON list test No.40");
@@ -1874,15 +1872,15 @@ void test_Recursion_JSON_List_with_no_Token_Passed_in_after_close_Brace_Token_sh
   printf("\n\n");
 }
 
-/**
- * Test for complete Recursion JsonList
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{ "NAME2":"STEVEN",
- *              "NAME3":"YEN"}
- *  }
- */
+/****************************************************************************************************************
+ * Test for complete Recursion JsonList.                                                                        *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{ "NAME2":"STEVEN",                                                                               *
+ *              "NAME3":"YEN"}                                                                                  *
+ *  }                                                                                                           *
+ ****************************************************************************************************************/
 void test_Recursion_JSON_List_for_complete_form()
 {
   printf("JSON list test No.41");
@@ -1948,15 +1946,15 @@ void test_Recursion_JSON_List_for_complete_form()
   printf("\n\n");
 }
 
-/**
- * Test if extra Token passed into Recursion JsonList
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{ "NAME2":"STEVEN",
- *              "NAME3":"YEN"}
- *  }^
- */
+/****************************************************************************************************************
+ * Test if extra Token passed into Recursion JsonList.                                                          *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{ "NAME2":"STEVEN",                                                                               *
+ *              "NAME3":"YEN"}                                                                                  *
+ *  }^                                                                                                          *
+ ****************************************************************************************************************/
 void test_JSON_List_with_Extra_Token_Passed_into_Recursion_JSON_List()
 {
   printf("JSON list test No.42");
@@ -2007,18 +2005,18 @@ void test_JSON_List_with_Extra_Token_Passed_into_Recursion_JSON_List()
 }
 
 
-/**
- * Test for Complex JsonList
- *
- *  {
- *    "NAME1":"JS",
- *    "AGE"  :{ "NAME2":"STEVEN",
- *              "NAME3":{ "NAME4":"ABU" },
- *              "NAME4":"YEN"
- *            },
- *    "ADD"  : 30
- *  }
- */
+/****************************************************************************************************************
+ * Test for Complex JsonList.                                                                                   *
+ *                                                                                                              *
+ *  {                                                                                                           *
+ *    "NAME1":"JS",                                                                                             *
+ *    "AGE"  :{ "NAME2":"STEVEN",                                                                               *
+ *              "NAME3":{ "NAME4":"ABU" },                                                                      *
+ *              "NAME4":"YEN"                                                                                   *
+ *            },                                                                                                *
+ *    "ADD"  : 30                                                                                               *
+ *  }                                                                                                           *
+ ****************************************************************************************************************/
 void test_Complex_Json_List()
 {
   printf("JSON list test No.43");
